@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { colors } from "../../utils/colors";
 
 const footerSections = [
   {
