@@ -28,9 +28,8 @@ const servicesData = [
   },
   {
     icon: <Globe size={24} />,
-    title: "Logística Internacional",
-    description:
-      "Gestión de importaciones y exportaciones con cobertura global.",
+    title: "Logística Nacional",
+    description: "Gestión de logística con cobertura en todo el país.",
   },
   {
     icon: <Shield size={24} />,
