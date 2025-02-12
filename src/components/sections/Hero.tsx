@@ -47,17 +47,11 @@ const Hero = () => {
                 className="px-4 py-2 rounded text-lg font-medium text-white shadow"
                 style={{ backgroundColor: colors.logex }}
               >
-                <Link to="/nosotros" className="block h-full w-full">
+                <Link to="/servicios" className="block h-full w-full">
                   Conoce nuestros servicios
                 </Link>
               </motion.button>
-              {/* <a
-              href="/politicas/Política Integrada.pdf"
-              target="_blank"
-              className="block mt-2 text-red-600 hover:underline visited:text-red-700"
-            >
-              Lee nuestra Política Integrada
-            </a> */}
+
               <AlertDialog>
                 <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
                   Lee nuestra Política Integrada
@@ -68,11 +62,32 @@ const Hero = () => {
                       Política Integrada de LogeX
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      <div className="relative w-full aspect-[9/16] lg:aspect-[16/9] h-full">
-                        <iframe
+                      <div className="relative w-full aspect-[9/16] lg:aspect-[16/9] h-[60vh] md:h-auto">
+                        {/* <iframe
                           src="/politicas/Política Integrada.pdf"
                           className="absolute inset-0 w-full h-full border-none"
-                        ></iframe>
+                          title="Política integrada"
+                          allowFullScreen
+                        ></iframe> */}
+                        <object
+                          data="/politicas/Política Integrada.pdf"
+                          type="application/pdf"
+                          className="absolute inset-0 w-full h-full"
+                        >
+                          <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
+                            <p className="text-center mb-4">
+                              No se puede mostrar el PDF directamente.
+                            </p>
+                            <a
+                              href="/politicas/Política Integrada.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-4 py-2 bg-red-600 text-white rounded-md"
+                            >
+                              Abrir PDF
+                            </a>
+                          </div>
+                        </object>
                       </div>
                     </AlertDialogDescription>
                   </AlertDialogHeader>

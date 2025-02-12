@@ -1,0 +1,108 @@
+:root {
+  --clr: #64748b;
+  --accent: #dc2626;
+}
+.body {
+  display: grid;
+  place-items: center;
+}
+
+.navigation {
+  width: 400px;
+  height: 70px;
+  background-color: var(--accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+.navigation ul {
+  position: relative;
+  display: flex;
+  width: 350px;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 70px;
+  height: 70px;
+  z-index: 1;
+}
+
+.navigation ul li a {
+  position: relative;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  line-height: 80px;
+  font-size: 1.5em;
+  text-align: center;
+  color: white;
+  transition: 500ms;
+  transform: translateY(15px);
+}
+
+.navigation ul li.active a .icon {
+  color: var(--accent);
+  transform: translateY(-15px);
+}
+
+.navigation ul li a .text {
+  position: absolute;
+  background-color: white;
+  padding: 5px 12px;
+  border-radius: 1em;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  transition: 500ms;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.navigation ul li.active a .text {
+  opacity: 1;
+  transform: translateY(40px);
+}
+
+.indicator {
+  position: absolute;
+  top: -50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 5px solid white;
+  transition: 500ms;
+}
+
+.navigation ul li:nth-child(1).active ~ .indicator {
+  transform: translateX(calc(70px * 0));
+}
+
+.navigation ul li:nth-child(2).active ~ .indicator {
+  transform: translateX(calc(70px * 1));
+}
+
+.navigation ul li:nth-child(3).active ~ .indicator {
+  transform: translateX(calc(70px * 2));
+}
+
+.navigation ul li:nth-child(4).active ~ .indicator {
+  transform: translateX(calc(70px * 3));
+}
+
+.navigation ul li:nth-child(5).active ~ .indicator {
+  transform: translateX(calc(70px * 4));
+}

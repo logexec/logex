@@ -73,24 +73,21 @@ const Sistemas = () => {
   ];
 
   return (
-    <div className="pt-16">
-      <div className="bg-primary/5 py-20">
+    <div className="pt-16 overflow-x-hidden lg:mb-20">
+      <div className="bg-primary/5 py-10 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1
-            className="text-4xl font-bold text-secondary mb-6"
+            className="text-3xl md:text-4xl font-bold text-secondary mb-6"
             style={{ color: colors.navy }}
           >
             Sistemas y Tecnología
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl">
             En{" "}
-            <span
-              className="font-bold italic text-lg"
-              style={{ color: colors.logex }}
-            >
+            <span className="font-bold italic" style={{ color: colors.logex }}>
               Log
             </span>
-            <span className="text-gray-600 font-bold italic text-lg">eX</span>,
+            <span className="text-gray-600 font-bold italic">eX</span>,
             utilizamos tecnología de vanguardia para optimizar la logística,
             garantizar eficiencia operativa y brindar soluciones personalizadas
             a nuestros clientes.
@@ -98,15 +95,15 @@ const Sistemas = () => {
         </div>
       </div>
 
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 md:py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
-            className="text-3xl font-bold text-secondary mb-12 text-center"
+            className="text-2xl md:text-3xl font-bold text-secondary mb-8 md:mb-12 text-center"
             style={{ color: colors.navy }}
           >
             Nuestras Soluciones
           </h2>
-          <div className="grid place-content-center max-w-xl mx-auto">
+          <div className="grid place-content-center w-full max-w-lg md:max-w-xl mx-auto">
             <Carousel
               plugins={[
                 Autoplay({
@@ -114,22 +111,27 @@ const Sistemas = () => {
                   stopOnMouseEnter: true,
                 }),
               ]}
+              className="w-full"
             >
               <CarouselContent>
                 {systems.map((sistema, index) => (
                   <CarouselItem
                     key={index}
-                    className="basis-1 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 p-1 mx-1"
+                    // Ajustamos el basis para móviles
+                    className="basis-3/12 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 p-1"
                   >
-                    <Card key={index} className="p-4 bg-white h-36">
+                    <Card
+                      key={index}
+                      className="p-4 bg-white h-auto min-h-[144px]"
+                    >
                       <CardTitle
-                        className="text-xl font-semibold"
+                        className="text-lg md:text-xl font-semibold"
                         style={{ color: colors.navy }}
                       >
                         {sistema.title}
                       </CardTitle>
                       <CardDescription>
-                        <p className="text-gray-700 my-3 text-base select-none">
+                        <p className="text-gray-700 my-3 text-sm md:text-base select-none">
                           {sistema.description}
                         </p>
                       </CardDescription>
@@ -137,8 +139,8 @@ const Sistemas = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
             </Carousel>
           </div>
         </div>
