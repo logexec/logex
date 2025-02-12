@@ -1,61 +1,74 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/Card";
 import { colors } from "../utils/colors";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const Sistemas = () => {
   const systems = [
     {
       title: "WMS",
       description:
-        "Sistema avanzado de gestión de almacenes que optimiza el almacenamiento y movimiento de mercancía.",
+        "Sistema avanzado de gestión de almacenes que optimiza el almacenamiento, inventario y movimiento de mercancía.",
     },
     {
       title: "TMS",
       description:
-        "Plataforma integral para la gestión eficiente del transporte y la distribución.",
+        "Plataforma integral para la planificación, ejecución y optimización del transporte y distribución.",
     },
     {
       title: "CGI",
       description:
-        "Plataforma integral para la gestión eficiente del transporte y la distribución.",
+        "Sistema para la gestión centralizada de información logística y operativa.",
     },
     {
       title: "SAR",
-      description: "Plataforma integral para la asignación de recursos.",
+      description:
+        "Plataforma para la asignación eficiente de recursos logísticos y operacionales.",
     },
     {
       title: "LogeX GPS",
       description:
-        "Sistema de gestión de operaciones de LogeX, diseñado para maximizar la eficiencia logística.",
+        "Sistema de rastreo y monitoreo en tiempo real para la optimización de rutas y flotas.",
     },
     {
       title: "LogeX Compras",
       description:
-        "Sistema de gestión de operaciones de LogeX, diseñado para maximizar la eficiencia logística.",
+        "Plataforma para la gestión de adquisiciones y proveedores en la cadena logística.",
     },
     {
       title: "LogeX Onix",
-      description: "Sistema de gestión de personal de LogeX.",
+      description:
+        "Sistema de administración de personal y asignación de roles en LogeX.",
     },
     {
       title: "DePrati x LogeX",
-      description: "Sistema de gestión de LogeX para nuestro cliente DePrati.",
+      description:
+        "Sistema personalizado de LogeX para la gestión logística del cliente DePrati.",
     },
     {
       title: "SGE",
-      description: "Sistema de gestión de Entregas de LogeX.",
+      description:
+        "Sistema especializado en la gestión y optimización de entregas.",
     },
     {
       title: "LogeX Portal",
-      description: "Portal de LogeX.",
+      description: "Portal de acceso a los servicios y herramientas de LogeX.",
     },
     {
       title: "Traccar",
-      description: "Modern GPS Tracking Platform",
+      description:
+        "Plataforma moderna de rastreo GPS para la gestión de flotas y activos.",
     },
     {
       title: "Torre de Control LogeX",
       description:
-        "Monitoreo en tiempo real de las operaciones logísticas con paneles e indicadores clave para la toma de decisiones.",
+        "Centro de monitoreo en tiempo real con paneles de control e indicadores clave para la toma de decisiones estratégicas.",
     },
   ];
 
@@ -93,22 +106,40 @@ const Sistemas = () => {
           >
             Nuestras Soluciones
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 xl:gap-6">
-            {systems.map((sistema, index) => (
-              <Card key={index} className="p-4 bg-white">
-                <CardTitle
-                  className="text-xl font-semibold"
-                  style={{ color: colors.navy }}
-                >
-                  {sistema.title}
-                </CardTitle>
-                <CardDescription>
-                  <p className="text-gray-700 my-3 text-base">
-                    {sistema.description}
-                  </p>
-                </CardDescription>
-              </Card>
-            ))}
+          <div className="grid place-content-center max-w-xl mx-auto">
+            <Carousel
+              plugins={[
+                Autoplay({
+                  delay: 2000,
+                  stopOnMouseEnter: true,
+                }),
+              ]}
+            >
+              <CarouselContent>
+                {systems.map((sistema, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-1 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 p-1 mx-1"
+                  >
+                    <Card key={index} className="p-4 bg-white h-36">
+                      <CardTitle
+                        className="text-xl font-semibold"
+                        style={{ color: colors.navy }}
+                      >
+                        {sistema.title}
+                      </CardTitle>
+                      <CardDescription>
+                        <p className="text-gray-700 my-3 text-base select-none">
+                          {sistema.description}
+                        </p>
+                      </CardDescription>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </section>
