@@ -106,3 +106,11 @@
 .navigation ul li:nth-child(5).active ~ .indicator {
   transform: translateX(calc(70px * 4));
 }
+
+@media (prefers-color-scheme: dark) {
+  .indicator {
+    background-color: #000 !important;
+    border: solid #000 !important;
+    outline-color: #000 !important;
+  }
+}
