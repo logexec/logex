@@ -46,9 +46,9 @@ const Hero = () => {
               alt="LogeX Supply Chain Solutions"
               className="w-full h-auto"
             />
-            <p className="text-sm text-center mx-auto mt-8 text-slate-500">
+            {/* <p className="text-sm text-center mx-auto mt-8 text-slate-500">
               La idea es poner un camión aquí con el logo
-            </p>
+            </p> */}
           </motion.div>
         </div>
       </div>
