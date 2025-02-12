@@ -62,17 +62,18 @@ const Hero = () => {
                 <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
                   Lee nuestra Política Integrada
                 </AlertDialogTrigger>
-                <AlertDialogContent className="bg-white max-w-6xl">
+                <AlertDialogContent className="bg-white max-h-[90vh] max-w-6xl">
                   <AlertDialogHeader>
                     <AlertDialogTitle>
                       Política Integrada de LogeX
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      <iframe
-                        src="/politicas/Política Integrada.pdf"
-                        width="100%"
-                        height="800px"
-                      ></iframe>
+                      <div className="relative w-full aspect-[9/16] lg:aspect-[16/9] h-full">
+                        <iframe
+                          src="/politicas/Política Integrada.pdf"
+                          className="absolute inset-0 w-full h-full border-none"
+                        ></iframe>
+                      </div>
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
