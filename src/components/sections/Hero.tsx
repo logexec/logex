@@ -34,45 +34,53 @@ const Hero = () => {
               Soluciones integrales de logística y gestión de cadena de
               suministro para empresas B2B
             </p>
-            <motion.button
-              whileHover={{ scale: 0.99 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-4 py-2 rounded text-lg font-medium text-white mr-2 shadow"
-              style={{ backgroundColor: colors.logex }}
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="flex flex-col gap-3 lg:flex-row"
             >
-              <Link to="/nosotros" className="block h-full w-full">
-                Conoce nuestros servicios
-              </Link>
-            </motion.button>
-            {/* <a
+              <motion.button
+                whileHover={{ scale: 0.99 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-4 py-2 rounded text-lg font-medium text-white shadow"
+                style={{ backgroundColor: colors.logex }}
+              >
+                <Link to="/nosotros" className="block h-full w-full">
+                  Conoce nuestros servicios
+                </Link>
+              </motion.button>
+              {/* <a
               href="/politicas/Política Integrada.pdf"
               target="_blank"
               className="block mt-2 text-red-600 hover:underline visited:text-red-700"
             >
               Lee nuestra Política Integrada
             </a> */}
-            <AlertDialog>
-              <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded ml-2 text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
-                Lee nuestra Política Integrada
-              </AlertDialogTrigger>
-              <AlertDialogContent className="bg-white max-w-6xl">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    Política Integrada de LogeX
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    <iframe
-                      src="/politicas/Política Integrada.pdf"
-                      width="100%"
-                      height="800px"
-                    ></iframe>
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cerrar</AlertDialogCancel>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+              <AlertDialog>
+                <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
+                  Lee nuestra Política Integrada
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white max-w-6xl">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Política Integrada de LogeX
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      <iframe
+                        src="/politicas/Política Integrada.pdf"
+                        width="100%"
+                        height="800px"
+                      ></iframe>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cerrar</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </motion.div>
           </div>
           <motion.div
             initial={{ x: 100, opacity: 0 }}
