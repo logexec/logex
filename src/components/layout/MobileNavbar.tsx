@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "motion/react";
 import { Code, Contact, Home, PackageSearch, Truck } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
