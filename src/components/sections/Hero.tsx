@@ -16,7 +16,7 @@ const Hero = () => {
               initial={{ y: 20 }}
               animate={{ y: 0 }}
               className="text-5xl md:text-6xl font-bold text-secondary mb-6"
-              style={{ color: colors.secondary }}
+              style={{ color: colors.navy }}
             >
               Optimiza tu cadena de suministro
             </motion.h1>
@@ -28,7 +28,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 rounded-md text-lg font-medium text-white"
-              style={{ backgroundColor: colors.primary }}
+              style={{ backgroundColor: colors.logex }}
             >
               <Link to="/nosotros" className="block h-full w-full">
                 Conoce nuestros servicios

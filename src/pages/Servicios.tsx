@@ -1,30 +1,31 @@
-import Card from "../components/ui/Card";
 import { ChartBar, Globe, Package, Shield, Truck, Users } from "lucide-react";
+import { colors } from "../utils/colors";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 
 const servicesData = [
   {
-    icon: <Truck size={24} />,
-    title: "Logística Integral",
-    description:
-      "Soluciones completas de transporte y distribución adaptadas a tus necesidades empresariales.",
-  },
-  {
     icon: <Package size={24} />,
-    title: "Gestión de Almacenes",
+    title: "Almacenamiento Inteligente & Gestión de Inventarios",
     description:
-      "Optimización de inventario y almacenamiento con tecnología de punta.",
+      "Optimiza tu inventario con nuestras estrategias avanzadas y tecnología de última generación. Tu stock, siempre bajo control.",
   },
   {
-    icon: <ChartBar size={24} />,
-    title: "Analítica Supply Chain",
+    icon: <Truck size={24} />,
+    title: "Transporte Nacional Eficiente",
     description:
-      "Análisis de datos y KPIs para mejorar la eficiencia de tu cadena de suministro.",
+      "Llevamos tus productos a donde los necesites, con cobertura total y tiempos de entrega optimizados.",
   },
   {
     icon: <Users size={24} />,
     title: "Consultoría Logística",
     description:
-      "Asesoramiento experto para optimizar tus procesos logísticos.",
+      "Estrategias diseñadas para que tu operación sea más ágil, eficiente y rentable.",
+  },
+  {
+    icon: <ChartBar size={24} />,
+    title: "Analítica y Optimización de la Supply Ch",
+    description:
+      "Tomamos decisiones basadas en datos para hacer tu cadena de suministro más eficiente y predecible.",
   },
   {
     icon: <Globe size={24} />,
@@ -33,9 +34,9 @@ const servicesData = [
   },
   {
     icon: <Shield size={24} />,
-    title: "Seguridad y Trazabilidad",
+    title: "Seguridad y Seguimiento en Tiempo Real",
     description:
-      "Seguimiento en tiempo real y seguridad en toda la cadena de suministro.",
+      "Garantizamos trazabilidad total con tecnología de monitoreo 24/7. Seguridad y visibilidad en cada paso.",
   },
 ];
 
@@ -44,18 +45,25 @@ const Servicios = () => {
     <div className="pt-16">
       <div className="bg-primary/5 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-secondary mb-6">
-            Nuestros Servicios
+          <h1
+            className="text-4xl font-bold mb-6"
+            style={{ color: colors.navy }}
+          >
+            Soluciones Logísticas a la Medida
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl">
             En{" "}
-            <span className="text-primary font-bold italic text-lg">Log</span>
+            <span
+              className="font-bold italic text-lg"
+              style={{ color: colors.logex }}
+            >
+              Log
+            </span>
             <span className="text-gray-600 font-bold italic text-lg">eX</span>,
-            nos especializamos en brindar soluciones logísticas de calidad a
-            emrpresas exitosas. Nuestro enfoque se basa en la eficiencia y la
-            utilización de procesos y tecnología de vanguardia. Trabajamos en
-            estrecha colaboración con nuestros clientes para convertirnos en su
-            aliado estratégico y crear valor en sus operaciones.
+            transformamos la logística en una ventaja competitiva para tu
+            empresa. Desde la gestión de almacenes hasta el transporte a nivel
+            nacional, ofrecemos soluciones personalizadas con tecnología de
+            vanguardia.
           </p>
         </div>
       </div>
@@ -64,7 +72,13 @@ const Servicios = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {servicesData.map((service, index) => (
-              <Card key={index} {...service} />
+              <Card key={index} className="p-2">
+                <CardHeader>
+                  <span style={{ color: colors.logex }}>{service.icon}</span>
+                  <CardTitle>{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>{service.description}</CardContent>
+              </Card>
             ))}
           </div>
         </div>

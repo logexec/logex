@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import NavLink from "../ui/NavLink";
 import { Link } from "react-router-dom";
+import { colors } from "@/utils/colors";
 
 const Navbar = () => {
   return (
@@ -31,7 +32,8 @@ const Navbar = () => {
               <NavLink to="/contacto">Contacto</NavLink>
               <NavLink
                 to="/tracking"
-                className="bg-primary text-white hover:bg-primary/90"
+                className={`bg-primary text-white hover:text-white hover:opacity-90`}
+                style={{ background: colors.logex }}
               >
                 Tracking
               </NavLink>

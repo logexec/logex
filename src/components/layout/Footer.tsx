@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { colors } from "../../utils/colors";
 
 const footerSections = [
   {
@@ -32,7 +33,10 @@ const footerSections = [
 
 const Footer = () => {
   return (
-    <footer className="py-12 bg-secondary select-none">
+    <footer
+      className="py-12 bg-secondary select-none"
+      style={{ background: colors.navy }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>

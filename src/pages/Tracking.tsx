@@ -52,31 +52,43 @@ const Tracking = () => {
         className="bg-white shadow-sm border-b"
       >
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1
+          <motion.h1
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
             className="text-3xl font-bold mb-6 text-center"
-            style={{ color: colors.secondary }}
+            style={{ color: colors.navy }}
           >
             Rastrear Envío
-          </h1>
-          <div className="flex gap-4">
+          </motion.h1>
+          <motion.form
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="flex gap-4"
+            onSubmit={(e) => {
+              e.preventDefault(), console.log("Submitted!");
+            }}
+          >
             <input
               type="text"
               placeholder="Ingresa el número de tracking"
               value={trackingNumber}
               onChange={(e) => setTrackingNumber(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="flex-1 px-4 py-3 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded"
             />
             <button
-              style={{ backgroundColor: colors.primary }}
-              className="px-6 py-3 rounded-lg text-white font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors"
+              style={{ backgroundColor: colors.logex }}
+              className="px-6 py-3 rounded text-white font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors hover:bg-red-700"
               onClick={() =>
                 trackingNumber ? setIsShown(true) : setIsShown(false)
               }
+              type="submit"
             >
               <Search size={20} />
               Rastrear
             </button>
-          </div>
+          </motion.form>
         </div>
       </motion.div>
 
@@ -91,7 +103,7 @@ const Tracking = () => {
           >
             <h2
               className="text-xl font-semibold mb-8"
-              style={{ color: colors.secondary }}
+              style={{ color: colors.navy }}
             >
               Historial de Rastreo
             </h2>
@@ -100,7 +112,7 @@ const Tracking = () => {
               {/* Timeline line */}
               <div
                 className="absolute left-[28px] top-8 bottom-8 w-px"
-                style={{ backgroundColor: `${colors.primary}20` }}
+                style={{ backgroundColor: `${colors.logex}` }}
               />
 
               {/* Timeline items */}
@@ -120,14 +132,14 @@ const Tracking = () => {
                         className="w-14 h-14 rounded-full bg-white border-2 flex items-center justify-center"
                         style={{
                           borderColor: item.isAlert
-                            ? colors.accent
+                            ? colors.orange
                             : item.isCompleted
-                            ? colors.primary
+                            ? colors.green
                             : colors.gray,
                           color: item.isAlert
-                            ? colors.accent
+                            ? colors.orange
                             : item.isCompleted
-                            ? colors.primary
+                            ? colors.logex
                             : colors.gray,
                         }}
                       >
@@ -141,7 +153,7 @@ const Tracking = () => {
                         <div>
                           <h3
                             className="font-semibold"
-                            style={{ color: colors.secondary }}
+                            style={{ color: colors.navy }}
                           >
                             {item.status}
                           </h3>
@@ -152,8 +164,8 @@ const Tracking = () => {
                             <span
                               className="inline-block mt-2 px-3 py-1 rounded-full text-sm"
                               style={{
-                                backgroundColor: `${colors.accent}10`,
-                                color: colors.accent,
+                                backgroundColor: `${colors.logex}`,
+                                color: colors.white,
                               }}
                             >
                               {item.subStatus}

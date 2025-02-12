@@ -1,10 +1,21 @@
+import { motion } from "motion/react";
+import { colors } from "@/utils/colors";
+
 const Contacto = () => {
   return (
     <div className="min-h-full flex flex-col items-center bg-[#f1f1f1] p-4 py-[10.75rem]">
-      <h1 className="text-center text-[#a8a8a8] font-bold text-xl">
+      <motion.h1
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.75 }}
+        className="text-center text-[#8d8d8d] font-bold text-xl"
+      >
         ¿Quejas, dudas, sugerencias?
-      </h1>
-      <form
+      </motion.h1>
+      <motion.form
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.75 }}
         action=""
         className="max-w-[800px] grid grid-cols-2 text-center mx-auto my-5 px-3"
       >
@@ -39,12 +50,13 @@ const Contacto = () => {
         <div className="col-span-2 my-4">
           <input
             type="submit"
-            value="Submit"
+            value="Enviar"
             id="input-submit"
-            className="w-11/12 py-2 text-white bg-primary text-semibold rounded-md outline-none border-2 border-transparent border-spacing-1 focus:border-sky-400"
+            className={`w-11/12 py-2 text-white text-semibold rounded-md outline-none border-2 border-transparent border-spacing-1 focus:border-sky-400 !hover:bg-red-700 cursor-pointer`}
+            style={{ background: colors.logex }}
           />
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 };

@@ -1,13 +1,19 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkProps {
   to: string;
   children: React.ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children, className = "" }) => {
+const NavLink: React.FC<NavLinkProps> = ({
+  to,
+  children,
+  className = "",
+  style,
+}) => {
   const location = useLocation();
   const isActive = location.pathname === to && to !== "/tracking";
 
@@ -24,6 +30,7 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children, className = "" }) => {
       className={`${baseClasses} ${
         isActive ? activeClasses : defaultClasses
       } ${className}`}
+      style={style}
     >
       {children}
     </Link>

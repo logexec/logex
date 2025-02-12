@@ -1,6 +1,7 @@
 import { ChartBar, Globe, Package, Shield, Truck, Users } from "lucide-react";
 import { motion } from "motion/react";
-import Card from "../ui/Card";
+import { colors } from "../../utils/colors";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 
 const servicesData = [
   {
@@ -45,10 +46,16 @@ const Services = () => {
     <section className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-secondary mb-4">
+          <h2
+            className="text-4xl font-bold text-secondary mb-4"
+            style={{ color: colors.navy }}
+          >
             Nuestros Servicios
           </h2>
-          <p className="text-gray max-w-2xl mx-auto">
+          <p
+            className="text-gray max-w-2xl mx-auto"
+            style={{ color: colors.gray }}
+          >
             Soluciones integrales para optimizar tu cadena de suministro
           </p>
         </div>
@@ -61,7 +68,13 @@ const Services = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card {...service} />
+              <Card className="p-2 bg-white h-48">
+                <CardHeader>
+                  <span style={{ color: colors.logex }}>{service.icon}</span>
+                  <CardTitle>{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>{service.description}</CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
