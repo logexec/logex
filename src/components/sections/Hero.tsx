@@ -3,7 +3,6 @@ import { colors } from "../../utils/colors";
 import { Link } from "react-router-dom";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
