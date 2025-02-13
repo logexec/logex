@@ -109,8 +109,6 @@
 
 @media (prefers-color-scheme: dark) {
   .indicator {
-    background-color: #000 !important;
     border: solid #000 !important;
-    outline-color: #000 !important;
   }
 }
