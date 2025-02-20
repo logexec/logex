@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardTitle } from "@/components/ui/Card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { colors } from "../utils/colors";
 import {
   Carousel,
