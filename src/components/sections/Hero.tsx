@@ -25,14 +25,14 @@ const Hero = () => {
             <motion.h1
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              className="text-5xl md:text-6xl font-bold text-secondary mb-6"
+              className="text-5xl font-bold text-secondary mb-6"
               style={{ color: colors.navy }}
             >
-              Optimiza tu cadena de suministro
+              Especialistas en servicios logísticos
             </motion.h1>
             <p className="text-xl mb-8" style={{ color: colors.gray }}>
-              Soluciones integrales de logística y gestión de cadena de
-              suministro para empresas B2B
+              Nuestro objetivo principal es ofrecer soluciones para optimizar la
+              Cadena de Abastecimiento de nuestros clientes.
             </p>
 
             <motion.div
@@ -63,12 +63,6 @@ const Hero = () => {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       <div className="relative w-full aspect-[9/16] lg:aspect-[16/9] h-[60vh] md:h-auto">
-                        {/* <iframe
-                          src="/politicas/Política Integrada.pdf"
-                          className="absolute inset-0 w-full h-full border-none"
-                          title="Política integrada"
-                          allowFullScreen
-                        ></iframe> */}
                         <object
                           data="/politicas/Política Integrada.pdf"
                           type="application/pdf"
@@ -115,9 +109,6 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Accent decorator */}
-      <div className="absolute right-0 top-1/4 w-1/3 h-64 -z-10 rounded-l-full opacity-10 bg-accent" />
     </motion.section>
   );
 };

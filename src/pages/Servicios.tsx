@@ -1,6 +1,6 @@
 import { ChartBar, Globe, Package, Shield, Truck, Users } from "lucide-react";
 import { colors } from "../utils/colors";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const servicesData = [
   {

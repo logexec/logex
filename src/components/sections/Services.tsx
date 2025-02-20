@@ -1,32 +1,26 @@
-import { ChartBar, Globe, Package, Shield, Truck, Users } from "lucide-react";
+import { Bot, Globe, MapPin, Package, Shield, Truck } from "lucide-react";
 import { motion } from "motion/react";
 import { colors } from "../../utils/colors";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const servicesData = [
   {
-    icon: <Truck size={24} />,
-    title: "Logística Integral",
+    icon: <MapPin size={24} />,
+    title: "Ultima Milla",
     description:
-      "Soluciones completas de transporte y distribución adaptadas a tus necesidades empresariales.",
+      "Rastreamos con éxito los envíos en tiempo real a través de Internet de las cosas (IoT), tecnología inteligente y sensores.",
   },
   {
     icon: <Package size={24} />,
-    title: "Gestión de Almacenes",
+    title: "Almacenamiento",
     description:
-      "Optimización de inventario y almacenamiento con tecnología de punta.",
+      "Administración de nodegas, análisis de stock y excelentes técnicas de almacenamiento",
   },
   {
-    icon: <ChartBar size={24} />,
-    title: "Analítica Supply Chain",
+    icon: <Truck size={24} />,
+    title: "Transporte",
     description:
-      "Análisis de datos y KPIs para mejorar la eficiencia de tu cadena de suministro.",
-  },
-  {
-    icon: <Users size={24} />,
-    title: "Consultoría Logística",
-    description:
-      "Asesoramiento experto para optimizar tus procesos logísticos.",
+      "La mayor satisfacción de los clientes finales, sistematizando la gestión de entregas y optimizando los procesos logísticos.",
   },
   {
     icon: <Globe size={24} />,
@@ -38,6 +32,12 @@ const servicesData = [
     title: "Seguridad y Trazabilidad",
     description:
       "Seguimiento en tiempo real y seguridad en toda la cadena de suministro.",
+  },
+  {
+    icon: <Bot size={24} />,
+    title: "Automatización de Procesos",
+    description:
+      "Creamos un centro de decisión virtual que proporciona visibilidad de extremo a extremo, en tiempo real, de tu cadena de suministro.",
   },
 ];
 
@@ -68,7 +68,7 @@ const Services = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="p-2 bg-white h-48">
+              <Card className="p-2 bg-white h-56">
                 <CardHeader>
                   <span style={{ color: colors.logex }}>{service.icon}</span>
                   <CardTitle>{service.title}</CardTitle>
