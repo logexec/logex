@@ -59,7 +59,7 @@ const Tracking = () => {
             className="text-3xl font-bold mb-6 text-center"
             style={{ color: colors.navy }}
           >
-            Rastrear Envío
+            Rastrear envío
           </motion.h1>
           <motion.form
             initial={{ y: 50, opacity: 0 }}
@@ -72,7 +72,7 @@ const Tracking = () => {
           >
             <input
               type="text"
-              placeholder="Ingresa el número de tracking"
+              placeholder="Número de guía o tracking"
               value={trackingNumber}
               onChange={(e) => setTrackingNumber(e.target.value)}
               className="flex-1 px-4 py-3 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded"

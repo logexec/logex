@@ -6,7 +6,7 @@ const footerSections = [
     title: "Compañía",
     links: [
       { text: "Sobre Nosotros", href: "/nosotros" },
-      { text: "Responsabilidad Social", href: "/responsabilidad" },
+      { text: "Responsabilidad Social", href: "/responsabilidad-social" },
       { text: "Certificaciones", href: "/certificaciones" },
       { text: "Trabaja con Nosotros", href: "/careers" },
     ],
@@ -46,7 +46,7 @@ const Footer = () => {
               className="h-8 w-auto mb-4"
             />
             <p className="text-gray-400">
-              Excelencia en gestión de cadena de suministro
+              Líderes en gestión de cadena de suministro en Ecuador
             </p>
           </div>
 

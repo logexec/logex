@@ -11,8 +11,11 @@ const Contacto = () => {
         transition={{ duration: 0.75 }}
         className="text-center text-[#8d8d8d] font-bold text-xl mb-6"
       >
-        ¿Quejas, dudas, sugerencias?
+        Contacto
       </motion.h1>
+      <p className="text-center text-[#8d8d8d] text-sm mb-6">
+        Para propuestas comerciales o información sobre nuestros servicios.
+      </p>
       <motion.form
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -52,7 +55,7 @@ const Contacto = () => {
         <div className="col-span-1 md:col-span-2 my-4">
           <input
             type="submit"
-            value="Enviar"
+            value="Enviar mensaje"
             id="input-submit"
             className="w-full md:w-11/12 py-2 text-white text-semibold rounded-md outline-none border-2 border-transparent border-spacing-1 focus:border-sky-400 hover:bg-red-700 cursor-pointer"
             style={{ background: colors.logex }}

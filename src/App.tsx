@@ -10,6 +10,7 @@ import { colors } from "./utils/colors";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import { PageWrapper } from "./components/layout/PageWrapper";
+import { ScrollToTop } from "./components/layout/ScrollToTop";
 import Home from "./pages/Home";
 import Nosotros from "./pages/Nosotros";
 import Servicios from "./pages/Servicios";
@@ -24,6 +25,7 @@ const Layout = () => {
       className="min-h-screen flex flex-col"
       style={{ backgroundColor: colors.light }}
     >
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
         <AnimatePresence mode="wait">

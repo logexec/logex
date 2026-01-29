@@ -12,12 +12,10 @@ const RSE = () => {
           className="max-w-2xl"
         >
           <h1 className="text-4xl font-bold text-secondary mb-6">
-            Responsabilidad Social Empresarial
+            Responsabilidad social empresarial
           </h1>
           <p className="text-xl text-gray-600">
-            En LogeX, nos comprometemos con la sostenibilidad y el desarrollo
-            comunitario, promoviendo prácticas responsables que contribuyen al
-            bienestar social y ambiental.
+            En LogeX nos comprometemos con la sostenibilidad y el desarrollo comunitario, mediante prácticas responsables que contribuyen al bienestar social y ambiental.
           </p>
         </motion.div>
         <motion.div

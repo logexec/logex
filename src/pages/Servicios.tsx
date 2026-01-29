@@ -23,7 +23,7 @@ const servicesData = [
   },
   {
     icon: <ChartBar size={24} />,
-    title: "Analítica y Optimización de la Supply Ch",
+    title: "Analítica y Optimización de la Supply Chain",
     description:
       "Tomamos decisiones basadas en datos para hacer tu cadena de suministro más eficiente y predecible.",
   },
@@ -49,7 +49,7 @@ const Servicios = () => {
             className="text-4xl font-bold mb-6"
             style={{ color: colors.navy }}
           >
-            Soluciones Logísticas a la Medida
+            Soluciones logísticas a la medida
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl">
             En{" "}
@@ -59,11 +59,8 @@ const Servicios = () => {
             >
               Log
             </span>
-            <span className="text-gray-600 font-bold italic text-lg">eX</span>,
-            transformamos la logística en una ventaja competitiva para tu
-            empresa. Desde la gestión de almacenes hasta el transporte a nivel
-            nacional, ofrecemos soluciones personalizadas con tecnología de
-            vanguardia.
+            <span className="text-gray-600 font-bold italic text-lg">eX</span>{" "}
+            transformamos la logística en ventaja competitiva para su empresa: desde gestión de almacenes hasta transporte nacional, con soluciones personalizadas y tecnología de vanguardia.
           </p>
         </div>
       </div>

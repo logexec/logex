@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { colors } from "../utils/colors";
-import { Card, CardContent, CardDescription } from "@/components/ui/Card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 const Nosotros = () => {
   return (
@@ -17,12 +17,12 @@ const Nosotros = () => {
             className={`text-4xl font-bold mb-6`}
             style={{ color: colors.navy }}
           >
-            Experiencia Comprobada en Logística
+            Experiencia comprobada en logística
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Con más de{" "}
             <span className="font-semibold text-primary">
-              20 años de experiencia
+              23 años de experiencia
             </span>{" "}
             en Ecuador,{" "}
             <span
@@ -32,8 +32,7 @@ const Nosotros = () => {
               Log
             </span>
             <span className="text-gray-600 font-bold italic text-lg">eX</span>{" "}
-            es líder en servicios logísticos, brindando soluciones
-            personalizadas y eficientes para grandes empresas.
+            es líder en servicios logísticos y brinda soluciones personalizadas y eficientes para grandes empresas.
           </p>
         </div>
       </div>
@@ -90,19 +89,19 @@ const Nosotros = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: "Personalización",
-                description:
-                  "Ofrecemos soluciones a medida para cada cliente, optimizando su cadena de abastecimiento.",
-              },
-              {
-                title: "Eficiencia",
-                description:
-                  "Almacenamos y transportamos productos de manera segura y con máxima optimización.",
-              },
-              {
                 title: "Ética y Calidad",
                 description:
-                  "Cumplimos con los más altos estándares operativos, comerciales y éticos en cada proceso.",
+                  "Operamos bajo los más altos estándares éticos, asegurando transparencia total en cada etapa de la cadena de suministro.",
+              },
+              {
+                title: "Agilidad Operativa",
+                description:
+                "Almacenamiento inteligente y logística de transporte diseñados para acelerar su cadena de suministro con total seguridad.",
+              },
+              {
+                title: "Personalización",
+                description:
+                  "Nos esforzamos en proveer soluciones a la medida para cada cliente, enfocados en optimizar su cadena de abastecimiento.",
               },
             ].map((valor, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md">
@@ -131,18 +130,18 @@ const Nosotros = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
             {[
               {
-                percentage: "50%",
-                description: "Almacenamiento y transporte seguro y eficiente.",
+                percentage: "+55,000m2",
+                description: "Superficie de almacenamiento administrada.",
               },
               {
-                percentage: "50%",
+                percentage: "650 vehículos",
                 description:
-                  "Cumplimos con los estándares éticos y operativos más altos.",
+                  "Vehículos en ruta en todo el país.",
               },
               {
-                percentage: "100+",
+                percentage: "1,300",
                 description:
-                  "Empresas multinacionales confían en nuestros servicios.",
+                  "Colaboradores directos en nómina. ",
               },
             ].map((dato, index) => (
               <Card key={index} className="p-5">

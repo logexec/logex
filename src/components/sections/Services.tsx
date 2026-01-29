@@ -6,26 +6,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const servicesData = [
   {
     icon: <MapPin size={24} />,
-    title: "Ultima Milla",
+    title: "Última Milla",
     description:
-      "Rastreamos con éxito los envíos en tiempo real a través de Internet de las cosas (IoT), tecnología inteligente y sensores.",
+      "Rastreo de envíos en tiempo real con IoT y sensores para mayor visibilidad y control de entregas.",
   },
   {
     icon: <Package size={24} />,
     title: "Almacenamiento",
     description:
-      "Administración de nodegas, análisis de stock y excelentes técnicas de almacenamiento",
+      "Administración de bodegas, análisis de stock y técnicas de almacenamiento que optimizan su operación.",
   },
   {
     icon: <Truck size={24} />,
     title: "Transporte",
     description:
-      "La mayor satisfacción de los clientes finales, sistematizando la gestión de entregas y optimizando los procesos logísticos.",
+      "Gestión de entregas y procesos logísticos orientada a plazos confiables y satisfacción del cliente final.",
   },
   {
     icon: <Globe size={24} />,
     title: "Logística Nacional",
-    description: "Gestión de logística con cobertura nacional.",
+    description: "Cobertura logística en todo el país con estándares uniformes de servicio.",
   },
   {
     icon: <Shield size={24} />,
@@ -56,7 +56,7 @@ const Services = () => {
             className="text-gray max-w-2xl mx-auto"
             style={{ color: colors.gray }}
           >
-            Soluciones integrales para optimizar tu cadena de suministro
+            Soluciones integrales para optimizar su cadena de suministro
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

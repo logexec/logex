@@ -15,7 +15,7 @@ const Brands = () => {
           className="text-gray max-w-2xl mx-auto"
           style={{ color: colors.gray }}
         >
-          Las marcas que confían en nosotros
+          Empresas que confían en nosotros
         </p>
       </div>
       <MarqueeCarousel />

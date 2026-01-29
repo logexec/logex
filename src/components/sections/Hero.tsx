@@ -28,11 +28,10 @@ const Hero = () => {
               className="text-5xl font-bold text-secondary mb-6"
               style={{ color: colors.navy }}
             >
-              Especialistas en servicios logísticos
+              Innovamos para resolver sus desafíos logísticos
             </motion.h1>
             <p className="text-xl mb-8" style={{ color: colors.gray }}>
-              Nuestro objetivo principal es ofrecer soluciones para optimizar la
-              Cadena de Abastecimiento de nuestros clientes.
+              Optimizamos la cadena de suministro con tecnología y trazabilidad para que su operación sea más eficiente y confiable.
             </p>
 
             <motion.div
@@ -48,7 +47,7 @@ const Hero = () => {
                 style={{ backgroundColor: colors.logex }}
               >
                 <Link to="/servicios" className="block h-full w-full">
-                  Conoce nuestros servicios
+                  Solicitar propuesta
                 </Link>
               </motion.button>
 
