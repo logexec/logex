@@ -15,7 +15,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   style,
 }) => {
   const location = useLocation();
-  const isActive = location.pathname === to && to !== "/tracking";
+  const isActive = location.pathname === to && to !== "/appointments";
 
   const baseClasses =
     "px-3 py-2 rounded-md text-sm font-medium transition-colors";
