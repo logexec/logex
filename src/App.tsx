@@ -17,7 +17,7 @@ import Servicios from "./pages/Servicios";
 import Sistemas from "./pages/Sistemas";
 import RSE from "./pages/RSE";
 import Contacto from "./pages/Contacto";
-import Tracking from "./pages/Tracking";
+import Appointments from "./pages/Appointments";
 
 const Layout = () => {
   return (
@@ -27,7 +27,7 @@ const Layout = () => {
     >
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow">
+      <main className="grow">
         <AnimatePresence mode="wait">
           <Outlet />
         </AnimatePresence>
@@ -89,10 +89,10 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="tracking"
+        path="appointments"
         element={
           <PageWrapper>
-            <Tracking />
+            <Appointments />
           </PageWrapper>
         }
       />

@@ -1,5 +1,4 @@
-import { motion } from "motion/react";
-import { Code, Contact, Home, PackageSearch, Truck } from "lucide-react";
+import { ClipboardClock, Code, Contact, Home, Truck } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import "./MobileNavbar.component.css";
 
@@ -20,9 +19,9 @@ const MobileNavbar = () => {
     },
     {
       id: 3,
-      name: "Tracking",
-      icon: PackageSearch,
-      url: "/tracking",
+      name: "Agendar Turno",
+      icon: ClipboardClock,
+      url: "/appointments",
     },
     {
       id: 4,
@@ -38,12 +37,7 @@ const MobileNavbar = () => {
     },
   ];
   return (
-    <motion.div
-      initial={{ y: 500, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="lg:hidden fixed bottom-0 mx-auto flex body z-50"
-    >
+    <div className="lg:hidden fixed bottom-0 mx-auto flex body z-50">
       <nav className="navigation">
         <ul className="relative flex items-center rounded">
           {links.map((item) => {
@@ -60,7 +54,7 @@ const MobileNavbar = () => {
           <div className="indicator" />
         </ul>
       </nav>
-    </motion.div>
+    </div>
   );
 };
 

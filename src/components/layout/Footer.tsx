@@ -24,7 +24,7 @@ const footerSections = [
     title: "Soporte",
     links: [
       { text: "Centro de Ayuda", href: "/ayuda" },
-      { text: "Tracking", href: "/tracking" },
+      { text: "Agendar turno", href: "/appointments" },
       { text: "Contacto", href: "/contacto" },
       { text: "FAQ", href: "/faq" },
     ],

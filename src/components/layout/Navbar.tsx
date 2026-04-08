@@ -11,7 +11,7 @@ const Navbar = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <Link to={"/"} className="block">
               <img
@@ -31,11 +31,11 @@ const Navbar = () => {
               <NavLink to="/responsabilidad-social">RSE</NavLink>
               <NavLink to="/contacto">Contacto</NavLink>
               <NavLink
-                to="/tracking"
+                to="/appointments"
                 className={`bg-primary text-white hover:text-white hover:opacity-90`}
                 style={{ background: colors.logex }}
               >
-                Tracking
+                Agendar un turno
               </NavLink>
             </div>
           </div>
