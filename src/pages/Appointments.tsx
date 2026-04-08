@@ -24,6 +24,7 @@ const schema = z.object({
     }),
 });
 type Errors = Record<string, string | string[]>;
+
 async function submitForm(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
@@ -36,6 +37,8 @@ async function submitForm(event: FormEvent<HTMLFormElement>) {
     errors: {} as Errors,
   };
 }
+
+const Required = () => <span className="text-red-500" title="Campo obligatorio">*</span>;
 
 const Appointments = () => {
   const [loading, setLoading] = useState(false);
@@ -76,42 +79,42 @@ const Appointments = () => {
               onSubmit={onSubmit}
             >
               <Field name="company">
-                <FieldLabel>Casa comercial / empresa</FieldLabel>
+                <FieldLabel>Casa comercial / empresa <Required /></FieldLabel>
                 <Input placeholder="Ej: Juan Pérez" />
                 <FieldError />
               </Field>
               <Field name="type">
-                <FieldLabel>Tipo de trámite</FieldLabel>
+                <FieldLabel>Tipo de trámite <Required /></FieldLabel>
                 <Input placeholder="Entrega, retiro, otro..." />
                 <FieldError />
               </Field>
               <Field name="order_id">
-                <FieldLabel>N&uacute;mero de orden de compra</FieldLabel>
+                <FieldLabel>N&uacute;mero de orden de compra <Required /></FieldLabel>
                 <Input placeholder="Ej: 12345" />
                 <FieldError />
               </Field>
               <Field name="driver_name">
-                <FieldLabel>Nombre del conductor</FieldLabel>
+                <FieldLabel>Nombre del conductor <Required /></FieldLabel>
                 <Input placeholder="Ej: Gabriel Herrera" />
                 <FieldError />
               </Field>
               <Field name="driver_id">
-                <FieldLabel>N&uacute;mero de c&eacute;dula</FieldLabel>
+                <FieldLabel>N&uacute;mero de c&eacute;dula <Required /></FieldLabel>
                 <Input placeholder="Ej: 1234567890" />
                 <FieldError />
               </Field>
               <Field name="vehicle_plate">
-                <FieldLabel>Placa del vehículo</FieldLabel>
+                <FieldLabel>Placa del vehículo <Required /></FieldLabel>
                 <Input placeholder="Ej: ABC-1234" />
                 <FieldError />
               </Field>
               <Field name="parcel_count">
-                <FieldLabel>N&uacute;mero de paquetes/bultos</FieldLabel>
+                <FieldLabel>N&uacute;mero de paquetes/bultos <Required /></FieldLabel>
                 <Input placeholder="Ej: 5" />
                 <FieldError />
               </Field>
               <Field name="email">
-                <FieldLabel>Email</FieldLabel>
+                <FieldLabel>Email <Required /></FieldLabel>
                 <Input placeholder="Ej: correo@dominio.com" />
                 <FieldError />
               </Field>
@@ -120,7 +123,7 @@ const Appointments = () => {
                 <FieldLabel>
                   <Checkbox name="terms" />
                   <span className="ml-2 text-sm text-gray-600">
-                    Acepto los términos y condiciones
+                    Acepto los términos y condiciones  <Required />
                   </span>
                 </FieldLabel>
               </Field>
