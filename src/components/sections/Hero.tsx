@@ -1,16 +1,16 @@
 import { motion } from "motion/react";
 import { colors } from "../../utils/colors";
 import { Link } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../ui/alert-dialog";
+// import {
+//   AlertDialog,
+//   AlertDialogCancel,
+//   AlertDialogContent,
+//   AlertDialogDescription,
+//   AlertDialogFooter,
+//   AlertDialogHeader,
+//   AlertDialogTitle,
+//   AlertDialogTrigger,
+// } from "../ui/alert-dialog";
 
 const Hero = () => {
   return (
@@ -51,7 +51,7 @@ const Hero = () => {
                 </Link>
               </motion.button>
 
-              <AlertDialog>
+              {/* <AlertDialog>
                 <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
                   Lee nuestra Política Integrada
                 </AlertDialogTrigger>
@@ -88,7 +88,7 @@ const Hero = () => {
                     <AlertDialogCancel>Cerrar</AlertDialogCancel>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog>
+              </AlertDialog> */}
             </motion.div>
           </div>
           <motion.div
