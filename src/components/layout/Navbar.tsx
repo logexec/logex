@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import NavLink from "../ui/NavLink";
 import { Link } from "react-router-dom";
-import { colors } from "@/utils/colors";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   return (
@@ -30,13 +30,11 @@ const Navbar = () => {
               <NavLink to="/sistemas">Sistemas</NavLink>
               <NavLink to="/responsabilidad-social">RSE</NavLink>
               <NavLink to="/contacto">Contacto</NavLink>
-              <NavLink
-                to="/appointments"
-                className={`bg-primary text-white hover:text-white hover:opacity-90`}
-                style={{ background: colors.logex }}
-              >
-                Agendar un turno
-              </NavLink>
+              <Link to="/appointments">
+                <Button variant="ghost" className="bg-slate-700 text-primary-foreground hover:bg-slate-700/90">
+                  Recepci&oacute;n de proveedores
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
