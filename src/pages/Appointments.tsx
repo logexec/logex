@@ -24,16 +24,16 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "@/components/ui/stepper";
-import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogClose,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogPopup,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 
 const steps = [
   {
@@ -54,6 +54,53 @@ const steps = [
 ];
 
 const APPOINTMENTS_API_URL = "https://httpbin.org/post";
+const FIELD_ORDER = [
+  "company",
+  "type",
+  "order_id",
+  "driver_name",
+  "driver_id",
+  "vehicle_plate",
+  "parcel_count",
+  "email",
+  "appointment_date",
+  "appointment_time",
+  "terms",
+] as const;
+
+const FIELD_LABELS: Record<(typeof FIELD_ORDER)[number], string> = {
+  appointment_date: "Fecha del turno",
+  appointment_time: "Horario disponible",
+  company: "Casa comercial / empresa",
+  driver_id: "Número de cédula",
+  driver_name: "Nombre del conductor",
+  email: "Email",
+  order_id: "Número de orden de compra",
+  parcel_count: "Número de paquetes/bultos",
+  terms: "Políticas de recepción",
+  type: "Tipo de trámite",
+  vehicle_plate: "Placa del vehículo",
+};
+
+const FIELD_STEPS: Record<(typeof FIELD_ORDER)[number], number> = {
+  appointment_date: 2,
+  appointment_time: 2,
+  company: 1,
+  driver_id: 1,
+  driver_name: 1,
+  email: 1,
+  order_id: 1,
+  parcel_count: 1,
+  terms: 3,
+  type: 1,
+  vehicle_plate: 1,
+};
+
+const textField = (emptyMessage: string) =>
+  z.preprocess(
+    (value) => (value == null ? "" : String(value)),
+    z.string().trim().min(1, { message: emptyMessage }),
+  );
 
 const isValidAppointmentDate = (value: string) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -71,55 +118,83 @@ const isValidAppointmentDate = (value: string) => {
 };
 
 const schema = z.object({
-  company: z
-    .string()
-    .trim()
-    .min(1, { message: "Por favor, ingresa la casa comercial o empresa." }),
-  type: z
-    .string()
-    .trim()
-    .min(1, { message: "Por favor, ingresa un tipo de trámite." }),
-  order_id: z
-    .string()
-    .trim()
-    .min(1, { message: "Por favor, ingresa el número de orden de compra." }),
-  driver_name: z.string().trim().min(1, {
-    message:
-      "Por favor, ingresa el nombre del conductor que realizará el trámite.",
-  }),
-  driver_id: z
-    .string()
-    .trim()
-    .regex(/^\d{10}$/, {
-      message: "Por favor, ingresa un número de cédula válido de 10 dígitos.",
-    }),
-  vehicle_plate: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .regex(/^[A-Z]{2,3}-\d{3,4}$/, {
-      message: "Por favor, ingresa una placa válida. Ejemplo: ABC-1234.",
-    }),
-  parcel_count: z.coerce
-    .number({
-      message: "Por favor, ingresa el número de paquetes o bultos.",
-    })
-    .int({ message: "El número de paquetes o bultos debe ser entero." })
-    .positive({
-      message: "El número de paquetes o bultos debe ser mayor a cero.",
-    }),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Por favor, ingresa un correo electrónico válido." }),
-  appointment_date: z.string().refine(isValidAppointmentDate, {
-    message: "Por favor, selecciona una fecha válida entre el 01 y el 25.",
-  }),
-  appointment_time: z
-    .string()
-    .refine((value) => availableTimes.includes(value), {
-      message: "Por favor, selecciona un horario disponible.",
-    }),
+  company: textField("La casa comercial o empresa está vacía."),
+  type: textField("El tipo de trámite está vacío."),
+  order_id: textField("El número de orden de compra está vacío."),
+  driver_name: textField("El nombre del conductor está vacío."),
+  driver_id: z.preprocess(
+    (value) => (value == null ? "" : String(value).trim()),
+    z
+      .string()
+      .refine((value) => value.length > 0, {
+        message: "El número de cédula está vacío.",
+      })
+      .regex(/^\d{10}$/, {
+        message: "El número de cédula debe tener 10 dígitos.",
+      }),
+  ),
+  vehicle_plate: z.preprocess(
+    (value) => (value == null ? "" : String(value).trim().toUpperCase()),
+    z
+      .string()
+      .refine((value) => value.length > 0, {
+        message: "La placa del vehículo está vacía.",
+      })
+      .regex(/^[A-Z]{2,3}-\d{3,4}$/, {
+        message:
+          "La placa del vehículo no tiene un formato válido. Ejemplo: ABC-1234.",
+      }),
+  ),
+  parcel_count: z
+    .preprocess(
+      (value) => (value == null ? "" : String(value).trim()),
+      z
+        .string()
+        .min(1, {
+          message: "El número de paquetes o bultos está vacío.",
+        })
+        .refine((value) => !Number.isNaN(Number(value)), {
+          message: "El número de paquetes o bultos debe ser numérico.",
+        })
+        .refine((value) => Number.isInteger(Number(value)), {
+          message: "El número de paquetes o bultos debe ser entero.",
+        })
+        .refine((value) => Number(value) > 0, {
+          message: "El número de paquetes o bultos debe ser mayor a cero.",
+        }),
+    )
+    .transform((value) => Number(value)),
+  email: z.preprocess(
+    (value) => (value == null ? "" : String(value).trim()),
+    z
+      .string()
+      .refine((value) => value.length > 0, {
+        message: "El correo electrónico está vacío.",
+      })
+      .email({ message: "El correo electrónico no tiene un formato válido." }),
+  ),
+  appointment_date: z.preprocess(
+    (value) => (value == null ? "" : String(value).trim()),
+    z
+      .string()
+      .refine((value) => value.length > 0, {
+        message: "La fecha del turno está vacía.",
+      })
+      .refine(isValidAppointmentDate, {
+        message: "Ingresaste una fecha inválida.",
+      }),
+  ),
+  appointment_time: z.preprocess(
+    (value) => (value == null ? "" : String(value).trim()),
+    z
+      .string()
+      .refine((value) => value.length > 0, {
+        message: "El horario disponible está vacío.",
+      })
+      .refine((value) => availableTimes.includes(value), {
+        message: "Seleccionaste un horario inválido.",
+      }),
+  ),
   terms: z.preprocess(
     (value) => value === "on" || value === true,
     z.boolean().refine((value) => value, {
@@ -138,50 +213,11 @@ async function submitForm(formData: FormData) {
     return { errors: fieldErrors as Errors };
   }
 
-  await createAppointment(result.data)
-    .then(() => {
-      Confirmation(true, "success");
-    })
-    .catch(() => {
-      Confirmation(true, "error");
-    });
+  await createAppointment(result.data);
 
   return {
     errors: {} as Errors,
   };
-}
-
-function Confirmation({
-  showAlert = false,
-  type
-}: {
-  showAlert: boolean;
-  type: string;
-}) {
-  return (
-    <AlertDialog open={showAlert}>
-      <AlertDialogPopup>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {type === "success" ? "Turno agendado" : "Error al agendar turno"}
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            {type === "success"
-              ? "Tu turno ha sido agendado exitosamente."
-              : "No fue posible agendar tu turno. Intenta nuevamente."}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogClose
-            render={<Button variant="ghost" />}
-            onClick={() => !showAlert}
-          >
-            Entendido
-          </AlertDialogClose>
-        </AlertDialogFooter>
-      </AlertDialogPopup>
-    </AlertDialog>
-  );
 }
 
 async function createAppointment(payload: AppointmentPayload) {
@@ -198,6 +234,74 @@ async function createAppointment(payload: AppointmentPayload) {
   }
 
   return response.json();
+}
+
+function getFirstErrorStep(errors: Errors) {
+  for (const fieldName of FIELD_ORDER) {
+    if (errors[fieldName]?.length) {
+      return FIELD_STEPS[fieldName];
+    }
+  }
+
+  return 1;
+}
+
+function buildErrorAlertItems(errors: Errors) {
+  const items: Array<{ field: string; message: string }> = [];
+
+  for (const fieldName of FIELD_ORDER) {
+    const fieldErrors = errors[fieldName];
+    if (!fieldErrors?.length) continue;
+
+    const messages = Array.isArray(fieldErrors) ? fieldErrors : [fieldErrors];
+    items.push({
+      field: FIELD_LABELS[fieldName],
+      message: messages[0],
+    });
+  }
+
+  return items;
+}
+
+function Confirmation({
+  body,
+  description,
+  onClose,
+  open,
+  title,
+}: {
+  body: ReactNode;
+  description?: string;
+  onClose: () => void;
+  open: boolean;
+  title: string;
+}) {
+  return (
+    <AlertDialog
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) onClose();
+      }}
+      open={open}
+    >
+      <AlertDialogPopup>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          {description ? (
+            <p className="text-muted-foreground text-sm">{description}</p>
+          ) : null}
+          <div className="text-sm text-muted-foreground">{body}</div>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="bg-transparent border-0 pt-1.5">
+          <AlertDialogClose
+            onClick={onClose}
+            render={<Button variant="ghost" className="hover:bg-gray-200" />}
+          >
+            Entendido
+          </AlertDialogClose>
+        </AlertDialogFooter>
+      </AlertDialogPopup>
+    </AlertDialog>
+  );
 }
 
 const Required = () => (
@@ -234,6 +338,12 @@ const Appointments = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState("");
+  const [confirmation, setConfirmation] = useState({
+    body: null as ReactNode,
+    description: "",
+    open: false,
+    title: "",
+  });
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -244,15 +354,63 @@ const Appointments = () => {
     try {
       const response = await submitForm(formData);
       setErrors(response.errors);
+
+      if (Object.keys(response.errors).length > 0) {
+        setCurrentStep(getFirstErrorStep(response.errors));
+        const errorItems = buildErrorAlertItems(response.errors);
+        setConfirmation({
+          body: (
+            <div className="space-y-2">
+              {errorItems.map(({ field, message }) => (
+                <p key={field}>
+                  <strong className="font-semibold text-foreground">
+                    {field}:
+                  </strong>{" "}
+                  <span>{message}</span>
+                </p>
+              ))}
+            </div>
+          ),
+          description: "Revisa estos campos antes de continuar:",
+          open: true,
+          title: "Corrige los campos del formulario",
+        });
+        return;
+      }
+
+      setConfirmation({
+        body: "Tu turno ha sido agendado exitosamente.",
+        description: "",
+        open: true,
+        title: "Turno agendado",
+      });
     } catch {
-      alert("No fue posible agendar el turno. Intenta nuevamente.");
+      setConfirmation({
+        body: "No fue posible agendar tu turno. Intenta nuevamente.",
+        description: "",
+        open: true,
+        title: "Error al agendar turno",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50">
+    <>
+      <Confirmation
+        body={confirmation.body}
+        description={confirmation.description}
+        onClose={() =>
+          setConfirmation((current) => ({
+            ...current,
+            open: false,
+          }))
+        }
+        open={confirmation.open}
+        title={confirmation.title}
+      />
+      <div className="min-h-screen pt-20 bg-gray-50">
       {/* Search Section */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-8">
@@ -534,7 +692,8 @@ const Appointments = () => {
           </section>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
