@@ -37,7 +37,7 @@ import type { ReactNode } from "react";
 
 const steps = [
   {
-    description: "Registro del turno",
+    description: "Datos del proveedor",
     step: 1,
     title: "Primer paso",
   },
