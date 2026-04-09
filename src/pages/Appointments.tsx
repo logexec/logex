@@ -123,7 +123,7 @@ const Appointments = () => {
                 <FieldLabel>
                   <Checkbox name="terms" />
                   <span className="ml-2 text-sm text-gray-600">
-                    Acepto los términos y condiciones  <Required />
+                    Acepto las políticas de recepción. <Required />
                   </span>
                 </FieldLabel>
               </Field>
