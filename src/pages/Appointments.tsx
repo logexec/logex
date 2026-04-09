@@ -25,6 +25,15 @@ import {
   StepperTrigger,
 } from "@/components/ui/stepper";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogClose,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogPopup,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const steps = [
   {
@@ -38,38 +47,157 @@ const steps = [
     title: "Segundo paso",
   },
   {
-    description: "Disponibilidad",
+    description: "Políticas de recepción",
     step: 3,
     title: "Tercer paso",
   },
 ];
 
+const APPOINTMENTS_API_URL = "https://httpbin.org/post";
+
+const isValidAppointmentDate = (value: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  return (
+    !Number.isNaN(date.getTime()) &&
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day &&
+    startOfDay(date) >= startOfDay(new Date()) &&
+    day <= 25
+  );
+};
+
 const schema = z.object({
-  age: z.coerce
-    .number({ message: "Por favor, ingresa un número." })
-    .positive({ message: "El número debe ser positivo." }),
-  company: z.string().min(1, { message: "Por favor, ingresa un nombre." }),
+  company: z
+    .string()
+    .trim()
+    .min(1, { message: "Por favor, ingresa la casa comercial o empresa." }),
   type: z
     .string()
+    .trim()
     .min(1, { message: "Por favor, ingresa un tipo de trámite." }),
-  driver_name: z.string().min(1, {
+  order_id: z
+    .string()
+    .trim()
+    .min(1, { message: "Por favor, ingresa el número de orden de compra." }),
+  driver_name: z.string().trim().min(1, {
     message:
       "Por favor, ingresa el nombre del conductor que realizará el trámite.",
   }),
+  driver_id: z
+    .string()
+    .trim()
+    .regex(/^\d{10}$/, {
+      message: "Por favor, ingresa un número de cédula válido de 10 dígitos.",
+    }),
+  vehicle_plate: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(/^[A-Z]{2,3}-\d{3,4}$/, {
+      message: "Por favor, ingresa una placa válida. Ejemplo: ABC-1234.",
+    }),
+  parcel_count: z.coerce
+    .number({
+      message: "Por favor, ingresa el número de paquetes o bultos.",
+    })
+    .int({ message: "El número de paquetes o bultos debe ser entero." })
+    .positive({
+      message: "El número de paquetes o bultos debe ser mayor a cero.",
+    }),
+  email: z
+    .string()
+    .trim()
+    .email({ message: "Por favor, ingresa un correo electrónico válido." }),
+  appointment_date: z.string().refine(isValidAppointmentDate, {
+    message: "Por favor, selecciona una fecha válida entre el 01 y el 25.",
+  }),
+  appointment_time: z
+    .string()
+    .refine((value) => availableTimes.includes(value), {
+      message: "Por favor, selecciona un horario disponible.",
+    }),
+  terms: z.preprocess(
+    (value) => value === "on" || value === true,
+    z.boolean().refine((value) => value, {
+      message: "Debes aceptar las políticas de recepción.",
+    }),
+  ),
 });
+
+type AppointmentPayload = z.infer<typeof schema>;
 type Errors = Record<string, string | string[]>;
 
-async function submitForm(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
+async function submitForm(formData: FormData) {
   const result = schema.safeParse(Object.fromEntries(formData));
   if (!result.success) {
     const { fieldErrors } = z.flattenError(result.error);
     return { errors: fieldErrors as Errors };
   }
+
+  await createAppointment(result.data)
+    .then(() => {
+      Confirmation(true, "success");
+    })
+    .catch(() => {
+      Confirmation(true, "error");
+    });
+
   return {
     errors: {} as Errors,
   };
+}
+
+function Confirmation({
+  showAlert = false,
+  type
+}: {
+  showAlert: boolean;
+  type: string;
+}) {
+  return (
+    <AlertDialog open={showAlert}>
+      <AlertDialogPopup>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {type === "success" ? "Turno agendado" : "Error al agendar turno"}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {type === "success"
+              ? "Tu turno ha sido agendado exitosamente."
+              : "No fue posible agendar tu turno. Intenta nuevamente."}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogClose
+            render={<Button variant="ghost" />}
+            onClick={() => !showAlert}
+          >
+            Entendido
+          </AlertDialogClose>
+        </AlertDialogFooter>
+      </AlertDialogPopup>
+    </AlertDialog>
+  );
+}
+
+async function createAppointment(payload: AppointmentPayload) {
+  const response = await fetch(APPOINTMENTS_API_URL, {
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error("No fue posible agendar el turno.");
+  }
+
+  return response.json();
 }
 
 const Required = () => (
@@ -111,16 +239,15 @@ const Appointments = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     setLoading(true);
-    const response = await submitForm(event);
-    await new Promise((r) => setTimeout(r, 800));
-    setErrors(response.errors);
-    setLoading(false);
-    if (Object.keys(response.errors).length === 0) {
-      alert(
-        `Name: ${String(formData.get("name") || "")}\nAge: ${String(
-          formData.get("age") || "",
-        )}`,
-      );
+    setErrors({});
+
+    try {
+      const response = await submitForm(formData);
+      setErrors(response.errors);
+    } catch {
+      alert("No fue posible agendar el turno. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -299,43 +426,82 @@ const Appointments = () => {
                     <FieldError />
                   </Field>
                   <p className="text-xs text-gray-500 col-span-2">
-                    * La disponibilidad de turnos es únicamente del día 01 al 25 de cada mes, en horarios de 08:30 a 14:00.
+                    * La disponibilidad de turnos es únicamente del día 01 al 25
+                    de cada mes, en horarios de 08:30 a 14:00.
                   </p>
                 </>
               )}
               {currentStep === 3 && (
                 <>
-                  {/* TODO: Implementar un informativo ligado al checkbox implementado en el que explique la política de agendamiento: 
-                  El proveedor deberá aceptar las siguientes condiciones:
-1. Para ingresar al CD, el proveedor deberá portar (EPP):
-• Casco
-• Chaleco reflectivo
-• Botas con punta de acero
-2. Deberá presentar:
-• Documento de identificación
-• Turno
-• Orden de compra
-• Factura o acta de consignación
-• Anexo de lotes
-3. La factura debe tener fecha de emisión:
-• Mínimo un día antes de la entrega.
-• No mayor a tres días posteriores a su emisión.
-4. El producto deberá llegar listo para entrega.
-• No se permitirá realizar reprocesos en el andén asignado (limpieza,
-etiquetado, reacondicionamiento, etc.).
-                   */}
+                  <div>
+                    <p className="font-medium text-gray-800 dark:text-gray-200 text-xl">
+                      Política de agendamiento
+                    </p>
+                    <p className="mt-1 text-sm">
+                      El proveedor deberá aceptar las siguientes condiciones:
+                    </p>
+                  </div>
                   <Field name="terms" className="col-span-2">
-                    <FieldLabel>
+                    <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-400">
+                      <div>
+                        <p className="font-medium text-gray-800 dark:text-gray-200">
+                          1. Para ingresar al CD, el proveedor deberá portar
+                          (EPP):
+                        </p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                          <li>Casco</li>
+                          <li>Chaleco reflectivo</li>
+                          <li>Botas con punta de acero</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-800 dark:text-gray-200">
+                          2. Deberá presentar:
+                        </p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                          <li>Documento de identificación</li>
+                          <li>Turno</li>
+                          <li>Orden de compra</li>
+                          <li>Factura o acta de consignación</li>
+                          <li>Anexo de lotes</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-800 dark:text-gray-200">
+                          3. La factura debe tener fecha de emisión:
+                        </p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                          <li>Mínimo un día antes de la entrega.</li>
+                          <li>
+                            No mayor a tres días posteriores a su emisión.
+                          </li>
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-800 dark:text-gray-200">
+                          4. El producto deberá llegar listo para entrega.
+                        </p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5">
+                          <li>
+                            No se permitirá realizar reprocesos en el andén
+                            asignado (limpieza, etiquetado, reacondicionamiento,
+                            etc.).
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <FieldLabel className="mt-1">
                       <Checkbox name="terms" />
-                      <span className="ml-2 text-sm text-gray-600">
+                      <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
                         Acepto las políticas de recepción. <Required />
                       </span>
                     </FieldLabel>
+                    <FieldError />
                   </Field>
                 </>
               )}
 
-              <Division className="col-span-2 my-4" />
+              <Division className="col-span-2 mt-4 mb-1" />
 
               <div className="flex justify-center space-x-4 mx-auto col-span-2">
                 <Button
@@ -348,7 +514,7 @@ etiquetado, reacondicionamiento, etc.).
                 </Button>
                 <Button
                   className="w-32"
-                  disabled={currentStep > steps.length}
+                  disabled={currentStep >= steps.length}
                   onClick={() => setCurrentStep((prev) => prev + 1)}
                   variant="outline"
                 >
@@ -360,11 +526,7 @@ etiquetado, reacondicionamiento, etc.).
                 loading={loading}
                 type="submit"
                 className="col-span-2"
-                disabled={
-                  loading ||
-                  Object.keys(errors).length > 0 ||
-                  currentStep !== steps.length
-                }
+                disabled={loading || currentStep !== steps.length}
               >
                 Agendar cita
               </Button>
