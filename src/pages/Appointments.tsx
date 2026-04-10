@@ -204,10 +204,46 @@ const schema = z.object({
 });
 
 type AppointmentPayload = z.infer<typeof schema>;
+type AppointmentFormValues = {
+  appointment_date: string;
+  appointment_time: string;
+  company: string;
+  driver_id: string;
+  driver_name: string;
+  email: string;
+  order_id: string;
+  parcel_count: string;
+  terms: boolean;
+  type: string;
+  vehicle_plate: string;
+};
 type Errors = Record<string, string | string[]>;
 
-async function submitForm(formData: FormData) {
-  const result = schema.safeParse(Object.fromEntries(formData));
+const initialFormValues: AppointmentFormValues = {
+  appointment_date: "",
+  appointment_time: "",
+  company: "",
+  driver_id: "",
+  driver_name: "",
+  email: "",
+  order_id: "",
+  parcel_count: "",
+  terms: false,
+  type: "",
+  vehicle_plate: "",
+};
+
+const parseAppointmentDate = (value: string) => {
+  if (!value) return undefined;
+
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  return Number.isNaN(date.getTime()) ? undefined : date;
+};
+
+async function submitForm(formValues: AppointmentFormValues) {
+  const result = schema.safeParse(formValues);
   if (!result.success) {
     const { fieldErrors } = z.flattenError(result.error);
     return { errors: fieldErrors as Errors };
@@ -336,23 +372,33 @@ const Appointments = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedTime, setSelectedTime] = useState("");
+  const [formValues, setFormValues] =
+    useState<AppointmentFormValues>(initialFormValues);
   const [confirmation, setConfirmation] = useState({
     body: null as ReactNode,
     description: "",
     open: false,
     title: "",
   });
+  const selectedDate = parseAppointmentDate(formValues.appointment_date);
+
+  const updateField = <K extends keyof AppointmentFormValues>(
+    field: K,
+    value: AppointmentFormValues[K],
+  ) => {
+    setFormValues((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
     setLoading(true);
     setErrors({});
 
     try {
-      const response = await submitForm(formData);
+      const response = await submitForm(formValues);
       setErrors(response.errors);
 
       if (Object.keys(response.errors).length > 0) {
@@ -458,56 +504,112 @@ const Appointments = () => {
                       <FieldLabel>
                         Casa comercial / empresa <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: Juan Pérez" />
+                      <Input
+                        name="company"
+                        onChange={(event) =>
+                          updateField("company", event.target.value)
+                        }
+                        placeholder="Ej: Juan Pérez"
+                        value={formValues.company}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="type">
                       <FieldLabel>
                         Tipo de trámite <Required />
                       </FieldLabel>
-                      <Input placeholder="Entrega, retiro, otro..." />
+                      <Input
+                        name="type"
+                        onChange={(event) =>
+                          updateField("type", event.target.value)
+                        }
+                        placeholder="Entrega, retiro, otro..."
+                        value={formValues.type}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="order_id">
                       <FieldLabel>
                         N&uacute;mero de orden de compra <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: 12345" />
+                      <Input
+                        name="order_id"
+                        onChange={(event) =>
+                          updateField("order_id", event.target.value)
+                        }
+                        placeholder="Ej: 12345"
+                        value={formValues.order_id}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="driver_name">
                       <FieldLabel>
                         Nombre del conductor <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: Gabriel Herrera" />
+                      <Input
+                        name="driver_name"
+                        onChange={(event) =>
+                          updateField("driver_name", event.target.value)
+                        }
+                        placeholder="Ej: Gabriel Herrera"
+                        value={formValues.driver_name}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="driver_id">
                       <FieldLabel>
                         N&uacute;mero de c&eacute;dula <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: 1234567890" />
+                      <Input
+                        name="driver_id"
+                        onChange={(event) =>
+                          updateField("driver_id", event.target.value)
+                        }
+                        placeholder="Ej: 1234567890"
+                        value={formValues.driver_id}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="vehicle_plate">
                       <FieldLabel>
                         Placa del vehículo <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: ABC-1234" />
+                      <Input
+                        name="vehicle_plate"
+                        onChange={(event) =>
+                          updateField("vehicle_plate", event.target.value)
+                        }
+                        placeholder="Ej: ABC-1234"
+                        value={formValues.vehicle_plate}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="parcel_count">
                       <FieldLabel>
                         N&uacute;mero de paquetes/bultos <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: 5" />
+                      <Input
+                        name="parcel_count"
+                        onChange={(event) =>
+                          updateField("parcel_count", event.target.value)
+                        }
+                        placeholder="Ej: 5"
+                        value={formValues.parcel_count}
+                      />
                       <FieldError />
                     </Field>
                     <Field name="email">
                       <FieldLabel>
                         Email <Required />
                       </FieldLabel>
-                      <Input placeholder="Ej: correo@dominio.com" />
+                      <Input
+                        name="email"
+                        onChange={(event) =>
+                          updateField("email", event.target.value)
+                        }
+                        placeholder="Ej: correo@dominio.com"
+                        value={formValues.email}
+                      />
                       <FieldError />
                     </Field>
                   </>
@@ -518,13 +620,6 @@ const Appointments = () => {
                       <FieldLabel>
                         Fecha del turno <Required />
                       </FieldLabel>
-                      <input
-                        name="appointment_date"
-                        type="hidden"
-                        value={
-                          selectedDate ? format(selectedDate, "yyyy-MM-dd") : ""
-                        }
-                      />
                       <Popover>
                         <PopoverTrigger>
                           <Button
@@ -546,7 +641,12 @@ const Appointments = () => {
                           <Calendar
                             mode="single"
                             selected={selectedDate}
-                            onSelect={setSelectedDate}
+                            onSelect={(date) =>
+                              updateField(
+                                "appointment_date",
+                                date ? format(date, "yyyy-MM-dd") : "",
+                              )
+                            }
                             disabled={(date) =>
                               startOfDay(date) < startOfDay(new Date()) ||
                               date.getDate() > 25
@@ -560,21 +660,20 @@ const Appointments = () => {
                       <FieldLabel>
                         Horario disponible <Required />
                       </FieldLabel>
-                      <input
-                        name="appointment_time"
-                        type="hidden"
-                        value={selectedTime}
-                      />
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                         {availableTimes.map((time) => (
                           <Button
                             key={time}
                             className="w-full"
                             name="appointment_time_option"
-                            onClick={() => setSelectedTime(time)}
+                            onClick={() =>
+                              updateField("appointment_time", time)
+                            }
                             type="button"
                             variant={
-                              selectedTime === time ? "default" : "outline"
+                              formValues.appointment_time === time
+                                ? "default"
+                                : "outline"
                             }
                           >
                             {time}
@@ -649,7 +748,13 @@ const Appointments = () => {
                         </div>
                       </div>
                       <FieldLabel className="mt-1">
-                        <Checkbox name="terms" />
+                        <Checkbox
+                          checked={formValues.terms}
+                          name="terms"
+                          onCheckedChange={(checked) =>
+                            updateField("terms", checked)
+                          }
+                        />
                         <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
                           Acepto las políticas de recepción. <Required />
                         </span>
