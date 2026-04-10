@@ -53,7 +53,7 @@ const steps = [
   },
 ];
 
-const APPOINTMENTS_API_URL = "https://httpbin.org/post";
+const APPOINTMENTS_API_URL = "http://127.0.0.1/8001/api/v1/appointments";
 const FIELD_ORDER = [
   "company",
   "type",
