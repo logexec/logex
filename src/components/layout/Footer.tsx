@@ -43,7 +43,7 @@ const Footer = () => {
             <img
               src="/logo_transparent.png"
               alt="LogeX"
-              className="h-8 w-auto mb-4"
+              className="h-9 w-auto mb-4"
             />
             <p className="text-gray-400">
               Líderes en gestión de cadena de suministro en Ecuador

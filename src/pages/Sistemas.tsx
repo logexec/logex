@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
+import tdc from "@/assets/companies/tdc.webp";
 
 const capabilities = [
   {
@@ -71,10 +72,10 @@ const Sistemas = () => {
               Sistemas internos
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              Tecnología para controlar la operación logística
+              Tecnología de punta para controlar sus operaciones logísticas
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100">
-              En LogeX utilizamos herramientas propias y plataformas internas
+              En LogeX desarollamos herramientas y plataformas de gestión
               para optimizar almacenes, transporte, trazabilidad e información
               operativa.
             </p>
@@ -208,6 +209,12 @@ const Sistemas = () => {
                   <ShieldCheck size={18} />
                   Solicitar información
                 </Link>
+                <img
+                  src={tdc}
+                  alt="Torre de control LogeX"
+                  className="mt-8 w-full rounded-lg object-cover shadow-sm"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>

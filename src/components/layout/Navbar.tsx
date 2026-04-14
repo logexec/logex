@@ -17,7 +17,7 @@ const Navbar = () => {
               <img
                 src="/logex_logo.png"
                 alt="LogeX Supply Chain Management"
-                className="h-8 w-auto"
+                className="h-12 w-auto"
               />
             </Link>
           </motion.div>
