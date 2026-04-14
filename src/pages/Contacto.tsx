@@ -1,35 +1,66 @@
 import type { FormEvent } from "react";
+import { useState } from "react";
 import { Mail, MessageSquare, Phone, Send } from "lucide-react";
 import { motion } from "motion/react";
 import { colors } from "@/utils/colors";
 
 const supportEmail = "soporte@logex.ec";
+const contactApiUrl = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
 
 const Contacto = () => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+    "idle",
+  );
+  const [feedback, setFeedback] = useState("");
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const name = String(formData.get("name") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const phone = String(formData.get("phone") || "").trim();
     const subject = String(formData.get("subject") || "Contacto web").trim();
     const message = String(formData.get("message") || "").trim();
+    const companyWebsite = String(
+      formData.get("company_website") || "",
+    ).trim();
 
-    const body = [
-      `Nombre: ${name}`,
-      `Correo: ${email}`,
-      phone ? `Teléfono: ${phone}` : "",
-      "",
-      "Mensaje:",
-      message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    setStatus("sending");
+    setFeedback("");
 
-    window.location.href = `mailto:${supportEmail}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch(contactApiUrl, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: phone || null,
+          subject,
+          message,
+          source: "logex-web",
+          company_website: companyWebsite || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo enviar el mensaje.");
+      }
+
+      form.reset();
+      setStatus("success");
+      setFeedback("Mensaje enviado correctamente. Te contactaremos pronto.");
+    } catch {
+      setStatus("error");
+      setFeedback(
+        `No se pudo enviar el mensaje. Escríbenos directamente a ${supportEmail}.`,
+      );
+    }
   };
 
   return (
@@ -89,7 +120,7 @@ const Contacto = () => {
                   Envíanos un mensaje
                 </h2>
                 <p className="mt-1 text-gray-600">
-                  Completa los datos y se abrirá tu correo para enviarlo.
+                  Completa los datos y nuestro equipo recibirá tu solicitud.
                 </p>
               </div>
             </div>
@@ -151,15 +182,37 @@ const Contacto = () => {
                   className="resize-none rounded-lg border px-3 py-3 font-normal outline-none transition-colors focus:border-red-500"
                 />
               </label>
+
+              <input
+                type="text"
+                name="company_website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
             </div>
 
             <button
               type="submit"
+              disabled={status === "sending"}
               className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
             >
               <Send size={18} />
-              Enviar correo
+              {status === "sending" ? "Enviando..." : "Enviar mensaje"}
             </button>
+
+            {feedback ? (
+              <p
+                className={`mt-4 rounded-lg px-4 py-3 text-sm leading-6 ${
+                  status === "success"
+                    ? "bg-emerald-50 text-emerald-700"
+                    : "bg-red-50 text-red-700"
+                }`}
+              >
+                {feedback}
+              </p>
+            ) : null}
 
             <p className="mt-4 flex items-start gap-2 text-sm leading-6 text-gray-500">
               <Phone
@@ -167,8 +220,7 @@ const Contacto = () => {
                 size={16}
                 color={colors.logex}
               />
-              Si tu navegador no abre el correo automáticamente, escríbenos
-              directamente a {supportEmail}.
+              También puedes escribirnos directamente a {supportEmail}.
             </p>
           </motion.form>
         </div>

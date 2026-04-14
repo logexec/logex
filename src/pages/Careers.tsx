@@ -70,7 +70,7 @@ const Careers = () => {
         <div className="absolute inset-0 -z-10 bg-neutral-950/70" />
         <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-linear-to-t from-white to-transparent" />
 
-        <div className="mx-auto grid min-h-[560px] max-w-7xl content-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+        <div className="mx-auto grid min-h-140 max-w-7xl content-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-4 inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white">
               <Truck size={18} />

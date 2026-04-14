@@ -53,8 +53,24 @@ const steps = [
   },
 ];
 
-const APPOINTMENTS_API_URL = "http://127.0.0.1/8001/api/v1/appointments";
+const APPOINTMENTS_API_URL =
+  import.meta.env.VITE_APPOINTMENTS_API_URL || "/api/appointments";
+const appointmentProjects = [
+  {
+    code: "agso",
+    locations: [
+      {
+        code: "tambillo-cd",
+        name: "Centro de Distribución Tambillo",
+      },
+    ],
+    name: "AGSO",
+    tenantCode: "logex",
+  },
+] as const;
 const FIELD_ORDER = [
+  "project_code",
+  "location_code",
   "company",
   "type",
   "order_id",
@@ -77,6 +93,8 @@ const FIELD_LABELS: Record<(typeof FIELD_ORDER)[number], string> = {
   email: "Email",
   order_id: "Número de orden de compra",
   parcel_count: "Número de paquetes/bultos",
+  location_code: "Ubicación",
+  project_code: "Proyecto",
   terms: "Políticas de recepción",
   type: "Tipo de trámite",
   vehicle_plate: "Placa del vehículo",
@@ -89,8 +107,10 @@ const FIELD_STEPS: Record<(typeof FIELD_ORDER)[number], number> = {
   driver_id: 1,
   driver_name: 1,
   email: 1,
+  location_code: 1,
   order_id: 1,
   parcel_count: 1,
+  project_code: 1,
   terms: 3,
   type: 1,
   vehicle_plate: 1,
@@ -118,6 +138,21 @@ const isValidAppointmentDate = (value: string) => {
 };
 
 const schema = z.object({
+  project_code: textField("Debes escoger un proyecto.").refine(
+    (value) => appointmentProjects.some((project) => project.code === value),
+    {
+      message: "Seleccionaste un proyecto inválido.",
+    },
+  ),
+  location_code: textField("Debes escoger una ubicación.").refine(
+    (value) =>
+      appointmentProjects.some((project) =>
+        project.locations.some((location) => location.code === value),
+      ),
+    {
+      message: "Seleccionaste una ubicación inválida.",
+    },
+  ),
   company: textField("La casa comercial o empresa está vacía."),
   type: textField("El tipo de trámite está vacío."),
   order_id: textField("El número de orden de compra está vacío."),
@@ -211,13 +246,21 @@ type AppointmentFormValues = {
   driver_id: string;
   driver_name: string;
   email: string;
+  location_code: string;
   order_id: string;
   parcel_count: string;
+  project_code: string;
   terms: boolean;
   type: string;
   vehicle_plate: string;
 };
 type Errors = Record<string, string | string[]>;
+
+class AppointmentApiError extends Error {
+  constructor(public errors: Errors) {
+    super("No fue posible agendar el turno.");
+  }
+}
 
 const initialFormValues: AppointmentFormValues = {
   appointment_date: "",
@@ -226,8 +269,10 @@ const initialFormValues: AppointmentFormValues = {
   driver_id: "",
   driver_name: "",
   email: "",
+  location_code: appointmentProjects[0].locations[0].code,
   order_id: "",
   parcel_count: "",
+  project_code: appointmentProjects[0].code,
   terms: false,
   type: "",
   vehicle_plate: "",
@@ -249,7 +294,15 @@ async function submitForm(formValues: AppointmentFormValues) {
     return { errors: fieldErrors as Errors };
   }
 
-  await createAppointment(result.data);
+  try {
+    await createAppointment(result.data);
+  } catch (error) {
+    if (error instanceof AppointmentApiError) {
+      return { errors: error.errors };
+    }
+
+    throw error;
+  }
 
   return {
     errors: {} as Errors,
@@ -257,19 +310,105 @@ async function submitForm(formValues: AppointmentFormValues) {
 }
 
 async function createAppointment(payload: AppointmentPayload) {
+  const scheduledAt = `${payload.appointment_date}T${payload.appointment_time}:00-05:00`;
+  const procedureType = normalizeProcedureType(payload.type);
+  const project = getSelectedProject(payload.project_code);
+
   const response = await fetch(APPOINTMENTS_API_URL, {
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      tenant_code: project.tenantCode,
+      project_code: payload.project_code,
+      location_code: payload.location_code,
+      company_name: payload.company,
+      procedure_type: procedureType,
+      purchase_order_number: payload.order_id,
+      driver_name: payload.driver_name,
+      driver_identification: payload.driver_id,
+      truck_plate: payload.vehicle_plate,
+      package_count: payload.parcel_count,
+      email: payload.email,
+      scheduled_at: scheduledAt,
+      policies_accepted: payload.terms,
+    }),
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
     method: "POST",
   });
 
   if (!response.ok) {
-    throw new Error("No fue posible agendar el turno.");
+    const apiPayload = await response.json().catch(() => null);
+    throw new AppointmentApiError(mapAppointmentApiErrors(apiPayload));
   }
 
   return response.json();
+}
+
+function getSelectedProject(projectCode: string) {
+  return (
+    appointmentProjects.find((project) => project.code === projectCode) ||
+    appointmentProjects[0]
+  );
+}
+
+function normalizeProcedureType(value: string) {
+  const normalized = value.trim().toLowerCase();
+
+  if (normalized === "delivery" || normalized.includes("entrega")) {
+    return "delivery";
+  }
+
+  if (normalized === "pickup" || normalized.includes("retiro")) {
+    return "pickup";
+  }
+
+  return "other";
+}
+
+function mapAppointmentApiErrors(payload: unknown): Errors {
+  if (!payload || typeof payload !== "object") {
+    return {
+      appointment_date: [
+        "No fue posible agendar tu turno. Intenta nuevamente.",
+      ],
+    };
+  }
+
+  const rawErrors = "errors" in payload ? payload.errors : null;
+
+  if (!rawErrors || typeof rawErrors !== "object") {
+    return {
+      appointment_date: [
+        "No fue posible agendar tu turno. Intenta nuevamente.",
+      ],
+    };
+  }
+
+  const fieldMap: Record<string, keyof AppointmentFormValues> = {
+    company_name: "company",
+    driver_identification: "driver_id",
+    driver_name: "driver_name",
+    email: "email",
+    location_code: "location_code",
+    package_count: "parcel_count",
+    policies_accepted: "terms",
+    procedure_type: "type",
+    project_code: "project_code",
+    purchase_order_number: "order_id",
+    scheduled_at: "appointment_date",
+    truck_plate: "vehicle_plate",
+  };
+  const mappedErrors: Errors = {};
+
+  for (const [apiField, messages] of Object.entries(rawErrors)) {
+    const formField = fieldMap[apiField] || "appointment_date";
+    mappedErrors[formField] = Array.isArray(messages)
+      ? messages.map(String)
+      : [String(messages)];
+  }
+
+  return mappedErrors;
 }
 
 function getFirstErrorStep(errors: Errors) {
@@ -362,7 +501,7 @@ const availableTimes: string[] = [];
 
 for (
   let slot = appointmentStart;
-  slot <= appointmentEnd;
+  addMinutes(slot, 40) <= appointmentEnd;
   slot = addMinutes(slot, 40)
 ) {
   availableTimes.push(format(slot, "HH:mm"));
@@ -391,6 +530,7 @@ const Appointments = () => {
       [field]: value,
     }));
   };
+  const selectedProject = getSelectedProject(formValues.project_code);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -500,6 +640,54 @@ const Appointments = () => {
               >
                 {currentStep === 1 && (
                   <>
+                    <Field name="project_code">
+                      <FieldLabel>
+                        Proyecto <Required />
+                      </FieldLabel>
+                      <select
+                        className="h-9 w-full rounded-lg border bg-white px-3 text-sm outline-none transition-colors focus:border-red-500"
+                        name="project_code"
+                        onChange={(event) => {
+                          const nextProject = getSelectedProject(
+                            event.target.value,
+                          );
+
+                          updateField("project_code", nextProject.code);
+                          updateField(
+                            "location_code",
+                            nextProject.locations[0].code,
+                          );
+                        }}
+                        value={formValues.project_code}
+                      >
+                        {appointmentProjects.map((project) => (
+                          <option key={project.code} value={project.code}>
+                            {project.name}
+                          </option>
+                        ))}
+                      </select>
+                      <FieldError />
+                    </Field>
+                    <Field name="location_code">
+                      <FieldLabel>
+                        Ubicación <Required />
+                      </FieldLabel>
+                      <select
+                        className="h-9 w-full rounded-lg border bg-white px-3 text-sm outline-none transition-colors focus:border-red-500"
+                        name="location_code"
+                        onChange={(event) =>
+                          updateField("location_code", event.target.value)
+                        }
+                        value={formValues.location_code}
+                      >
+                        {selectedProject.locations.map((location) => (
+                          <option key={location.code} value={location.code}>
+                            {location.name}
+                          </option>
+                        ))}
+                      </select>
+                      <FieldError />
+                    </Field>
                     <Field name="company">
                       <FieldLabel>
                         Casa comercial / empresa <Required />
