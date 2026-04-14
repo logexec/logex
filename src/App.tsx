@@ -18,6 +18,7 @@ import Sistemas from "./pages/Sistemas";
 import RSE from "./pages/RSE";
 import Contacto from "./pages/Contacto";
 import Appointments from "./pages/Appointments";
+import Careers from "./pages/Careers";
 
 const Layout = () => {
   return (
@@ -93,6 +94,14 @@ const router = createBrowserRouter(
         element={
           <PageWrapper>
             <Appointments />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="careers"
+        element={
+          <PageWrapper>
+            <Careers />
           </PageWrapper>
         }
       />

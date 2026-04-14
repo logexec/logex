@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-full bg-white shadow-sm z-50">
+    <nav className="w-full bg-white shadow-sm z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
@@ -31,8 +31,11 @@ const Navbar = () => {
               <NavLink to="/responsabilidad-social">RSE</NavLink>
               <NavLink to="/contacto">Contacto</NavLink>
               <Link to="/appointments">
-                <Button variant="ghost" className="bg-slate-700 text-primary-foreground hover:bg-slate-700/90">
-                  Recepci&oacute;n de proveedores
+                <Button
+                  variant="ghost"
+                  className="bg-slate-700 text-primary-foreground hover:bg-slate-700/90"
+                >
+                  Agenda una cita
                 </Button>
               </Link>
             </div>
