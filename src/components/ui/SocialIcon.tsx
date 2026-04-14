@@ -1,11 +1,11 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 interface SocialIconProps {
   href: string;
-  icon: JSX.Element | string;
+  icon: ReactNode;
 }
 
-const SocialIcon: React.FC<SocialIconProps> = ({ href, icon }) => {
+const SocialIcon = ({ href, icon }: SocialIconProps) => {
   return (
     <a
       href={href}

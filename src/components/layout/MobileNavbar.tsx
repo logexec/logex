@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./MobileNavbar.component.css";
 
 const MobileNavbar = () => {
+  const { pathname } = useLocation();
   const links = [
     {
       id: 1,
@@ -41,7 +42,7 @@ const MobileNavbar = () => {
       <nav className="navigation">
         <ul className="relative flex items-center rounded">
           {links.map((item) => {
-            const active = useLocation().pathname === item.url;
+            const active = pathname === item.url;
             return (
               <li key={item.id} className={`list ${active && "active"}`}>
                 <Link to={item.url}>
