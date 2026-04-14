@@ -30,14 +30,11 @@ const Navbar = () => {
               <NavLink to="/sistemas">Sistemas</NavLink>
               <NavLink to="/responsabilidad-social">RSE</NavLink>
               <NavLink to="/contacto">Contacto</NavLink>
-              <Link to="/appointments">
-                <Button
-                  variant="ghost"
-                  className="bg-slate-700 text-primary-foreground hover:bg-slate-700/90"
-                >
-                  Agenda una cita
-                </Button>
-              </Link>
+              <Button
+                variant="ghost"
+                className="bg-slate-600 text-primary-foreground hover:bg-slate-600/90"
+                render={<Link to="/appointments">Agenda una cita</Link>}
+              />
             </div>
           </div>
         </div>
