@@ -1,12 +1,12 @@
-import { ChartBar, ClipboardList, Route, SlidersHorizontal } from "lucide-react";
+import { CheckCircle2, Route, SlidersHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
 
 const items = [
-  "Análisis de procesos logísticos y cadena de abastecimiento.",
-  "Diseño de soluciones a medida según la operación del cliente.",
-  "Optimización de flujos de productos, materiales e información.",
-  "Acompañamiento operativo para mejorar eficiencia y control.",
+  "Levantamiento de necesidades operativas y puntos críticos.",
+  "Diseño de procesos logísticos adaptados al cliente.",
+  "Integración de almacenamiento, transporte e información.",
+  "Seguimiento de mejoras para ganar eficiencia y visibilidad.",
 ];
 
 const Consultoria = () => {
@@ -14,7 +14,7 @@ const Consultoria = () => {
     <div>
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
-          src="/servicios-operacion.webp"
+          src="/consultoria-hero.webp"
           alt="Consultoría logística LogeX"
           className="absolute inset-0 -z-20 size-full object-cover"
         />
@@ -28,11 +28,12 @@ const Consultoria = () => {
               Consultoría logística
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              Soluciones diseñadas para cada operación
+              Diseño operativo para cadenas de abastecimiento
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100">
-              Acompañamos a nuestros clientes en la optimización de su cadena de
-              suministro con análisis, procesos y soluciones logísticas a medida.
+              Acompañamos la estructuración de soluciones logísticas a medida,
+              conectando procesos, tecnología y operación para mejorar el flujo
+              de productos e información.
             </p>
           </div>
         </div>
@@ -40,18 +41,23 @@ const Consultoria = () => {
 
       <section className="py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1fr] lg:items-center lg:px-8">
-          <div className="rounded-lg border bg-white p-6 shadow-sm sm:p-8">
-            <ChartBar size={36} color={colors.logex} />
+          <div>
+            <p
+              className="text-sm font-bold uppercase tracking-wide"
+              style={{ color: colors.logex }}
+            >
+              Enfoque
+            </p>
             <h2
-              className="mt-5 text-3xl font-bold"
+              className="mt-3 text-3xl font-bold"
               style={{ color: colors.navy }}
             >
-              Eficiencia basada en información
+              Logística pensada para su operación
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Transformamos retos logísticos en procesos más controlados,
-              trazables y eficientes, alineando operación, tecnología y
-              necesidades del cliente.
+              Cada cliente tiene restricciones, volúmenes, tiempos y prioridades
+              distintas. Por eso partimos de la operación real para definir una
+              solución que pueda ejecutarse con control.
             </p>
             <Link
               to="/contacto"
@@ -68,10 +74,10 @@ const Consultoria = () => {
                 key={item}
                 className="flex gap-4 rounded-lg border bg-white p-5 shadow-sm"
               >
-                <ClipboardList
+                <CheckCircle2
                   className="mt-1 shrink-0"
                   size={22}
-                  color={colors.logex}
+                  color={colors.green}
                 />
                 <p className="leading-7 text-gray-700">{item}</p>
               </div>

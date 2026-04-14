@@ -28,7 +28,7 @@ const Almacenes = () => {
     <div>
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
-          src="/servicios-hero.webp"
+          src="/almacenes-stock.webp"
           alt="Gestión de almacenes LogeX"
           className="absolute inset-0 -z-20 size-full object-cover"
         />
