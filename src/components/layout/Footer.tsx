@@ -7,7 +7,7 @@ const footerSections = [
     links: [
       { text: "Sobre Nosotros", href: "/nosotros" },
       { text: "Responsabilidad Social", href: "/responsabilidad-social" },
-      { text: "Certificaciones", href: "/certificaciones" },
+      // { text: "Certificaciones", href: "/certificaciones" },
       { text: "Trabaja con Nosotros", href: "/careers" },
     ],
   },
