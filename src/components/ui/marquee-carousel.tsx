@@ -63,7 +63,7 @@ export default function MarqueeCarousel() {
 
   return (
     <div className="relative h-24 w-full overflow-hidden">
-      <motion.div className="flex w-max animate-[marquee_55s_linear_infinite] hover:[animation-play-state:paused]">
+      <motion.div className="flex w-max animate-[marquee_52s_linear_infinite] hover:paused">
         {[...images, ...images].map((src, idx) => (
           <div
             key={idx}
