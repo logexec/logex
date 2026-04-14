@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { motion, useAnimation } from "motion/react";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import abinveb from "@/assets/companies/abinveb.png";
 import andina from "@/assets/companies/andina.png";
@@ -39,29 +39,11 @@ const images = [
 ];
 
 export default function MarqueeCarousel() {
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
-  const [paused, setPaused] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!paused) {
-      controls.start({
-        transform: ["translateX(0%)", "translateX(-100%)"],
-        transition: { duration: 75, repeat: Infinity, ease: "linear" },
-      });
-    } else {
-      controls.stop();
-    }
-  }, [paused, controls]);
-
   return (
-    <div
-      className="relative w-full overflow-hidden h-24"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <motion.div className="flex w-max" ref={marqueeRef} animate={controls}>
+    <div className="relative h-24 w-full overflow-hidden">
+      <motion.div className="flex w-max animate-[marquee_75s_linear_infinite] hover:[animation-play-state:paused]">
         {[...images, ...images].map((src, idx) => (
           <div
             key={idx}
