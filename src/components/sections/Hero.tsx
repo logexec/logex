@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { colors } from "../../utils/colors";
 import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
 // import {
 //   AlertDialog,
 //   AlertDialogCancel,
@@ -17,21 +18,22 @@ const Hero = () => {
     <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="relative min-h-screen bg-white flex items-center"
+      className="relative flex min-h-170 items-center bg-white"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <motion.h1
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              className="text-5xl font-bold text-secondary mb-6"
+              className="text-4xl font-bold leading-tight text-secondary mb-6 sm:text-5xl"
               style={{ color: colors.navy }}
             >
               Innovamos para resolver sus desafíos logísticos
             </motion.h1>
             <p className="text-xl mb-8" style={{ color: colors.gray }}>
-              Optimizamos la cadena de suministro con tecnología y trazabilidad para que su operación sea más eficiente y confiable.
+              Optimizamos la cadena de suministro con tecnología y trazabilidad
+              para que su operación sea más eficiente y confiable.
             </p>
 
             <motion.div
@@ -40,16 +42,18 @@ const Hero = () => {
               transition={{ delay: 0.5, duration: 0.5 }}
               className="flex flex-col gap-3 lg:flex-row"
             >
-              <motion.button
-                whileHover={{ scale: 0.99 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-4 py-2 rounded text-lg font-medium text-white shadow"
-                style={{ backgroundColor: colors.logex }}
-              >
-                <Link to="/servicios" className="block h-full w-full">
-                  Solicitar propuesta
-                </Link>
-              </motion.button>
+              <Button
+                variant="destructive-outline"
+                size="xl"
+                render={<Link to="/contacto">Solicitar propuesta</Link>}
+              />
+
+              <Button
+                render={<Link to="/servicios">Ver servicios</Link>}
+                variant="outline"
+                size="xl"
+                className="hover:bg-foreground/5"
+              />
 
               {/* <AlertDialog>
                 <AlertDialogTrigger className="border border-slate-400 px-4 py-2 rounded text-lg font-semibold shadow hover:shadow-none hover:scale-[.99] transition-all duration-200 active:scale-95">
@@ -92,15 +96,14 @@ const Hero = () => {
             </motion.div>
           </div>
           <motion.div
-            initial={{ x: 100, opacity: 0 }}
+            initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             className="hidden md:block"
           >
-            {/* Poner un camion */}
             <img
-              src="/logex_logo.png"
+              src="/servicios-transporte.webp"
               alt="LogeX Supply Chain Solutions"
-              className="w-full h-auto"
+              className="h-105 w-full rounded-lg object-cover shadow-sm"
             />
             {/* <p className="text-sm text-center mx-auto mt-8 text-slate-500">
               La idea es poner un camión aquí con el logo

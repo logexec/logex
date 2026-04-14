@@ -3,8 +3,8 @@ import MarqueeCarousel from "../ui/marquee-carousel";
 
 const Brands = () => {
   return (
-    <section className="py-20 bg-white dark:bg-black">
-      <div className="text-center mb-16">
+    <section className="py-20 bg-white">
+      <div className="text-center mb-12">
         <h2
           className="text-4xl font-bold text-secondary mb-4"
           style={{ color: colors.navy }}

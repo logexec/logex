@@ -1,235 +1,249 @@
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  BadgeCheck,
+  Boxes,
+  CheckCircle2,
+  ShieldCheck,
+  Truck,
+  Users,
+  Warehouse,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
+
+const highlights = [
+  {
+    icon: <Boxes size={22} />,
+    title: "Valor agregado",
+    description:
+      "Administramos y optimizamos cadenas de abastecimiento con soluciones personalizadas y eficientes.",
+  },
+  {
+    icon: <ShieldCheck size={22} />,
+    title: "Eficiencia segura",
+    description:
+      "Almacenamos y transportamos productos con procesos orientados a seguridad, calidad y control.",
+  },
+];
+
+const stats = [
+  {
+    value: "+55,000 m2",
+    label: "superficie de almacenamiento administrada",
+  },
+  {
+    value: "650",
+    label: "vehículos en ruta en todo el país",
+  },
+  {
+    value: "1,300",
+    label: "colaboradores directos en nómina",
+  },
+];
+
+const standards = [
+  "Soluciones logísticas y tecnológicas a medida.",
+  "Administración de cadenas de abastecimiento para grandes empresas.",
+  "Procesos operativos enfocados en eficiencia y trazabilidad.",
+  "Altos estándares éticos, operativos y comerciales.",
+];
 
 const Nosotros = () => {
   return (
-    <div className="pt-16">
-      {/* Hero Section */}
-      <div className="bg-primary/5 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1
-            className={`text-4xl font-bold mb-6`}
-            style={{ color: colors.navy }}
-          >
-            Experiencia comprobada en logística
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Con más de{" "}
-            <span className="font-semibold text-primary">
-              23 años de experiencia
-            </span>{" "}
-            en Ecuador,{" "}
-            <span
-              className="font-bold italic text-lg"
+    <div>
+      <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
+        <img
+          src="/nosotros-hero.webp"
+          alt="Equipo y operación logística LogeX"
+          className="absolute inset-0 -z-20 size-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-neutral-950/65" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-linear-to-t from-white to-transparent" />
+
+        <div className="mx-auto grid min-h-[520px] max-w-6xl content-center px-4 py-20 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="mb-4 inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white">
+              <BadgeCheck size={18} />
+              Nosotros
+            </p>
+            <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
+              Experiencia comprobada en logística
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100">
+              LogeX es una empresa especializada en servicios logísticos en
+              Ecuador. Administramos y agregamos valor a las cadenas de
+              abastecimiento de nuestros clientes con soluciones a medida.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:px-8">
+          <div>
+            <p
+              className="text-sm font-bold uppercase tracking-wide"
               style={{ color: colors.logex }}
             >
-              Log
-            </span>
-            <span className="text-gray-600 font-bold italic text-lg">eX</span>{" "}
-            es líder en servicios logísticos y brinda soluciones personalizadas y eficientes para grandes empresas.
-          </p>
-        </div>
-      </div>
+              Trayectoria
+            </p>
+            <h2
+              className="mt-3 text-3xl font-bold sm:text-4xl"
+              style={{ color: colors.navy }}
+            >
+              Especialización en operaciones de gran escala
+            </h2>
+            <p className="mt-5 leading-8 text-gray-600">
+              Con más de 20 años de experiencia en el Ecuador, nos hemos
+              consolidado como un aliado logístico para grandes empresas.
+              Trabajamos con procesos, tecnología y equipos especializados para
+              almacenar y transportar productos de forma eficiente y segura.
+            </p>
 
-      {/* Sobre LogeX */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2
-                style={{ color: colors.navy }}
-                className="text-3xl font-bold text-secondary mb-6"
-              >
-                Liderazgo y Especialización
-              </h2>
-              <p className="text-gray-600 mb-6">
-                En LogeX, nos especializamos en administrar y agregar valor a
-                las cadenas de abastecimiento de nuestros clientes. Ofrecemos
-                soluciones logísticas y tecnológicas a medida, garantizando
-                seguridad y eficiencia en cada proceso.
-              </p>
-              <h2
-                style={{ color: colors.navy }}
-                className="text-3xl font-bold text-secondary mb-6"
-              >
-                Compromiso con la Calidad
-              </h2>
-              <p className="text-gray-600">
-                Trabajamos bajo los más altos estándares éticos, operativos y
-                comerciales de la industria, asegurando una logística confiable
-                y de alto nivel para cada cliente.
-              </p>
+            <div className="mt-8 grid gap-4">
+              {highlights.map((highlight) => (
+                <article
+                  key={highlight.title}
+                  className="flex gap-4 rounded-lg border bg-white p-5 shadow-sm"
+                >
+                  <span
+                    className="mt-1 inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-red-50"
+                    style={{ color: colors.logex }}
+                  >
+                    {highlight.icon}
+                  </span>
+                  <div>
+                    <h3
+                      className="font-semibold"
+                      style={{ color: colors.navy }}
+                    >
+                      {highlight.title}
+                    </h3>
+                    <p className="mt-1 leading-7 text-gray-600">
+                      {highlight.description}
+                    </p>
+                  </div>
+                </article>
+              ))}
             </div>
-            <div>
-              <img
-                src="/warehouse.jpg"
-                alt="LogeX Operaciones"
-                className="rounded-lg shadow-xl"
-              />
+          </div>
+
+          <img
+            src="/nosotros-operacion.webp"
+            alt="Operación logística LogeX"
+            className="h-full max-h-[520px] w-full rounded-lg object-cover shadow-sm"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 md:grid-cols-3">
+            {stats.map((stat) => (
+              <article
+                key={stat.value}
+                className="rounded-lg border bg-white p-6 shadow-sm"
+              >
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: colors.navy }}
+                >
+                  {stat.value}
+                </p>
+                <p className="mt-2 leading-7 text-gray-600">{stat.label}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1fr] lg:items-center lg:px-8">
+          <img
+            src="/nosotros-logistica.webp"
+            alt="Logística LogeX"
+            className="max-h-[420px] w-full rounded-lg object-cover shadow-sm"
+            loading="lazy"
+          />
+
+          <div>
+            <p
+              className="text-sm font-bold uppercase tracking-wide"
+              style={{ color: colors.logex }}
+            >
+              Cómo trabajamos
+            </p>
+            <h2
+              className="mt-3 text-3xl font-bold"
+              style={{ color: colors.navy }}
+            >
+              Estándares claros para operar mejor
+            </h2>
+            <p className="mt-5 leading-8 text-gray-600">
+              Nuestra propuesta combina logística, tecnología y gestión
+              operativa para convertir los desafíos de abastecimiento en
+              procesos más eficientes y controlados.
+            </p>
+
+            <div className="mt-7 grid gap-3">
+              {standards.map((standard) => (
+                <div key={standard} className="flex gap-3">
+                  <CheckCircle2
+                    className="mt-1 shrink-0"
+                    size={20}
+                    color={colors.green}
+                  />
+                  <p className="leading-7 text-gray-700">{standard}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/servicios"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
+              >
+                <Warehouse size={18} />
+                Ver servicios
+              </Link>
+              <Link
+                to="/contacto"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border bg-white px-5 text-base font-semibold text-gray-800 transition-colors hover:border-red-200"
+              >
+                <Users size={18} />
+                Contactar
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Nuestros Valores */}
       <section className="bg-gray-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2
-            style={{ color: colors.navy }}
-            className="text-3xl font-bold text-secondary mb-12 text-center"
-          >
-            Nuestros Valores
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Ética y Calidad",
-                description:
-                  "Operamos bajo los más altos estándares éticos, asegurando transparencia total en cada etapa de la cadena de suministro.",
-              },
-              {
-                title: "Agilidad Operativa",
-                description:
-                "Almacenamiento inteligente y logística de transporte diseñados para acelerar su cadena de suministro con total seguridad.",
-              },
-              {
-                title: "Personalización",
-                description:
-                  "Nos esforzamos en proveer soluciones a la medida para cada cliente, enfocados en optimizar su cadena de abastecimiento.",
-              },
-            ].map((valor, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                <h3
-                  className="text-xl font-semibold text-secondary mb-4"
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-lg border bg-white p-6 shadow-sm sm:p-8">
+            <div className="grid gap-8 lg:grid-cols-[0.35fr_1fr] lg:items-start">
+              <div className="flex items-center gap-4">
+                <span
+                  className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50"
                   style={{ color: colors.logex }}
                 >
-                  {valor.title}
-                </h3>
-                <p className="text-gray-600">{valor.description}</p>
+                  <Truck size={24} />
+                </span>
+                <h2
+                  className="text-2xl font-bold"
+                  style={{ color: colors.navy }}
+                >
+                  Cobertura
+                </h2>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Datos Clave */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2
-            style={{ color: colors.navy }}
-            className="text-3xl font-bold text-secondary mb-12 text-center"
-          >
-            Datos Clave de LogeX
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-            {[
-              {
-                percentage: "+55,000m2",
-                description: "Superficie de almacenamiento administrada.",
-              },
-              {
-                percentage: "650 vehículos",
-                description:
-                  "Vehículos en ruta en todo el país.",
-              },
-              {
-                percentage: "1,300",
-                description:
-                  "Colaboradores directos en nómina. ",
-              },
-            ].map((dato, index) => (
-              <Card key={index} className="p-5">
-                <CardContent>
-                  <h3
-                    className="text-4xl font-bold text-primary"
-                    style={{ color: colors.navy }}
-                  >
-                    {dato.percentage}
-                  </h3>
-                </CardContent>
-                <CardDescription>
-                  <p className="text-gray-600" style={{ color: colors.gray }}>
-                    {dato.description}
-                  </p>
-                </CardDescription>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-20 bg-gray-50 grid place-content-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3
-            className="text-4xl mb-12 font-bold text-center"
-            style={{ color: colors.navy }}
-          >
-            Preguntas frecuentes
-          </h3>
-          <Accordion type="single" collapsible className="w-[56rem] max-w-4xl">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-lg">
-                ¿Cómo puedo contratar sus servicios?
-              </AccordionTrigger>
-              <AccordionContent className="text-base">
-                Para contratar nuestros servicios, simplemente completa el
-                formulario de contacto en nuestra página web y uno de nuestros
-                representantes se pondrá en contacto contigo para brindarte más
-                información.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger className="text-lg">
-                ¿Cuál es su área de cobertura?
-              </AccordionTrigger>
-              <AccordionContent className="text-base">
+              <p className="leading-8 text-gray-600">
                 Nuestros servicios de logística y distribución están disponibles
-                en todo el territorio de Ecuador. Trabajamos con una amplia red
-                de socios y proveedores para garantizar una cobertura completa y
-                eficiente.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger className="text-lg">
-                ¿Cuáles son sus tarifas?
-              </AccordionTrigger>
-              <AccordionContent className="text-base">
-                Nuestras tarifas varían según el tipo de servicio y las
-                necesidades específicas de cada cliente. Te recomendamos ponerte
-                en contacto con nuestro equipo de ventas para obtener un
-                presupuesto personalizado y competitivo.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger className="text-lg">
-                ¿Ofrecen servicios de almacenamiento?
-              </AccordionTrigger>
-              <AccordionContent className="text-base">
-                Sí, ofrecemos servicios de almacenamiento seguro y eficiente ara
-                tus productos. Contamos con instalaciones modernas y personal
-                capacitado para garantizar la integridad y el cuidado de tus
-                mercancías.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <AccordionTrigger className="text-lg">
-                ¿Cuál es su tiempo de entrega?
-              </AccordionTrigger>
-              <AccordionContent className="text-base">
-                Nuestro tiempo de entrega varía según la ubicación y la
-                naturaleza del envío. Trabajamos diligentemente para cumplir con
-                los plazos acordados y garantizar la satisfacción de nuestros
-                clientes.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                en todo el territorio de Ecuador, con una operación diseñada
+                para brindar cobertura, trazabilidad y respuesta ante las
+                necesidades de cada cliente.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
