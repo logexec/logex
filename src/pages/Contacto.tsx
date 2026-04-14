@@ -1,67 +1,178 @@
+import type { FormEvent } from "react";
+import { Mail, MessageSquare, Phone, Send } from "lucide-react";
 import { motion } from "motion/react";
 import { colors } from "@/utils/colors";
 
+const supportEmail = "soporte@logex.ec";
+
 const Contacto = () => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const phone = String(formData.get("phone") || "").trim();
+    const subject = String(formData.get("subject") || "Contacto web").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    const body = [
+      `Nombre: ${name}`,
+      `Correo: ${email}`,
+      phone ? `Teléfono: ${phone}` : "",
+      "",
+      "Mensaje:",
+      message,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.location.href = `mailto:${supportEmail}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
-    // Ajustamos el padding y hacemos el contenedor más flexible
-    <div className="min-h-screen flex flex-col items-center bg-[#f1f1f1] p-4 py-8 md:py-[10.75rem]">
-      <motion.h1
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.75 }}
-        className="text-center text-[#8d8d8d] font-bold text-xl mb-6"
-      >
-        Contacto
-      </motion.h1>
-      <p className="text-center text-[#8d8d8d] text-sm mb-6">
-        Para propuestas comerciales o información sobre nuestros servicios.
-      </p>
-      <motion.form
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.75 }}
-        action=""
-        // Ajustamos el grid para móviles
-        className="w-full max-w-[800px] grid grid-cols-1 md:grid-cols-2 gap-4 text-center mx-auto my-5 px-3"
-      >
-        <div className="w-full p-0 flex flex-col gap-2">
-          <input
-            type="text"
-            id="input-name"
-            placeholder="Nombres"
-            className="my-2 py-1 px-3 rounded-md outline-none border focus:border-sky-300 transition-all duration-300 w-full"
-          />
-          <input
-            type="email"
-            id="input-email"
-            placeholder="Email"
-            className="my-2 py-1 px-3 rounded-md outline-none border focus:border-sky-300 transition-all duration-300 w-full"
-          />
-          <input
-            type="text"
-            id="input-subject"
-            placeholder="Asunto"
-            className="my-2 py-1 px-3 rounded-md outline-none border focus:border-sky-300 transition-all duration-300 w-full"
-          />
+    <div className="pt-16">
+      <section className="bg-gray-50 py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8">
+          <motion.div
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="pt-2"
+          >
+            <p
+              className="text-sm font-bold uppercase tracking-wide"
+              style={{ color: colors.logex }}
+            >
+              Contacto
+            </p>
+            <h1
+              className="mt-3 text-3xl font-bold leading-tight sm:text-4xl"
+              style={{ color: colors.navy }}
+            >
+              Hablemos de logística
+            </h1>
+            <p className="mt-5 max-w-md leading-7 text-gray-600">
+              Escríbenos para propuestas comerciales, información sobre
+              servicios, coordinación de citas o soporte general.
+            </p>
+            <a
+              href={`mailto:${supportEmail}`}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 transition-colors hover:text-red-600"
+            >
+              <Mail size={18} color={colors.logex} />
+              {supportEmail}
+            </a>
+          </motion.div>
+
+          <motion.form
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.15, duration: 0.6 }}
+            onSubmit={handleSubmit}
+            className="rounded-lg border bg-white p-6 shadow-sm sm:p-8"
+          >
+            <div className="mb-6 flex items-start gap-4">
+              <span
+                className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50"
+                style={{ color: colors.logex }}
+              >
+                <MessageSquare size={24} />
+              </span>
+              <div>
+                <h2
+                  className="text-2xl font-bold"
+                  style={{ color: colors.navy }}
+                >
+                  Envíanos un mensaje
+                </h2>
+                <p className="mt-1 text-gray-600">
+                  Completa los datos y se abrirá tu correo para enviarlo.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className="grid gap-2 text-sm font-semibold text-gray-700">
+                Nombre
+                <input
+                  required
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Tu nombre"
+                  className="h-11 rounded-lg border px-3 font-normal outline-none transition-colors focus:border-red-500"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm font-semibold text-gray-700">
+                Correo
+                <input
+                  required
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="correo@empresa.com"
+                  className="h-11 rounded-lg border px-3 font-normal outline-none transition-colors focus:border-red-500"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm font-semibold text-gray-700">
+                Teléfono
+                <input
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  placeholder="Opcional"
+                  className="h-11 rounded-lg border px-3 font-normal outline-none transition-colors focus:border-red-500"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm font-semibold text-gray-700">
+                Asunto
+                <input
+                  required
+                  name="subject"
+                  type="text"
+                  placeholder="¿Cómo podemos ayudarte?"
+                  className="h-11 rounded-lg border px-3 font-normal outline-none transition-colors focus:border-red-500"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm font-semibold text-gray-700 sm:col-span-2">
+                Mensaje
+                <textarea
+                  required
+                  name="message"
+                  rows={6}
+                  placeholder="Cuéntanos brevemente lo que necesitas."
+                  className="resize-none rounded-lg border px-3 py-3 font-normal outline-none transition-colors focus:border-red-500"
+                />
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
+            >
+              <Send size={18} />
+              Enviar correo
+            </button>
+
+            <p className="mt-4 flex items-start gap-2 text-sm leading-6 text-gray-500">
+              <Phone
+                className="mt-0.5 shrink-0"
+                size={16}
+                color={colors.logex}
+              />
+              Si tu navegador no abre el correo automáticamente, escríbenos
+              directamente a {supportEmail}.
+            </p>
+          </motion.form>
         </div>
-        <div className="w-full h-full">
-          <textarea
-            name="message"
-            id="input-message"
-            placeholder="Mensaje"
-            className="w-full my-2 py-1 px-3 rounded-md outline-none border focus:border-sky-300 transition-all duration-300 min-h-32"
-          ></textarea>
-        </div>
-        <div className="col-span-1 md:col-span-2 my-4">
-          <input
-            type="submit"
-            value="Enviar mensaje"
-            id="input-submit"
-            className="w-full md:w-11/12 py-2 text-white text-semibold rounded-md outline-none border-2 border-transparent border-spacing-1 focus:border-sky-400 hover:bg-red-700 cursor-pointer"
-            style={{ background: colors.logex }}
-          />
-        </div>
-      </motion.form>
+      </section>
     </div>
   );
 };
