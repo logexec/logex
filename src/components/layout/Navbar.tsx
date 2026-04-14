@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 sticky top-0">
+    <nav className="w-full bg-white/70 backdrop-blur-xs shadow-sm z-50 sticky top-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
