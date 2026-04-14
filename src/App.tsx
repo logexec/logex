@@ -19,6 +19,11 @@ import RSE from "./pages/RSE";
 import Contacto from "./pages/Contacto";
 import Appointments from "./pages/Appointments";
 import Careers from "./pages/Careers";
+import Almacenes from "./pages/Almacenes";
+import Consultoria from "./pages/Consultoria";
+import Tecnologia from "./pages/Tecnologia";
+import Ayuda from "./pages/Ayuda";
+import FAQ from "./pages/FAQ";
 
 const Layout = () => {
   return (
@@ -66,6 +71,30 @@ const router = createBrowserRouter(
         }
       />
       <Route
+        path="almacenes"
+        element={
+          <PageWrapper>
+            <Almacenes />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="consultoria"
+        element={
+          <PageWrapper>
+            <Consultoria />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="tecnologia"
+        element={
+          <PageWrapper>
+            <Tecnologia />
+          </PageWrapper>
+        }
+      />
+      <Route
         path="sistemas"
         element={
           <PageWrapper>
@@ -86,6 +115,22 @@ const router = createBrowserRouter(
         element={
           <PageWrapper>
             <Contacto />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="ayuda"
+        element={
+          <PageWrapper>
+            <Ayuda />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="faq"
+        element={
+          <PageWrapper>
+            <FAQ />
           </PageWrapper>
         }
       />
