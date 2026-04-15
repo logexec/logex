@@ -1,5 +1,13 @@
 import { z } from "zod";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, CircleAlert } from "lucide-react";
+import type { IconType } from "react-icons";
+import {
+  FaTrailer,
+  FaTruckFieldUn,
+  FaTruckFront,
+  FaTruckMoving,
+  FaTruckRampBox,
+} from "react-icons/fa6";
 import { addMinutes, format, set, startOfDay } from "date-fns";
 import { FormEvent, useState } from "react";
 import { Form } from "@/components/ui/form";
@@ -34,6 +42,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import {
+  Autocomplete,
+  AutocompleteEmpty,
+  AutocompleteInput,
+  AutocompleteItem,
+  AutocompleteList,
+  AutocompletePopup,
+} from "@/components/ui/autocomplete";
 
 const steps = [
   {
@@ -116,11 +132,43 @@ const FIELD_STEPS: Record<(typeof FIELD_ORDER)[number], number> = {
   vehicle_plate: 1,
 };
 
+const items = [
+  { label: "Entrega de pedido", value: "entrega de pedido" },
+  { label: "Retiro de producto", value: "retiro de producto" },
+];
+
 const textField = (emptyMessage: string) =>
   z.preprocess(
     (value) => (value == null ? "" : String(value)),
     z.string().trim().min(1, { message: emptyMessage }),
   );
+
+const normalizeVehiclePlate = (value: unknown) => {
+  const compactValue = String(value ?? "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+  const plateParts = /^([A-Z]{3})(\d*)$/.exec(compactValue);
+
+  if (!plateParts) return compactValue;
+
+  const [, letters, digits] = plateParts;
+
+  return digits ? `${letters}-${digits}` : letters;
+};
+
+const getVehiclePlateIcon = (
+  validation: ValidPlateValidation,
+): IconType => {
+  const { secondLetter, numbers } = validation.details;
+
+  if (numbers.length === 3) return FaTrailer;
+  if (secondLetter === "E") return FaTruckFieldUn;
+  if (secondLetter === "M") return FaTruckRampBox;
+  if (["A", "U", "Z"].includes(secondLetter)) return FaTruckMoving;
+
+  return FaTruckFront;
+};
 
 const isValidAppointmentDate = (value: string) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -169,15 +217,15 @@ const schema = z.object({
       }),
   ),
   vehicle_plate: z.preprocess(
-    (value) => (value == null ? "" : String(value).trim().toUpperCase()),
+    normalizeVehiclePlate,
     z
       .string()
       .refine((value) => value.length > 0, {
         message: "La placa del vehículo está vacía.",
       })
-      .regex(/^[A-Z]{2,3}-\d{3,4}$/, {
+      .regex(/^[A-Z]{3}-(?:\d{3}|\d{4})$/, {
         message:
-          "La placa del vehículo no tiene un formato válido. Ejemplo: ABC-1234.",
+          "La placa del vehículo no tiene un formato válido. Ejemplos: ABC-1234 o ABC-123.",
       }),
   ),
   parcel_count: z
@@ -239,6 +287,24 @@ const schema = z.object({
 });
 
 type AppointmentPayload = z.infer<typeof schema>;
+type PlateValidationResult =
+  | {
+      isValid: false;
+      message: string;
+    }
+  | {
+      details: {
+        firstLetter: string;
+        numbers: string;
+        secondLetter: string;
+      };
+      isValid: true;
+      province: string;
+      serviceType: string;
+      vehicleType: string;
+      vehicleCategory: string;
+    };
+type ValidPlateValidation = Extract<PlateValidationResult, { isValid: true }>;
 type AppointmentFormValues = {
   appointment_date: string;
   appointment_time: string;
@@ -582,6 +648,92 @@ const Appointments = () => {
     }
   };
 
+  const validateEcuadorianPlate = (plate: string): PlateValidationResult => {
+    // Limpiar la placa (quitar espacios y guiones, pasar a mayúsculas)
+    const cleanPlate = plate.replace(/[-\s]/g, "").toUpperCase();
+
+    // Regex para Camiones/Vehículos (3 letras - 4 números) y Remolques (3 letras - 3 números)
+    const plateRegex = /^([A-Z])([A-Z])([A-Z])(\d{3,4})$/;
+    const match = cleanPlate.match(plateRegex);
+
+    if (!match) return { isValid: false, message: "Formato de placa inválido" };
+
+    const [, firstLetter, secondLetter, , numbers] = match;
+
+    // Mapa de Provincias (Primera Letra)
+    const provinces: Record<string, string> = {
+      A: "Azuay",
+      B: "Bolívar",
+      U: "Cañar",
+      C: "Carchi",
+      X: "Cotopaxi",
+      H: "Chimborazo",
+      O: "El Oro",
+      E: "Esmeraldas",
+      W: "Galápagos",
+      G: "Guayas",
+      I: "Imbabura",
+      L: "Loja",
+      R: "Los Ríos",
+      M: "Manabí",
+      V: "Morona Santiago",
+      N: "Napo",
+      S: "Pastaza",
+      P: "Pichincha",
+      Y: "Santa Elena",
+      J: "Santo Domingo de los Tsáchilas",
+      Q: "Orellana",
+      T: "Tungurahua",
+      Z: "Zamora Chinchipe",
+      K: "Sucumbíos",
+    };
+
+    // Identificación del Tipo de Servicio (Segunda Letra)
+    let serviceType = "particular";
+    if (["A", "U", "Z"].includes(secondLetter)) {
+      serviceType = "público/comercial";
+    } else if (["E"].includes(secondLetter)) {
+      serviceType = "gubernamental";
+    } else if (["X"].includes(secondLetter)) {
+      serviceType = "oficial";
+    } else if (["M"].includes(secondLetter)) {
+      serviceType = "municipal";
+    }
+
+    // Identificación del Vehículo por longitud de números
+    const vehicleCategory =
+      numbers.length === 3
+        ? "unidad de carga"
+        : "vehículo motorizado";
+    let vehicleType = "Cabezal particular";
+
+    if (numbers.length === 3) {
+      vehicleType = "Remolque/plataforma";
+    } else if (secondLetter === "E") {
+      vehicleType = "Camión del Estado";
+    } else if (secondLetter === "M") {
+      vehicleType = "Camión municipal";
+    } else if (["A", "U", "Z"].includes(secondLetter)) {
+      vehicleType = "Camión de carga público";
+    }
+
+    return {
+      isValid: true,
+      province: provinces[firstLetter] || "Provincia Desconocida",
+      serviceType,
+      vehicleType,
+      vehicleCategory,
+      details: { firstLetter, secondLetter, numbers },
+    };
+  };
+
+  const vehiclePlateValidation = formValues.vehicle_plate
+    ? validateEcuadorianPlate(formValues.vehicle_plate)
+    : null;
+  const VehiclePlateIcon = vehiclePlateValidation?.isValid
+    ? getVehiclePlateIcon(vehiclePlateValidation)
+    : null;
+
   return (
     <>
       <Confirmation
@@ -706,14 +858,39 @@ const Appointments = () => {
                       <FieldLabel>
                         Tipo de trámite <Required />
                       </FieldLabel>
-                      <Input
+                      {/* <Input
                         name="type"
                         onChange={(event) =>
                           updateField("type", event.target.value)
                         }
                         placeholder="Entrega, retiro, otro..."
                         value={formValues.type}
-                      />
+                      /> */}
+                      <Autocomplete
+                        items={items}
+                        onValueChange={(value) => updateField("type", value)}
+                        value={formValues.type}
+                      >
+                        <AutocompleteInput
+                          name="type"
+                          placeholder="Retiro, entrega, otro…"
+                        />
+                        <AutocompletePopup>
+                          <AutocompleteEmpty>
+                            Escribe el trámite a realizar...
+                          </AutocompleteEmpty>
+                          <AutocompleteList>
+                            {(item) => (
+                              <AutocompleteItem
+                                key={item.value}
+                                value={item.value}
+                              >
+                                {item.label}
+                              </AutocompleteItem>
+                            )}
+                          </AutocompleteList>
+                        </AutocompletePopup>
+                      </Autocomplete>
                       <FieldError />
                     </Field>
                     <Field name="order_id">
@@ -765,11 +942,39 @@ const Appointments = () => {
                       <Input
                         name="vehicle_plate"
                         onChange={(event) =>
-                          updateField("vehicle_plate", event.target.value)
+                          updateField(
+                            "vehicle_plate",
+                            normalizeVehiclePlate(event.target.value),
+                          )
                         }
                         placeholder="Ej: ABC-1234"
                         value={formValues.vehicle_plate}
                       />
+                      {vehiclePlateValidation?.isValid && (
+                        <p className="mt-1 flex items-center gap-1.5 text-xs text-gray-600">
+                          {VehiclePlateIcon && (
+                            <VehiclePlateIcon className="size-3.5 shrink-0 text-primary" />
+                          )}
+                          <span>
+                            Estás registrando un{" "}
+                            <strong className="font-medium text-gray-800">
+                              {vehiclePlateValidation.vehicleType}
+                            </strong>{" "}
+                            de {vehiclePlateValidation.province}. Categoría:{" "}
+                            {vehiclePlateValidation.vehicleCategory},{" "}
+                            {vehiclePlateValidation.serviceType}.
+                          </span>
+                        </p>
+                      )}
+                      {vehiclePlateValidation &&
+                        !vehiclePlateValidation.isValid && (
+                          <p className="mt-1 flex items-center gap-1.5 text-xs text-sky-700">
+                            <CircleAlert className="size-3.5 shrink-0" />
+                            <span>
+                              Asegúrate de que la placa ingresada es correcta.
+                            </span>
+                          </p>
+                        )}
                       <FieldError />
                     </Field>
                     <Field name="parcel_count">
@@ -959,6 +1164,7 @@ const Appointments = () => {
                     className="w-32 hover:bg-primary/10"
                     disabled={currentStep === 1}
                     onClick={() => setCurrentStep((prev) => prev - 1)}
+                    type="button"
                     variant="outline"
                   >
                     Anterior
@@ -968,6 +1174,7 @@ const Appointments = () => {
                       className="w-32 hover:bg-primary/10"
                       disabled={currentStep >= steps.length}
                       onClick={() => setCurrentStep((prev) => prev + 1)}
+                      type="button"
                       variant="outline"
                     >
                       Siguiente
