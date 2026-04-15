@@ -1,60 +1,60 @@
 import {
   BadgeCheck,
+  Briefcase,
   ClipboardCheck,
   Clock3,
   FileCheck2,
   Mail,
   MapPin,
-  Route,
-  ShieldCheck,
   Truck,
+  Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
 
 const benefits = [
   {
-    icon: <Route size={24} />,
-    title: "Operaciones planificadas",
+    icon: <Briefcase size={24} />,
+    title: "Trabajo con propósito",
     description:
-      "Rutas coordinadas con procesos claros para que cada entrega tenga seguimiento y soporte operativo.",
+      "Participa en operaciones que conectan almacenamiento, transporte, tecnología y servicio al cliente.",
   },
   {
-    icon: <ShieldCheck size={24} />,
-    title: "Carga con respaldo",
+    icon: <Users size={24} />,
+    title: "Equipos coordinados",
     description:
-      "Trabajamos con protocolos de seguridad, trazabilidad y comunicación constante durante el servicio.",
+      "Buscamos personas responsables, colaborativas y orientadas a cumplir procesos con calidad.",
   },
   {
     icon: <Clock3 size={24} />,
-    title: "Relación de largo plazo",
+    title: "Crecimiento estable",
     description:
-      "Buscamos choferes confiables para construir una red estable en cobertura nacional.",
+      "Valoramos la constancia, el aprendizaje y la capacidad de adaptarse a operaciones dinámicas.",
   },
 ];
 
 const requirements = [
-  "Licencia profesional vigente y documentación personal al día.",
-  "Experiencia comprobable en conducción de transporte de carga.",
-  "Compromiso con puntualidad, cuidado de la carga y comunicación en ruta.",
-  "Disponibilidad para cumplir procesos de seguridad y validación LogeX.",
+  "Documentación personal actualizada y disponibilidad para el proceso de selección.",
+  "Experiencia o formación relacionada con el área a la que deseas postular.",
+  "Responsabilidad, puntualidad y compromiso con el trabajo bien ejecutado.",
+  "Apertura para cumplir procesos internos, inducción y estándares de seguridad.",
 ];
 
 const steps = [
   {
     title: "Envía tus datos",
     description:
-      "Cuéntanos tu ciudad base, experiencia conduciendo carga, tipo de licencia y disponibilidad.",
+      "Cuéntanos tu área de interés, experiencia, ciudad de residencia y datos de contacto.",
   },
   {
-    title: "Validamos documentación",
+    title: "Revisamos tu perfil",
     description:
-      "Revisamos tu perfil, referencias y los documentos necesarios para activar el proceso.",
+      "Validamos tu información según las necesidades actuales de nuestras áreas operativas y administrativas.",
   },
   {
-    title: "Coordinamos rutas",
+    title: "Coordinamos el proceso",
     description:
-      "Si tu perfil calza con nuestras operaciones, avanzamos con inducción y asignación de servicios.",
+      "Si tu perfil se ajusta a una vacante, avanzamos con entrevistas, documentación e inducción.",
   },
 ];
 
@@ -73,24 +73,24 @@ const Careers = () => {
         <div className="mx-auto grid min-h-140 max-w-7xl content-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-4 inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white">
-              <Truck size={18} />
-              Convocatoria para choferes
+              <Briefcase size={18} />
+              Trabaja con nosotros
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-              Súmate como chofer de LogeX
+              Construye tu camino en LogeX
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-100">
-              Esta página es únicamente para choferes profesionales que quieran
-              operar con estándares de seguridad, trazabilidad y cumplimiento en
-              Ecuador. El vehículo se asigna según la operación.
+              Buscamos talento para áreas operativas, administrativas,
+              logísticas y de soporte. Si quieres formar parte de una operación
+              seria, ordenada y en crecimiento, queremos conocer tu perfil.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:soporte@logex.ec?subject=Transportista aliado - [Tu nombre]"
+                href="mailto:soporte@logex.ec?subject=Postulación laboral - [Tu nombre]"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
               >
                 <Mail size={18} />
-                Postular como chofer
+                Enviar postulación
               </a>
               <Link
                 to="/contacto"
@@ -103,9 +103,9 @@ const Careers = () => {
 
           <div className="grid content-end gap-4 text-sm text-gray-100 sm:grid-cols-3 lg:grid-cols-1">
             {[
-              { value: "Cobertura", label: "rutas nacionales" },
-              { value: "Carga", label: "operaciones coordinadas" },
-              { value: "Soporte", label: "seguimiento en ruta" },
+              { value: "Operación", label: "logística y almacenes" },
+              { value: "Soporte", label: "áreas administrativas" },
+              { value: "Servicio", label: "clientes y procesos" },
             ].map((item) => (
               <div
                 key={item.value}
@@ -126,18 +126,18 @@ const Careers = () => {
               className="text-sm font-bold uppercase tracking-wide"
               style={{ color: colors.logex }}
             >
-              No es una bolsa de empleo general
+              Talento para distintas áreas
             </p>
             <h2
               className="mt-3 text-3xl font-bold sm:text-4xl"
               style={{ color: colors.navy }}
             >
-              Buscamos aliados de transporte
+              Buscamos personas que sumen
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
-              Si tienes experiencia movilizando carga, cuidas los tiempos de
-              entrega y mantienes tu documentación al día, queremos conocer tu
-              perfil profesional.
+              Recibimos perfiles para distintas áreas de LogeX. Más que llenar
+              una vacante, nos interesa conocer personas responsables, claras en
+              su comunicación y comprometidas con el servicio.
             </p>
           </div>
 
@@ -185,7 +185,7 @@ const Careers = () => {
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
               Queremos que el primer contacto sea útil. Incluye la información
-              principal de tu operación para acelerar la revisión.
+              principal de tu perfil para acelerar la revisión.
             </p>
           </div>
 
@@ -221,7 +221,7 @@ const Careers = () => {
                 className="mt-3 text-3xl font-bold sm:text-4xl"
                 style={{ color: colors.navy }}
               >
-                Cómo convertirte en transportista aliado
+                Cómo postular
               </h2>
               <div className="mt-8 space-y-5">
                 {steps.map((step, index) => (
@@ -271,7 +271,7 @@ const Careers = () => {
                     size={20}
                     color={colors.logex}
                   />
-                  Tipo de licencia, experiencia y disponibilidad.
+                  Área de interés, experiencia y disponibilidad.
                 </li>
                 <li className="flex gap-3">
                   <MapPin
@@ -279,18 +279,18 @@ const Careers = () => {
                     size={20}
                     color={colors.logex}
                   />
-                  Rutas o provincias donde puedes operar.
+                  Hoja de vida o resumen profesional actualizado.
                 </li>
               </ul>
               <a
-                href="mailto:soporte@logex.ec?subject=Transportista aliado - [Tu nombre]"
+                href="mailto:soporte@logex.ec?subject=Postulación laboral - [Tu nombre]"
                 className="mt-8 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
               >
                 <Mail size={18} />
                 Enviar información
               </a>
               <p className="mt-4 text-center text-sm text-gray-500">
-                Usa el asunto: Transportista aliado - [Tu nombre]
+                Usa el asunto: Postulación laboral - [Tu nombre]
               </p>
             </aside>
           </div>
