@@ -9,7 +9,7 @@ import {
   FaTruckRampBox,
 } from "react-icons/fa6";
 import { addMinutes, format, set, startOfDay } from "date-fns";
-import { FormEvent, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useState } from "react";
 import { Form } from "@/components/ui/form";
 import { colors } from "../utils/colors";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -70,7 +70,10 @@ const steps = [
 ];
 
 const APPOINTMENTS_API_URL =
-  import.meta.env.VITE_APPOINTMENTS_API_URL || "/api/appointments";
+  import.meta.env.VITE_APPOINTMENTS_API_URL || "/api/v1/public/appointments";
+const APPOINTMENT_AVAILABILITY_API_URL =
+  import.meta.env.VITE_APPOINTMENT_AVAILABILITY_API_URL ||
+  `${APPOINTMENTS_API_URL}/availability`;
 const appointmentProjects = [
   {
     code: "agso",
@@ -157,9 +160,7 @@ const normalizeVehiclePlate = (value: unknown) => {
   return digits ? `${letters}-${digits}` : letters;
 };
 
-const getVehiclePlateIcon = (
-  validation: ValidPlateValidation,
-): IconType => {
+const getVehiclePlateIcon = (validation: ValidPlateValidation): IconType => {
   const { secondLetter, numbers } = validation.details;
 
   if (numbers.length === 3) return FaTrailer;
@@ -185,106 +186,123 @@ const isValidAppointmentDate = (value: string) => {
   );
 };
 
-const schema = z.object({
-  project_code: textField("Debes escoger un proyecto.").refine(
-    (value) => appointmentProjects.some((project) => project.code === value),
-    {
-      message: "Seleccionaste un proyecto inválido.",
-    },
-  ),
-  location_code: textField("Debes escoger una ubicación.").refine(
-    (value) =>
-      appointmentProjects.some((project) =>
-        project.locations.some((location) => location.code === value),
-      ),
-    {
-      message: "Seleccionaste una ubicación inválida.",
-    },
-  ),
-  company: textField("La casa comercial o empresa está vacía."),
-  type: textField("El tipo de trámite está vacío."),
-  order_id: textField("El número de orden de compra está vacío."),
-  driver_name: textField("El nombre del conductor está vacío."),
-  driver_id: z.preprocess(
-    (value) => (value == null ? "" : String(value).trim()),
-    z
-      .string()
-      .refine((value) => value.length > 0, {
-        message: "El número de cédula está vacío.",
-      })
-      .regex(/^\d{10}$/, {
-        message: "El número de cédula debe tener 10 dígitos.",
-      }),
-  ),
-  vehicle_plate: z.preprocess(
-    normalizeVehiclePlate,
-    z
-      .string()
-      .refine((value) => value.length > 0, {
-        message: "La placa del vehículo está vacía.",
-      })
-      .regex(/^[A-Z]{3}-(?:\d{3}|\d{4})$/, {
-        message:
-          "La placa del vehículo no tiene un formato válido. Ejemplos: ABC-1234 o ABC-123.",
-      }),
-  ),
-  parcel_count: z
-    .preprocess(
+const schema = z
+  .object({
+    project_code: textField("Debes escoger un proyecto.").refine(
+      (value) => appointmentProjects.some((project) => project.code === value),
+      {
+        message: "Seleccionaste un proyecto inválido.",
+      },
+    ),
+    location_code: textField("Debes escoger una ubicación.").refine(
+      (value) =>
+        appointmentProjects.some((project) =>
+          project.locations.some((location) => location.code === value),
+        ),
+      {
+        message: "Seleccionaste una ubicación inválida.",
+      },
+    ),
+    company: textField("La casa comercial o empresa está vacía."),
+    type: textField("El tipo de trámite está vacío."),
+    order_id: textField("El número de orden de compra está vacío."),
+    driver_name: textField("El nombre del conductor está vacío."),
+    driver_id: z.preprocess(
       (value) => (value == null ? "" : String(value).trim()),
       z
         .string()
-        .min(1, {
-          message: "El número de paquetes o bultos está vacío.",
+        .refine((value) => value.length > 0, {
+          message: "El número de cédula está vacío.",
         })
-        .refine((value) => !Number.isNaN(Number(value)), {
-          message: "El número de paquetes o bultos debe ser numérico.",
-        })
-        .refine((value) => Number.isInteger(Number(value)), {
-          message: "El número de paquetes o bultos debe ser entero.",
-        })
-        .refine((value) => Number(value) > 0, {
-          message: "El número de paquetes o bultos debe ser mayor a cero.",
+        .regex(/^\d{10}$/, {
+          message: "El número de cédula debe tener 10 dígitos.",
         }),
-    )
-    .transform((value) => Number(value)),
-  email: z.preprocess(
-    (value) => (value == null ? "" : String(value).trim()),
-    z
-      .string()
-      .refine((value) => value.length > 0, {
-        message: "El correo electrónico está vacío.",
-      })
-      .email({ message: "El correo electrónico no tiene un formato válido." }),
-  ),
-  appointment_date: z.preprocess(
-    (value) => (value == null ? "" : String(value).trim()),
-    z
-      .string()
-      .refine((value) => value.length > 0, {
-        message: "La fecha del turno está vacía.",
-      })
-      .refine(isValidAppointmentDate, {
-        message: "Ingresaste una fecha inválida.",
+    ),
+    vehicle_plate: z.preprocess(
+      normalizeVehiclePlate,
+      z
+        .string()
+        .refine((value) => value.length > 0, {
+          message: "La placa del vehículo está vacía.",
+        })
+        .regex(/^[A-Z]{3}-(?:\d{3}|\d{4})$/, {
+          message:
+            "La placa del vehículo no tiene un formato válido. Ejemplos: ABC-1234 o ABC-123.",
+        }),
+    ),
+    parcel_count: z
+      .preprocess(
+        (value) => (value == null ? "" : String(value).trim()),
+        z
+          .string()
+          .min(1, {
+            message: "El número de paquetes o bultos está vacío.",
+          })
+          .refine((value) => !Number.isNaN(Number(value)), {
+            message: "El número de paquetes o bultos debe ser numérico.",
+          })
+          .refine((value) => Number.isInteger(Number(value)), {
+            message: "El número de paquetes o bultos debe ser entero.",
+          })
+          .refine((value) => Number(value) > 0, {
+            message: "El número de paquetes o bultos debe ser mayor a cero.",
+          }),
+      )
+      .transform((value) => Number(value)),
+    email: z.preprocess(
+      (value) => (value == null ? "" : String(value).trim()),
+      z
+        .string()
+        .refine((value) => value.length > 0, {
+          message: "El correo electrónico está vacío.",
+        })
+        .email({
+          message: "El correo electrónico no tiene un formato válido.",
+        }),
+    ),
+    appointment_date: z.preprocess(
+      (value) => (value == null ? "" : String(value).trim()),
+      z
+        .string()
+        .refine((value) => value.length > 0, {
+          message: "La fecha del turno está vacía.",
+        })
+        .refine(isValidAppointmentDate, {
+          message: "Ingresaste una fecha inválida.",
+        }),
+    ),
+    appointment_time: z.preprocess(
+      (value) => (value == null ? "" : String(value).trim()),
+      z
+        .string()
+        .refine((value) => value.length > 0, {
+          message: "Debes escoger un horario.",
+        })
+        .refine((value) => availableTimes.includes(value), {
+          message: "Seleccionaste un horario inválido.",
+        }),
+    ),
+    terms: z.preprocess(
+      (value) => value === "on" || value === true,
+      z.boolean().refine((value) => value, {
+        message: "Debes aceptar las políticas de recepción.",
       }),
-  ),
-  appointment_time: z.preprocess(
-    (value) => (value == null ? "" : String(value).trim()),
-    z
-      .string()
-      .refine((value) => value.length > 0, {
-        message: "Debes escoger un horario.",
-      })
-      .refine((value) => availableTimes.includes(value), {
-        message: "Seleccionaste un horario inválido.",
-      }),
-  ),
-  terms: z.preprocess(
-    (value) => value === "on" || value === true,
-    z.boolean().refine((value) => value, {
-      message: "Debes aceptar las políticas de recepción.",
-    }),
-  ),
-});
+    ),
+  })
+  .superRefine((value, context) => {
+    if (
+      value.appointment_date &&
+      value.appointment_time &&
+      availableTimes.includes(value.appointment_time) &&
+      !isAppointmentSlotInFuture(value.appointment_date, value.appointment_time)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "Seleccionaste un horario que ya pasó.",
+        path: ["appointment_time"],
+      });
+    }
+  });
 
 type AppointmentPayload = z.infer<typeof schema>;
 type PlateValidationResult =
@@ -321,6 +339,9 @@ type AppointmentFormValues = {
   vehicle_plate: string;
 };
 type Errors = Record<string, string | string[]>;
+type AppointmentAvailability = {
+  unavailableTimesByDate: Record<string, string[]>;
+};
 
 class AppointmentApiError extends Error {
   constructor(public errors: Errors) {
@@ -352,6 +373,147 @@ const parseAppointmentDate = (value: string) => {
 
   return Number.isNaN(date.getTime()) ? undefined : date;
 };
+
+const getAppointmentSlotDate = (dateValue: string, timeValue: string) => {
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(dateValue) ||
+    !/^\d{2}:\d{2}$/.test(timeValue)
+  ) {
+    return null;
+  }
+
+  const [year, month, day] = dateValue.split("-").map(Number);
+  const [hours, minutes] = timeValue.split(":").map(Number);
+  const slotDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
+
+  return Number.isNaN(slotDate.getTime()) ? null : slotDate;
+};
+
+function isAppointmentSlotInFuture(dateValue: string, timeValue: string) {
+  const slotDate = getAppointmentSlotDate(dateValue, timeValue);
+
+  return Boolean(slotDate && slotDate > new Date());
+}
+
+function getAvailableTimesForDate(dateValue: string) {
+  if (!dateValue) return availableTimes;
+
+  return availableTimes.filter((time) =>
+    isAppointmentSlotInFuture(dateValue, time),
+  );
+}
+
+function getAppointmentMonth(value: Date | string) {
+  if (value instanceof Date) {
+    return format(value, "yyyy-MM");
+  }
+
+  return value.slice(0, 7);
+}
+
+function normalizeAppointmentTime(value: unknown) {
+  if (typeof value !== "string") return null;
+
+  const timeMatch =
+    value.match(/T(\d{2}:\d{2})/) || value.match(/^(\d{2}:\d{2})/);
+
+  return timeMatch?.[1] ?? null;
+}
+
+function parseUnavailableTimes(value: unknown) {
+  const unavailableTimes = new Set<string>();
+
+  if (!value || typeof value !== "object") {
+    return [];
+  }
+
+  if ("unavailable_times" in value && Array.isArray(value.unavailable_times)) {
+    for (const time of value.unavailable_times) {
+      const normalizedTime = normalizeAppointmentTime(time);
+      if (normalizedTime) unavailableTimes.add(normalizedTime);
+    }
+  }
+
+  if ("slots" in value && Array.isArray(value.slots)) {
+    for (const slot of value.slots) {
+      if (!slot || typeof slot !== "object") continue;
+      if ("available" in slot && slot.available === false && "time" in slot) {
+        const normalizedTime = normalizeAppointmentTime(slot.time);
+        if (normalizedTime) unavailableTimes.add(normalizedTime);
+      }
+    }
+  }
+
+  if ("appointments" in value && Array.isArray(value.appointments)) {
+    for (const appointment of value.appointments) {
+      if (!appointment || typeof appointment !== "object") continue;
+      const scheduledAt =
+        "scheduled_at" in appointment ? appointment.scheduled_at : null;
+      const time = "time" in appointment ? appointment.time : scheduledAt;
+      const normalizedTime = normalizeAppointmentTime(time);
+      if (normalizedTime) unavailableTimes.add(normalizedTime);
+    }
+  }
+
+  return Array.from(unavailableTimes);
+}
+
+function parseAppointmentAvailability(
+  payload: unknown,
+): AppointmentAvailability {
+  const data =
+    payload && typeof payload === "object" && "data" in payload
+      ? payload.data
+      : payload;
+  const unavailableTimesByDate: Record<string, string[]> = {};
+
+  if (!data || typeof data !== "object") {
+    return { unavailableTimesByDate };
+  }
+
+  if ("dates" in data && data.dates && typeof data.dates === "object") {
+    for (const [date, availabilityForDate] of Object.entries(data.dates)) {
+      unavailableTimesByDate[date] = parseUnavailableTimes(availabilityForDate);
+    }
+
+    return { unavailableTimesByDate };
+  }
+
+  if ("date" in data && typeof data.date === "string") {
+    unavailableTimesByDate[data.date] = parseUnavailableTimes(data);
+  }
+
+  return { unavailableTimesByDate };
+}
+
+async function fetchAppointmentAvailability(params: {
+  locationCode: string;
+  month: string;
+  projectCode: string;
+}) {
+  const project = getSelectedProject(params.projectCode);
+  const query = new URLSearchParams({
+    location_code: params.locationCode,
+    month: params.month,
+    project_code: project.code,
+    tenant_code: project.tenantCode,
+  });
+  const response = await fetch(
+    `${APPOINTMENT_AVAILABILITY_API_URL}?${query.toString()}`,
+    {
+      headers: {
+        Accept: "application/json",
+      },
+      method: "GET",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("No fue posible consultar la disponibilidad.");
+  }
+
+  return parseAppointmentAvailability(await response.json());
+}
 
 async function submitForm(formValues: AppointmentFormValues) {
   const result = schema.safeParse(formValues);
@@ -405,7 +567,13 @@ async function createAppointment(payload: AppointmentPayload) {
 
   if (!response.ok) {
     const apiPayload = await response.json().catch(() => null);
-    throw new AppointmentApiError(mapAppointmentApiErrors(apiPayload));
+    const apiErrors = mapAppointmentApiErrors(apiPayload);
+
+    if (apiErrors) {
+      throw new AppointmentApiError(apiErrors);
+    }
+
+    throw new Error("No fue posible agendar el turno.");
   }
 
   return response.json();
@@ -432,23 +600,15 @@ function normalizeProcedureType(value: string) {
   return "other";
 }
 
-function mapAppointmentApiErrors(payload: unknown): Errors {
+function mapAppointmentApiErrors(payload: unknown): Errors | null {
   if (!payload || typeof payload !== "object") {
-    return {
-      appointment_date: [
-        "No fue posible agendar tu turno. Intenta nuevamente.",
-      ],
-    };
+    return null;
   }
 
   const rawErrors = "errors" in payload ? payload.errors : null;
 
   if (!rawErrors || typeof rawErrors !== "object") {
-    return {
-      appointment_date: [
-        "No fue posible agendar tu turno. Intenta nuevamente.",
-      ],
-    };
+    return null;
   }
 
   const fieldMap: Record<string, keyof AppointmentFormValues> = {
@@ -462,19 +622,21 @@ function mapAppointmentApiErrors(payload: unknown): Errors {
     procedure_type: "type",
     project_code: "project_code",
     purchase_order_number: "order_id",
-    scheduled_at: "appointment_date",
+    scheduled_at: "appointment_time",
     truck_plate: "vehicle_plate",
   };
   const mappedErrors: Errors = {};
 
   for (const [apiField, messages] of Object.entries(rawErrors)) {
-    const formField = fieldMap[apiField] || "appointment_date";
+    const formField = fieldMap[apiField];
+    if (!formField) continue;
+
     mappedErrors[formField] = Array.isArray(messages)
       ? messages.map(String)
       : [String(messages)];
   }
 
-  return mappedErrors;
+  return Object.keys(mappedErrors).length > 0 ? mappedErrors : null;
 }
 
 function getFirstErrorStep(errors: Errors) {
@@ -585,7 +747,27 @@ const Appointments = () => {
     open: false,
     title: "",
   });
+  const [availability, setAvailability] = useState<AppointmentAvailability>({
+    unavailableTimesByDate: {},
+  });
+  const [availabilityMonth, setAvailabilityMonth] = useState(() =>
+    getAppointmentMonth(new Date()),
+  );
+  const [availabilityLoadedMonth, setAvailabilityLoadedMonth] = useState("");
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState("");
   const selectedDate = parseAppointmentDate(formValues.appointment_date);
+  const selectedMonth = formValues.appointment_date
+    ? getAppointmentMonth(formValues.appointment_date)
+    : "";
+  const isSelectedMonthLoaded =
+    selectedMonth && availabilityLoadedMonth === selectedMonth;
+  const selectedDateUnavailableTimes = isSelectedMonthLoaded
+    ? (availability.unavailableTimesByDate[formValues.appointment_date] ?? [])
+    : [];
+  const availableAppointmentTimes = getAvailableTimesForDate(
+    formValues.appointment_date,
+  ).filter((time) => !selectedDateUnavailableTimes.includes(time));
 
   const updateField = <K extends keyof AppointmentFormValues>(
     field: K,
@@ -598,8 +780,67 @@ const Appointments = () => {
   };
   const selectedProject = getSelectedProject(formValues.project_code);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    setAvailabilityLoading(true);
+    setAvailabilityError("");
+    setAvailabilityLoadedMonth("");
+
+    fetchAppointmentAvailability({
+      locationCode: formValues.location_code,
+      month: availabilityMonth,
+      projectCode: formValues.project_code,
+    })
+      .then((nextAvailability) => {
+        if (abortController.signal.aborted) return;
+
+        setAvailability(nextAvailability);
+        setAvailabilityLoadedMonth(availabilityMonth);
+        setFormValues((current) =>
+          current.appointment_time &&
+          nextAvailability.unavailableTimesByDate[
+            current.appointment_date
+          ]?.includes(current.appointment_time)
+            ? { ...current, appointment_time: "" }
+            : current,
+        );
+      })
+      .catch(() => {
+        if (abortController.signal.aborted) return;
+
+        setAvailability({ unavailableTimesByDate: {} });
+        setAvailabilityLoadedMonth("");
+        setAvailabilityError(
+          "No fue posible consultar los turnos ya agendados. Intenta nuevamente.",
+        );
+      })
+      .finally(() => {
+        if (!abortController.signal.aborted) {
+          setAvailabilityLoading(false);
+        }
+      });
+
+    return () => abortController.abort();
+  }, [availabilityMonth, formValues.location_code, formValues.project_code]);
+
+  const goToPreviousStep = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setCurrentStep((prev) => Math.max(1, prev - 1));
+  };
+  const goToNextStep = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setCurrentStep((prev) => Math.min(steps.length, prev + 1));
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (currentStep !== steps.length) {
+      return;
+    }
+
     setLoading(true);
     setErrors({});
 
@@ -702,9 +943,7 @@ const Appointments = () => {
 
     // Identificación del Vehículo por longitud de números
     const vehicleCategory =
-      numbers.length === 3
-        ? "unidad de carga"
-        : "vehículo motorizado";
+      numbers.length === 3 ? "unidad de carga" : "vehículo motorizado";
     let vehicleType = "Cabezal particular";
 
     if (numbers.length === 3) {
@@ -895,7 +1134,7 @@ const Appointments = () => {
                     </Field>
                     <Field name="order_id">
                       <FieldLabel>
-                        N&uacute;mero de orden de compra <Required />
+                        Número de orden de compra <Required />
                       </FieldLabel>
                       <Input
                         name="order_id"
@@ -923,7 +1162,7 @@ const Appointments = () => {
                     </Field>
                     <Field name="driver_id">
                       <FieldLabel>
-                        N&uacute;mero de c&eacute;dula <Required />
+                        Número de cédula <Required />
                       </FieldLabel>
                       <Input
                         name="driver_id"
@@ -979,7 +1218,7 @@ const Appointments = () => {
                     </Field>
                     <Field name="parcel_count">
                       <FieldLabel>
-                        N&uacute;mero de paquetes/bultos <Required />
+                        Número de paquetes/bultos <Required />
                       </FieldLabel>
                       <Input
                         name="parcel_count"
@@ -1034,15 +1273,45 @@ const Appointments = () => {
                           <Calendar
                             mode="single"
                             selected={selectedDate}
-                            onSelect={(date) =>
-                              updateField(
-                                "appointment_date",
-                                date ? format(date, "yyyy-MM-dd") : "",
-                              )
+                            month={parseAppointmentDate(
+                              `${availabilityMonth}-01`,
+                            )}
+                            onMonthChange={(month) =>
+                              setAvailabilityMonth(getAppointmentMonth(month))
                             }
+                            onSelect={(date) => {
+                              const nextDate = date
+                                ? format(date, "yyyy-MM-dd")
+                                : "";
+                              updateField("appointment_date", nextDate);
+                              if (nextDate) {
+                                setAvailabilityMonth(
+                                  getAppointmentMonth(nextDate),
+                                );
+                              }
+
+                              if (
+                                formValues.appointment_time &&
+                                !getAvailableTimesForDate(nextDate).includes(
+                                  formValues.appointment_time,
+                                )
+                              ) {
+                                updateField("appointment_time", "");
+                              }
+                            }}
                             disabled={(date) =>
                               startOfDay(date) < startOfDay(new Date()) ||
-                              date.getDate() > 25
+                              date.getDate() > 25 ||
+                              !getAvailableTimesForDate(
+                                format(date, "yyyy-MM-dd"),
+                              ).some(
+                                (time) =>
+                                  !(
+                                    availability.unavailableTimesByDate[
+                                      format(date, "yyyy-MM-dd")
+                                    ] ?? []
+                                  ).includes(time),
+                              )
                             }
                           />
                         </PopoverContent>
@@ -1054,25 +1323,62 @@ const Appointments = () => {
                         Horario disponible <Required />
                       </FieldLabel>
                       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                        {availableTimes.map((time) => (
-                          <Button
-                            key={time}
-                            className="w-full"
-                            name="appointment_time_option"
-                            onClick={() =>
-                              updateField("appointment_time", time)
-                            }
-                            type="button"
-                            variant={
-                              formValues.appointment_time === time
-                                ? "default"
-                                : "outline"
-                            }
-                          >
-                            {time}
-                          </Button>
-                        ))}
+                        {availableTimes.map((time) => {
+                          const isUnavailable =
+                            selectedDateUnavailableTimes.includes(time);
+                          const isAvailable =
+                            formValues.appointment_date &&
+                            isSelectedMonthLoaded &&
+                            isAppointmentSlotInFuture(
+                              formValues.appointment_date,
+                              time,
+                            ) &&
+                            !isUnavailable;
+
+                          return (
+                            <Button
+                              key={time}
+                              className="w-full"
+                              disabled={!isAvailable}
+                              name="appointment_time_option"
+                              onClick={() =>
+                                updateField("appointment_time", time)
+                              }
+                              type="button"
+                              variant={
+                                formValues.appointment_time === time
+                                  ? "default"
+                                  : "outline"
+                              }
+                            >
+                              {time}
+                            </Button>
+                          );
+                        })}
                       </div>
+                      {availabilityLoading && (
+                        <p className="text-xs text-gray-500">
+                          Consultando turnos ya agendados...
+                        </p>
+                      )}
+                      {availabilityError && (
+                        <p className="text-xs text-sky-700">
+                          {availabilityError}
+                        </p>
+                      )}
+                      {!formValues.appointment_date && (
+                        <p className="text-xs text-gray-500">
+                          Escoge una fecha para ver qué horarios están
+                          disponibles.
+                        </p>
+                      )}
+                      {formValues.appointment_date &&
+                        availableAppointmentTimes.length === 0 && (
+                          <p className="text-xs text-sky-700">
+                            No quedan horarios disponibles para esta fecha.
+                            Escoge otra fecha para continuar.
+                          </p>
+                        )}
                       <FieldError />
                     </Field>
                     <p className="text-xs text-gray-500 col-span-2">
@@ -1163,7 +1469,7 @@ const Appointments = () => {
                   <Button
                     className="w-32 hover:bg-primary/10"
                     disabled={currentStep === 1}
-                    onClick={() => setCurrentStep((prev) => prev - 1)}
+                    onClick={goToPreviousStep}
                     type="button"
                     variant="outline"
                   >
@@ -1173,7 +1479,7 @@ const Appointments = () => {
                     <Button
                       className="w-32 hover:bg-primary/10"
                       disabled={currentStep >= steps.length}
-                      onClick={() => setCurrentStep((prev) => prev + 1)}
+                      onClick={goToNextStep}
                       type="button"
                       variant="outline"
                     >

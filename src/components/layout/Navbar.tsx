@@ -30,6 +30,7 @@ const Navbar = () => {
               <NavLink to="/sistemas">Sistemas</NavLink>
               <NavLink to="/responsabilidad-social">RSE</NavLink>
               <NavLink to="/contacto">Contacto</NavLink>
+              <NavLink to="/empleo">Trabaja con nosotros</NavLink>
               <Button
                 variant="ghost"
                 className="bg-slate-600 text-primary-foreground hover:bg-slate-600/90"

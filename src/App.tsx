@@ -143,15 +143,15 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="careers"
+        path="empleo"
         element={
           <PageWrapper>
             <Careers />
           </PageWrapper>
         }
       />
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 const App = () => {
