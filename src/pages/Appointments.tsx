@@ -344,7 +344,7 @@ class AppointmentApiError extends Error {
 }
 
 const initialFormValues: AppointmentFormValues = {
-  appointment_date: "",
+  appointment_date: format(new Date(), "yyyy-MM-dd"),
   appointment_time: "",
   company: "",
   driver_id: "",
@@ -1319,7 +1319,7 @@ const Appointments = () => {
                         selectedDate={selectedDate}
                         selectedTime={formValues.appointment_time}
                         timeSlots={appointmentTimeSlots}
-                        className="max-w-xl justify-self-center mx-auto"
+                        className="max-w-132 mx-auto"
                       />
                       <FieldError />
                     </Field>
