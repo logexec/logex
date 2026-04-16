@@ -1037,7 +1037,7 @@ const Appointments = () => {
         open={confirmation.open}
         title={confirmation.title}
       />
-      <div className="min-h-screen pt-20 bg-gray-50">
+      <div className="min-h-screen bg-gray-50">
         {/* Search Section */}
         <div className="bg-white shadow-sm border-b">
           <div className="max-w-4xl mx-auto px-4 py-8">
@@ -1303,7 +1303,7 @@ const Appointments = () => {
                   <section className="grid grid-cols-4 w-screen max-w-3xl gap-4 justify-center">
                     <Field name="appointment_date" className="col-span-4 w-full">
                       <FieldLabel>
-                        Fecha y horario del turno <Required />
+                        Elige la fecha y horario del turno <Required />
                       </FieldLabel>
                       <DayPicker
                         disabledDate={isAppointmentDateDisabled}

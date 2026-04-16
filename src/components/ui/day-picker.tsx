@@ -1,5 +1,6 @@
 "use client";
 
+import { es } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -40,8 +41,12 @@ export default function DayPicker({
       <div className="w-full rounded-md border">
         <div className="flex w-full max-sm:flex-col">
           <Calendar
+            classNames={{
+              caption_label: "capitalize",
+            }}
             className="w-full p-3 [--cell-size:--spacing(11)] sm:w-fit sm:pe-6 md:[--cell-size:--spacing(12)]"
             disabled={disabledDate}
+            locale={es}
             mode="single"
             month={month}
             onMonthChange={onMonthChange}
@@ -55,7 +60,7 @@ export default function DayPicker({
                   <div className="grid gap-1.5 px-5 max-sm:grid-cols-2">
                     {timeSlots.map(({ time: timeSlot, available }) => (
                       <Button
-                        className="w-full"
+                        className="w-full hover:bg-gray-200/70"
                         disabled={loading || !available}
                         key={timeSlot}
                         onClick={() => onTimeSelect(timeSlot)}
