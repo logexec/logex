@@ -1301,7 +1301,7 @@ const Appointments = () => {
 
                 {currentStep === 2 && (
                   <section className="grid grid-cols-4 w-screen max-w-3xl gap-4 justify-center">
-                    <Field name="appointment_date" className="col-span-4 mx-auto">
+                    <Field name="appointment_date" className="col-span-4 w-full">
                       <FieldLabel>
                         Fecha y horario del turno <Required />
                       </FieldLabel>
@@ -1319,6 +1319,7 @@ const Appointments = () => {
                         selectedDate={selectedDate}
                         selectedTime={formValues.appointment_time}
                         timeSlots={appointmentTimeSlots}
+                        className="max-w-xl justify-self-center mx-auto"
                       />
                       <FieldError />
                     </Field>
@@ -1326,12 +1327,12 @@ const Appointments = () => {
                       <FieldError />
                     </Field>
                     {availabilityLoading && (
-                      <p className="text-xs text-gray-500 col-span-1">
+                      <p className="text-xs text-gray-500 col-span-4">
                         Consultando turnos ya agendados...
                       </p>
                     )}
                     {availabilityError && (
-                      <p className="text-xs text-sky-700 col-span-1">
+                      <p className="text-xs text-sky-700 col-span-4">
                         {availabilityError}
                       </p>
                     )}

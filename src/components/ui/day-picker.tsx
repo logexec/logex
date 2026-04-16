@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 type TimeSlot = {
   available: boolean;
@@ -35,11 +36,11 @@ export default function DayPicker({
   timeSlots,
 }: DayPickerProps) {
   return (
-    <div className={className}>
-      <div className="rounded-md border">
-        <div className="flex max-sm:flex-col">
+    <div className={cn("w-full", className)}>
+      <div className="w-full rounded-md border">
+        <div className="flex w-full max-sm:flex-col">
           <Calendar
-            className="p-2 sm:pe-5"
+            className="w-full p-3 [--cell-size:--spacing(11)] sm:w-fit sm:pe-6 md:[--cell-size:--spacing(12)]"
             disabled={disabledDate}
             mode="single"
             month={month}
@@ -47,7 +48,7 @@ export default function DayPicker({
             onSelect={onDateSelect}
             selected={selectedDate}
           />
-          <div className="relative w-full max-sm:h-48 sm:w-40">
+          <div className="relative w-full max-sm:h-48 sm:w-48 md:w-52">
             <div className="absolute inset-0 py-4 max-sm:border-t">
               <ScrollArea className="h-full sm:border-s">
                 <div className="space-y-3">
