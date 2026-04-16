@@ -729,7 +729,7 @@ const availableTimes: string[] = [];
 
 for (
   let slot = appointmentStart;
-  addMinutes(slot, 40) <= appointmentEnd;
+  slot < appointmentEnd;
   slot = addMinutes(slot, 40)
 ) {
   availableTimes.push(format(slot, "HH:mm"));
