@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CalendarIcon, CircleAlert } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 import type { IconType } from "react-icons";
 import {
   FaTrailer,
@@ -16,13 +16,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
 import Division from "@/components/ui/division";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Stepper,
   StepperDescription,
@@ -40,7 +34,6 @@ import {
   AlertDialogPopup,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 import {
   Autocomplete,
@@ -50,6 +43,7 @@ import {
   AutocompleteList,
   AutocompletePopup,
 } from "@/components/ui/autocomplete";
+import DayPicker from "@/components/ui/day-picker";
 
 const steps = [
   {
@@ -768,6 +762,28 @@ const Appointments = () => {
   const availableAppointmentTimes = getAvailableTimesForDate(
     formValues.appointment_date,
   ).filter((time) => !selectedDateUnavailableTimes.includes(time));
+  const appointmentMonthDate =
+    parseAppointmentDate(`${availabilityMonth}-01`) ?? new Date();
+  const appointmentTimeSlots = availableTimes.map((time) => {
+    const isUnavailable = selectedDateUnavailableTimes.includes(time);
+    const isAvailable =
+      Boolean(formValues.appointment_date) &&
+      Boolean(isSelectedMonthLoaded) &&
+      isAppointmentSlotInFuture(formValues.appointment_date, time) &&
+      !isUnavailable;
+
+    return {
+      available: isAvailable,
+      time,
+    };
+  });
+  // const appointmentDateHelperMessage = !formValues.appointment_date
+  //   ? "Escoge una fecha para ver qué horarios están disponibles."
+  //   : "";
+  const appointmentDateEmptyMessage =
+    formValues.appointment_date && availableAppointmentTimes.length === 0
+      ? "No quedan horarios disponibles para esta fecha. Escoge otra fecha para continuar."
+      : "";
 
   const updateField = <K extends keyof AppointmentFormValues>(
     field: K,
@@ -832,6 +848,40 @@ const Appointments = () => {
     event.preventDefault();
     event.stopPropagation();
     setCurrentStep((prev) => Math.min(steps.length, prev + 1));
+  };
+  const isAppointmentDateDisabled = (date: Date) => {
+    const dateValue = format(date, "yyyy-MM-dd");
+    const dateUnavailableTimes =
+      availability.unavailableTimesByDate[dateValue] ?? [];
+
+    return (
+      startOfDay(date) < startOfDay(new Date()) ||
+      date.getDate() > 25 ||
+      !getAvailableTimesForDate(dateValue).some(
+        (time) => !dateUnavailableTimes.includes(time),
+      )
+    );
+  };
+  const handleAppointmentDateSelect = (date: Date | undefined) => {
+    const nextDate = date ? format(date, "yyyy-MM-dd") : "";
+
+    updateField("appointment_date", nextDate);
+    if (nextDate) {
+      setAvailabilityMonth(getAppointmentMonth(nextDate));
+    }
+
+    const nextDateUnavailableTimes =
+      availability.unavailableTimesByDate[nextDate] ?? [];
+
+    if (
+      formValues.appointment_time &&
+      (!getAvailableTimesForDate(nextDate).includes(
+        formValues.appointment_time,
+      ) ||
+        nextDateUnavailableTimes.includes(formValues.appointment_time))
+    ) {
+      updateField("appointment_time", "");
+    }
   };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -1246,146 +1296,60 @@ const Appointments = () => {
                     </Field>
                   </>
                 )}
+
+                {/* Paso 2 */}
+
                 {currentStep === 2 && (
-                  <>
-                    <Field name="appointment_date">
+                  <section className="grid grid-cols-4 w-screen max-w-3xl gap-4 justify-center">
+                    <Field name="appointment_date" className="col-span-4 mx-auto">
                       <FieldLabel>
-                        Fecha del turno <Required />
+                        Fecha y horario del turno <Required />
                       </FieldLabel>
-                      <Popover>
-                        <PopoverTrigger>
-                          <Button
-                            className={cn(
-                              "w-full justify-between font-normal",
-                              !selectedDate && "text-muted-foreground",
-                            )}
-                            variant="outline"
-                          >
-                            {selectedDate
-                              ? selectedDate.toLocaleDateString("es-EC", {
-                                  dateStyle: "long",
-                                })
-                              : "Selecciona una fecha"}
-                            <CalendarIcon className="size-4" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent align="start" className="w-auto p-0">
-                          <Calendar
-                            mode="single"
-                            selected={selectedDate}
-                            month={parseAppointmentDate(
-                              `${availabilityMonth}-01`,
-                            )}
-                            onMonthChange={(month) =>
-                              setAvailabilityMonth(getAppointmentMonth(month))
-                            }
-                            onSelect={(date) => {
-                              const nextDate = date
-                                ? format(date, "yyyy-MM-dd")
-                                : "";
-                              updateField("appointment_date", nextDate);
-                              if (nextDate) {
-                                setAvailabilityMonth(
-                                  getAppointmentMonth(nextDate),
-                                );
-                              }
-
-                              if (
-                                formValues.appointment_time &&
-                                !getAvailableTimesForDate(nextDate).includes(
-                                  formValues.appointment_time,
-                                )
-                              ) {
-                                updateField("appointment_time", "");
-                              }
-                            }}
-                            disabled={(date) =>
-                              startOfDay(date) < startOfDay(new Date()) ||
-                              date.getDate() > 25 ||
-                              !getAvailableTimesForDate(
-                                format(date, "yyyy-MM-dd"),
-                              ).some(
-                                (time) =>
-                                  !(
-                                    availability.unavailableTimesByDate[
-                                      format(date, "yyyy-MM-dd")
-                                    ] ?? []
-                                  ).includes(time),
-                              )
-                            }
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <DayPicker
+                        disabledDate={isAppointmentDateDisabled}
+                        loading={availabilityLoading}
+                        month={appointmentMonthDate}
+                        onDateSelect={handleAppointmentDateSelect}
+                        onMonthChange={(month) =>
+                          setAvailabilityMonth(getAppointmentMonth(month))
+                        }
+                        onTimeSelect={(time) =>
+                          updateField("appointment_time", time)
+                        }
+                        selectedDate={selectedDate}
+                        selectedTime={formValues.appointment_time}
+                        timeSlots={appointmentTimeSlots}
+                      />
                       <FieldError />
                     </Field>
-                    <Field name="appointment_time">
-                      <FieldLabel>
-                        Horario disponible <Required />
-                      </FieldLabel>
-                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                        {availableTimes.map((time) => {
-                          const isUnavailable =
-                            selectedDateUnavailableTimes.includes(time);
-                          const isAvailable =
-                            formValues.appointment_date &&
-                            isSelectedMonthLoaded &&
-                            isAppointmentSlotInFuture(
-                              formValues.appointment_date,
-                              time,
-                            ) &&
-                            !isUnavailable;
-
-                          return (
-                            <Button
-                              key={time}
-                              className="w-full"
-                              disabled={!isAvailable}
-                              name="appointment_time_option"
-                              onClick={() =>
-                                updateField("appointment_time", time)
-                              }
-                              type="button"
-                              variant={
-                                formValues.appointment_time === time
-                                  ? "default"
-                                  : "outline"
-                              }
-                            >
-                              {time}
-                            </Button>
-                          );
-                        })}
-                      </div>
-                      {availabilityLoading && (
-                        <p className="text-xs text-gray-500">
-                          Consultando turnos ya agendados...
-                        </p>
-                      )}
-                      {availabilityError && (
-                        <p className="text-xs text-sky-700">
-                          {availabilityError}
-                        </p>
-                      )}
-                      {!formValues.appointment_date && (
-                        <p className="text-xs text-gray-500">
-                          Escoge una fecha para ver qué horarios están
-                          disponibles.
-                        </p>
-                      )}
-                      {formValues.appointment_date &&
-                        availableAppointmentTimes.length === 0 && (
-                          <p className="text-xs text-sky-700">
-                            No quedan horarios disponibles para esta fecha.
-                            Escoge otra fecha para continuar.
-                          </p>
-                        )}
+                    <Field name="appointment_time" className="col-span-1">
                       <FieldError />
                     </Field>
-                    <p className="text-xs text-gray-500 col-span-2">
+                    {availabilityLoading && (
+                      <p className="text-xs text-gray-500 col-span-1">
+                        Consultando turnos ya agendados...
+                      </p>
+                    )}
+                    {availabilityError && (
+                      <p className="text-xs text-sky-700 col-span-1">
+                        {availabilityError}
+                      </p>
+                    )}
+                    {/* {appointmentDateHelperMessage && (
+                      <p className="text-xs text-gray-500 col-span-1">
+                        {appointmentDateHelperMessage}
+                      </p>
+                    )} */}
+                    {appointmentDateEmptyMessage && (
+                      <p className="text-xs text-sky-700 col-span-1">
+                        {appointmentDateEmptyMessage}
+                      </p>
+                    )}
+                    <p className="text-xs text-gray-500 col-span-4">
                       * La disponibilidad de turnos es únicamente del día 01 al
                       25 de cada mes, en horarios de 08:30 a 14:00.
                     </p>
-                  </>
+                  </section>
                 )}
                 {currentStep === 3 && (
                   <>
