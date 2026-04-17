@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import {
   Accordion,
   AccordionContent,
@@ -43,6 +44,11 @@ const faqs = [
 const FAQ = () => {
   return (
     <div>
+      <PageSEO
+        title="Preguntas Frecuentes"
+        description="Respuestas a las preguntas más comunes sobre los servicios, operaciones y sistemas de LogeX en Ecuador."
+        path="/faq"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/faq-hero.webp"

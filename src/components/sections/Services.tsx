@@ -9,25 +9,25 @@ const servicesData = [
     icon: <Package size={24} />,
     title: "Almacenamiento e inventarios",
     description:
-      "Administración de bodegas, inventario y movimiento de mercancía con procesos definidos.",
+      "Administramos más de 55.000 m² de infraestructura de almacenamiento con control de inventarios en tiempo real y trazabilidad completa.",
   },
   {
     icon: <Truck size={24} />,
     title: "Transporte nacional",
     description:
-      "Distribución y transporte con cobertura nacional para operaciones de distintas escalas.",
+      "Operamos una flota de más de 600 vehículos para distribución y transporte a nivel nacional, con seguimiento GPS, monitoreo en tiempo real y gestión de rutas.",
   },
   {
     icon: <SlidersHorizontal size={24} />,
     title: "Soluciones personalizadas",
     description:
-      "Diseño de soluciones logísticas adaptadas a las necesidades de cada cliente.",
+      "Estructuramos modelos logísticos a medida para cada industria, volumen y nivel de complejidad operativa.",
   },
   {
     icon: <MonitorCheck size={24} />,
     title: "Torre de control",
     description:
-      "Paneles, indicadores y seguimiento operativo para prevenir incidencias y responder a tiempo.",
+      "Visibilidad centralizada de sus operaciones con indicadores clave, alertas en tiempo real y capacidad de respuesta ante contingencias.",
   },
 ];
 
@@ -40,13 +40,13 @@ const Services = () => {
             className="text-4xl font-bold text-secondary mb-4"
             style={{ color: colors.navy }}
           >
-            Soluciones logísticas integradas
+            Una propuesta integral para operaciones que no admiten errores
           </h2>
           <p
-            className="text-gray max-w-2xl mx-auto"
+            className="text-xl mb-8 max-w-2xl mx-auto"
             style={{ color: colors.gray }}
           >
-            Procesos, tecnología y operación para optimizar su cadena de suministro.
+            Diseñamos, implementamos y monitoreamos cada eslabón de su cadena de abastecimiento — desde el almacén hasta la entrega final.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

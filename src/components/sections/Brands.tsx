@@ -12,10 +12,10 @@ const Brands = () => {
           Nuestros Clientes
         </h2>
         <p
-          className="text-gray max-w-2xl mx-auto"
+          className="text-xl mb-8 max-w-2xl mx-auto"
           style={{ color: colors.gray }}
         >
-          Empresas que confían en nosotros
+          Multinacionales líderes en consumo masivo, industria y retail que han elegido a LogeX como su operador logístico en Ecuador.
         </p>
       </div>
       <MarqueeCarousel />

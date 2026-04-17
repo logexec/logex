@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { Boxes, ClipboardCheck, PackageCheck, Warehouse } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
@@ -26,6 +27,11 @@ const points = [
 const Almacenes = () => {
   return (
     <div>
+      <PageSEO
+        title="Gestión de Almacenes"
+        description="Servicios de almacenamiento, control de inventario y manejo de mercancía con procesos diseñados para eficiencia, seguridad y trazabilidad en Ecuador."
+        path="/almacenes"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/almacenes-stock.webp"

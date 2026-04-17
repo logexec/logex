@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { ChartBar, MapPinned, MonitorCheck, ServerCog } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
@@ -26,6 +27,11 @@ const capabilities = [
 const Tecnologia = () => {
   return (
     <div>
+      <PageSEO
+        title="Tecnología Logística"
+        description="Sistemas de trazabilidad, torre de control y gestión de información operativa para mejorar almacenes, transporte y visibilidad en tiempo real en Ecuador."
+        path="/tecnologia"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/sistemas-hero.webp"

@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { BookOpen, Leaf, ShieldCheck, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { colors } from "../utils/colors";
@@ -26,6 +27,11 @@ const focusAreas = [
 const RSE = () => {
   return (
     <div>
+      <PageSEO
+        title="Responsabilidad Social Empresarial"
+        description="LogeX apoya la conservación del bosque nublado en la Reserva Biológica El Nogal, la educación ambiental y el desarrollo sostenible de comunidades en Yunguilla, Ecuador."
+        path="/responsabilidad-social"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/rse-hero.webp"

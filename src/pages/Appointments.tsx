@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { z } from "zod";
 import { CircleAlert } from "lucide-react";
 import type { IconType } from "react-icons";
@@ -1025,6 +1026,11 @@ const Appointments = () => {
 
   return (
     <>
+      <PageSEO
+        title="Agenda tu Turno de Recepción"
+        description="Agenda tu turno de recepción de proveedores en el Centro de Distribución de LogeX en Tambillo. Selecciona fecha y horario disponible en línea."
+        path="/appointments"
+      />
       <Confirmation
         body={confirmation.body}
         description={confirmation.description}

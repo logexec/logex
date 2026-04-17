@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import {
   BadgeCheck,
   Briefcase,
@@ -61,6 +62,11 @@ const steps = [
 const Careers = () => {
   return (
     <div>
+      <PageSEO
+        title="Trabaja con Nosotros"
+        description="Únete al equipo de LogeX. Oportunidades de empleo en logística, transporte, almacenamiento y tecnología en Ecuador."
+        path="/empleo"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/warehouse.jpg"

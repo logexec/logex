@@ -32,8 +32,9 @@ const Hero = () => {
               Innovamos para resolver sus desafíos logísticos
             </motion.h1>
             <p className="text-xl mb-8" style={{ color: colors.gray }}>
-              Optimizamos la cadena de suministro con tecnología y trazabilidad
-              para que su operación sea más eficiente y confiable.
+              LogeX gestiona cadenas de abastecimiento para las empresas más
+              exigentes del Ecuador — con infraestructura, tecnología propia y
+              más de 23 años de experiencia en operaciones de gran escala.
             </p>
 
             <motion.div

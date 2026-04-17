@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import {
   BadgeCheck,
   Boxes,
@@ -15,41 +16,46 @@ const highlights = [
     icon: <Boxes size={22} />,
     title: "Valor agregado",
     description:
-      "Administramos y optimizamos cadenas de abastecimiento con soluciones personalizadas y eficientes.",
+      "Vamos más allá del almacenamiento y el transporte: diseñamos soluciones que generan eficiencia, reducen costos operativos y dan visibilidad total a su cadena de abastecimiento.",
   },
   {
     icon: <ShieldCheck size={22} />,
     title: "Eficiencia segura",
     description:
-      "Almacenamos y transportamos productos con procesos orientados a seguridad, calidad y control.",
+      "Cada operación está respaldada por protocolos de seguridad, estándares de calidad auditables y sistemas de control que minimizan el riesgo operativo.",
   },
 ];
 
 const stats = [
   {
     value: "+55,000 m2",
-    label: "superficie de almacenamiento administrada",
+    label: "de superficie de almacenamiento bajo gestión",
   },
   {
     value: "650",
-    label: "vehículos en ruta en todo el país",
+    label: "vehículos operando a nivel nacional",
   },
   {
     value: "1,300",
-    label: "colaboradores directos en nómina",
+    label: "colaboradores directos",
   },
 ];
 
 const standards = [
-  "Soluciones logísticas y tecnológicas a medida.",
-  "Administración de cadenas de abastecimiento para grandes empresas.",
-  "Procesos operativos enfocados en eficiencia y trazabilidad.",
-  "Altos estándares éticos, operativos y comerciales.",
+  "Compromiso con estándares éticos y operativos que generan confianza sostenida en el tiempo.",
+  "Administración integral de cadenas de abastecimiento para corporaciones multinacionales.",
+  "Procesos operativos con trazabilidad end-to-end y métricas de desempeño en tiempo real.",
+  "Soluciones logísticas y tecnológicas diseñadas para la escala y complejidad de su operación.",
 ];
 
 const Nosotros = () => {
   return (
     <div>
+      <PageSEO
+        title="Nosotros | Empresa Logística en Ecuador"
+        description="Más de 20 años de experiencia en logística B2B. +55.000 m² de almacenamiento, 650 vehículos y 1.300 colaboradores gestionando cadenas de abastecimiento en Ecuador."
+        path="/nosotros"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/nosotros-hero.webp"
@@ -66,12 +72,12 @@ const Nosotros = () => {
               Nosotros
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              Experiencia comprobada en logística
+              Operaciones logísticas robustas para empresas que requieren precisión y escala
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100">
-              LogeX es una empresa especializada en servicios logísticos en
-              Ecuador. Administramos y agregamos valor a las cadenas de
-              abastecimiento de nuestros clientes con soluciones a medida.
+              Apoyamos a empresas exigentes en Ecuador a ejecutar sus operaciones
+              logísticas con control, eficiencia y confiabilidad. Integramos
+              soluciones a medida que optimizan toda la cadena de suministro.
             </p>
           </div>
         </div>
@@ -90,13 +96,14 @@ const Nosotros = () => {
               className="mt-3 text-3xl font-bold sm:text-4xl"
               style={{ color: colors.navy }}
             >
-              Especialización en operaciones de gran escala
+              Experiencia comprobada en entornos logísticos exigentes
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Con más de 20 años de experiencia en el Ecuador, nos hemos
-              consolidado como un aliado logístico para grandes empresas.
-              Trabajamos con procesos, tecnología y equipos especializados para
-              almacenar y transportar productos de forma eficiente y segura.
+              Con más de 23 años de trayectoria en Ecuador, LogeX ha construido
+              una capacidad operativa que pocas empresas logísticas de la región
+              pueden igualar. Gestionamos operaciones de alta complejidad para
+              corporaciones multinacionales con procesos robustos, tecnología
+              propia y equipos especializados.
             </p>
 
             <div className="mt-8 grid gap-4">
@@ -177,12 +184,12 @@ const Nosotros = () => {
               className="mt-3 text-3xl font-bold"
               style={{ color: colors.navy }}
             >
-              Estándares claros para operar mejor
+              Un modelo operativo diseñado para la exigencia corporativa
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Nuestra propuesta combina logística, tecnología y gestión
-              operativa para convertir los desafíos de abastecimiento en
-              procesos más eficientes y controlados.
+              Nuestra propuesta integra infraestructura, tecnología propia y
+              gestión operativa especializada para convertir los desafíos de
+              abastecimiento en ventajas competitivas medibles.
             </p>
 
             <div className="mt-7 grid gap-3">
@@ -237,10 +244,10 @@ const Nosotros = () => {
                 </h2>
               </div>
               <p className="leading-8 text-gray-600">
-                Nuestros servicios de logística y distribución están disponibles
-                en todo el territorio de Ecuador, con una operación diseñada
-                para brindar cobertura, trazabilidad y respuesta ante las
-                necesidades de cada cliente.
+                Nuestros servicios de logística y distribución tienen alcance
+                nacional, con una infraestructura diseñada para responder con
+                agilidad ante las necesidades operativas de cada cliente, sin
+                importar el volumen o la ubicación.
               </p>
             </div>
           </div>

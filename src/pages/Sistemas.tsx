@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import {
   Boxes,
   ChartBar,
@@ -56,6 +57,11 @@ const internalSystems = [
 const Sistemas = () => {
   return (
     <div className="overflow-x-hidden">
+      <PageSEO
+        title="Sistemas | Plataformas de Gestión Logística"
+        description="Ecosistema de herramientas tecnológicas para almacenes, transporte, monitoreo GPS y control operativo: LogeX Vertex, Axis, LMS, GPS y más."
+        path="/sistemas"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/sistemas-hero.webp"

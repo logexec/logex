@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { Mail, MessageSquare, Phone, Send } from "lucide-react";
@@ -65,6 +66,11 @@ const Contacto = () => {
 
   return (
     <div className="pt-16">
+      <PageSEO
+        title="Contacto"
+        description="Contáctanos para conocer cómo LogeX puede optimizar tu cadena de suministro con soluciones logísticas a medida para tu empresa en Ecuador."
+        path="/contacto"
+      />
       <section className="bg-gray-50 py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8">
           <motion.div

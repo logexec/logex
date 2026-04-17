@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { CalendarCheck, Mail, MessageSquare, PhoneCall } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
@@ -31,6 +32,11 @@ const helpOptions = [
 const Ayuda = () => {
   return (
     <div>
+      <PageSEO
+        title="Ayuda"
+        description="Centro de ayuda de LogeX. Encuentra respuestas, canales de contacto y recursos para proveedores y clientes en Ecuador."
+        path="/ayuda"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/ayuda-hero.webp"

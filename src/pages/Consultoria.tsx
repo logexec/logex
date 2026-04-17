@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import { CheckCircle2, Route, SlidersHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
@@ -12,6 +13,11 @@ const items = [
 const Consultoria = () => {
   return (
     <div>
+      <PageSEO
+        title="Consultoría Logística"
+        description="Diseño de soluciones logísticas a medida para su operación en Ecuador. Levantamiento de necesidades, diseño de procesos e integración de almacenamiento, transporte e información."
+        path="/consultoria"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/consultoria-hero.webp"

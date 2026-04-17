@@ -1,3 +1,4 @@
+import { PageSEO } from "@/components/layout/PageSEO";
 import {
   ChartBar,
   MonitorCheck,
@@ -52,6 +53,11 @@ const mainServices = [
 const Servicios = () => {
   return (
     <div>
+      <PageSEO
+        title="Servicios Logísticos"
+        description="Almacenamiento, gestión de inventarios, transporte nacional y seguimiento en tiempo real. Soluciones logísticas para operaciones complejas y de gran escala en Ecuador."
+        path="/servicios"
+      />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
           src="/servicios-hero.webp"
