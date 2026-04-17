@@ -46,7 +46,7 @@ const Services = () => {
             className="text-xl mb-8 max-w-2xl mx-auto"
             style={{ color: colors.gray }}
           >
-            Diseñamos, implementamos y monitoreamos cada eslabón de su cadena de abastecimiento — desde el almacén hasta la entrega final.
+            Diseñamos, implementamos y monitoreamos cada eslabón de su cadena de abastecimiento — desde el almacén hasta la entrega final. 
           </p>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
