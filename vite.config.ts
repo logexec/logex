@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
+      "^/api(/|$)": {
         changeOrigin: true,
         target: "http://127.0.0.1:8001",
       },
