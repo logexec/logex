@@ -102,7 +102,7 @@ const Hero = () => {
             className="hidden md:block"
           >
             <img
-              src="/servicios-transporte.webp"
+              src="/apldr2.webp"
               alt="LogeX Supply Chain Solutions"
               className="h-105 w-full rounded-lg object-cover shadow-sm"
             />

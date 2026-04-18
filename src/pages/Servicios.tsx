@@ -107,7 +107,7 @@ const Servicios = () => {
                 para brindar visibilidad durante la operación.
               </p>
               <img
-                src="/servicios-transporte.webp"
+                src="/contenedor-tru.webp"
                 alt="Transporte nacional LogeX"
                 className="mt-8 max-h-75 w-full rounded-lg object-cover shadow-sm"
                 loading="lazy"
@@ -169,7 +169,7 @@ const Servicios = () => {
           </div>
 
           <img
-            src="/servicios-operacion.webp"
+            src="/hero-banner.webp"
             alt="Operaciones logísticas LogeX"
             className="max-h-110 w-full rounded-lg object-cover shadow-sm"
             loading="lazy"

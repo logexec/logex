@@ -34,7 +34,7 @@ const RSE = () => {
       />
       <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
         <img
-          src="/rse-hero.webp"
+          src="/nogal-road.jpg"
           alt="Reserva Biológica El Nogal"
           className="absolute inset-0 -z-20 size-full object-cover"
         />
@@ -69,7 +69,7 @@ const RSE = () => {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <img
-              src="/rse-yunguilla.webp"
+              src="/nogal-house.jpg"
               alt="Bosque nublado en Yunguilla"
               className="h-full max-h-130 w-full rounded-lg object-cover shadow-sm"
               loading="lazy"
