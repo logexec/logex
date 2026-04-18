@@ -1,6 +1,10 @@
 import Brands from "@/components/sections/Brands";
+import Certifications from "@/components/sections/Certifications";
 import Hero from "../components/sections/Hero";
+import HeroBanner from "@/components/sections/HeroBanner";
+import Industries from "@/components/sections/Industries";
 import ServicesSection from "../components/sections/Services";
+import Stats from "@/components/sections/Stats";
 import { PageSEO } from "@/components/layout/PageSEO";
 
 const Home = () => {
@@ -12,9 +16,12 @@ const Home = () => {
         path="/"
       />
       <Hero />
+      <Stats />
       <ServicesSection />
+      <Industries />
+      <HeroBanner />
       <Brands />
-      {/* ... Más secciones */}
+      <Certifications />
     </div>
   );
 };
