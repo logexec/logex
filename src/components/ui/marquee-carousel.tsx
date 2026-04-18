@@ -3,59 +3,63 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import abinveb from "@/assets/companies/abinveb.png";
-import andina from "@/assets/companies/andina.png";
+import acnur from "@/assets/companies/acnur.png";
+import aga from "@/assets/companies/aga.svg";
+import gloria from "@/assets/companies/gloria.png";
 import arcacontinental from "@/assets/companies/arcacontinental.png";
-import natura from "@/assets/companies/natura.png";
+import avon from "@/assets/companies/avon.png";
 import bakels from "@/assets/companies/bakels.png";
 import cerveceria from "@/assets/companies/cn.png";
 import cocacola from "@/assets/companies/cocacola.png";
 import condor from "@/assets/companies/condor.png";
 import edesa from "@/assets/companies/edesa.png";
 import ge from "@/assets/companies/GE.png";
-import jaboneriawilson from "@/assets/companies/jaboneriawilson.png";
-import ordeno from "@/assets/companies/ordeno.png";
-import mabe from "@/assets/companies/mabe.png";
-import promesa from "@/assets/companies/promesa.png";
-import sw from "@/assets/companies/Sherwin-Williams.png";
-import sika from "@/assets/companies/sika.png";
-import acnur from "@/assets/companies/acnur.png";
-import un from "@/assets/companies/un.png";
 import holcim from "@/assets/companies/holcim.png";
-import swissgas from "@/assets/companies/swissgas.png";
 import intcomex from "@/assets/companies/intcomex.png";
-import reforma from "@/assets/companies/reforma.png";
+import jaboneriawilson from "@/assets/companies/jaboneriawilson.png";
 import lactalis from "@/assets/companies/lactalis.png";
+import mabe from "@/assets/companies/mabe.png";
 import moderna from "@/assets/companies/moderna.png";
+import natura from "@/assets/companies/natura.png";
 import nestle from "@/assets/companies/nestle.png";
+import ordeno from "@/assets/companies/ordeno.png";
+import promesa from "@/assets/companies/promesa.png";
+import reforma from "@/assets/companies/reforma.png";
+import sika from "@/assets/companies/sika.png";
+import sw from "@/assets/companies/Sherwin-Williams.png";
+import swissgas from "@/assets/companies/swissgas.png";
+import un from "@/assets/companies/un.png";
 import unicef from "@/assets/companies/unicef.png";
 
 const images = [
   abinveb,
-  andina,
+  acnur,
+  aga,
   arcacontinental,
-  natura,
+  avon,
   bakels,
   cerveceria,
   cocacola,
   condor,
   edesa,
-  acnur,
-  ordeno,
   ge,
-  jaboneriawilson,
-  mabe,
-  promesa,
-  sw,
-  sika,
-  un,
+  gloria,
   holcim,
-  swissgas,
   intcomex,
-  reforma,
+  jaboneriawilson,
   lactalis,
+  mabe,
   moderna,
+  natura,
   nestle,
-  unicef
+  ordeno,
+  promesa,
+  reforma,
+  sika,
+  sw,
+  swissgas,
+  un,
+  unicef,
 ];
 
 export default function MarqueeCarousel() {
