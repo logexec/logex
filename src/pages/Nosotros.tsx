@@ -3,6 +3,9 @@ import {
   BadgeCheck,
   Boxes,
   CheckCircle2,
+  Globe2,
+  Layers,
+  Package,
   ShieldCheck,
   Truck,
   Users,
@@ -10,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
+import Timeline from "@/components/sections/Timeline";
 
 const highlights = [
   {
@@ -28,16 +32,34 @@ const highlights = [
 
 const stats = [
   {
-    value: "+55,000 m2",
+    icon: <Warehouse size={24} />,
+    value: "+55,000 m²",
     label: "de superficie de almacenamiento bajo gestión",
   },
   {
+    icon: <Truck size={24} />,
     value: "650",
     label: "vehículos operando a nivel nacional",
   },
   {
+    icon: <Users size={24} />,
     value: "1,300",
     label: "colaboradores directos",
+  },
+  {
+    icon: <Package size={24} />,
+    value: "260,000",
+    label: "pedidos despachados al mes",
+  },
+  {
+    icon: <Layers size={24} />,
+    value: "46,000",
+    label: "SKUs bajo administración",
+  },
+  {
+    icon: <Globe2 size={24} />,
+    value: "28",
+    label: "clientes activos · 25 multinacionales",
   },
 ];
 
@@ -99,11 +121,15 @@ const Nosotros = () => {
               Experiencia comprobada en entornos logísticos exigentes
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Con más de 23 años de trayectoria en Ecuador, LogeX ha construido
-              una capacidad operativa que pocas empresas logísticas de la región
-              pueden igualar. Gestionamos operaciones de alta complejidad para
-              corporaciones multinacionales con procesos robustos, tecnología
-              propia y equipos especializados.
+              En 2003 iniciamos operaciones gestionando el transporte de AGA,
+              una multinacional de gases industriales.
+            </p>
+            <p className="mt-4 leading-8 text-gray-600">
+              Hoy, 23 años después, administramos la logística de 25
+              multinacionales en Ecuador. Operamos como una empresa
+              independiente, respaldada por procesos sólidos, tecnología propia
+              y equipos altamente especializados, guiados por principios éticos
+              y valores que sostienen relaciones de largo plazo.
             </p>
 
             <div className="mt-8 grid gap-4">
@@ -135,7 +161,7 @@ const Nosotros = () => {
           </div>
 
           <img
-            src="/nosotros-operacion.webp"
+            src="/apilador.webp"
             alt="Operación logística LogeX"
             className="h-full max-h-[520px] w-full rounded-lg object-cover shadow-sm"
             loading="lazy"
@@ -145,12 +171,18 @@ const Nosotros = () => {
 
       <section className="bg-gray-50 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {stats.map((stat) => (
               <article
-                key={stat.value}
-                className="rounded-lg border bg-white p-6 shadow-sm"
+                key={stat.label}
+                className="flex flex-col items-start rounded-lg border bg-white p-6 shadow-sm"
               >
+                <span
+                  className="mb-4 inline-flex size-12 items-center justify-center rounded-lg bg-red-50"
+                  style={{ color: colors.logex }}
+                >
+                  {stat.icon}
+                </span>
                 <p
                   className="text-3xl font-bold"
                   style={{ color: colors.navy }}
@@ -161,13 +193,18 @@ const Nosotros = () => {
               </article>
             ))}
           </div>
+          <p className="mt-8 text-center text-xs text-gray-400">
+            Datos a 2026
+          </p>
         </div>
       </section>
+
+      <Timeline />
 
       <section className="py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1fr] lg:items-center lg:px-8">
           <img
-            src="/nosotros-logistica.webp"
+            src="/maquila.png"
             alt="Logística LogeX"
             className="max-h-[420px] w-full rounded-lg object-cover shadow-sm"
             loading="lazy"

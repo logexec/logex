@@ -110,7 +110,7 @@ const Sistemas = () => {
               visibilidad, prevenir incidencias y responder con mayor rapidez.
             </p>
             <img
-              src="/sistemas-panel.webp"
+              src="/vertex.png"
               alt="Panel de sistemas LogeX"
               className="mt-8 max-h-[300px] w-full rounded-lg object-cover shadow-sm"
               loading="lazy"
@@ -175,7 +175,7 @@ const Sistemas = () => {
           </div>
 
           <img
-            src="/sistemas-operacion.webp"
+            src="/axis.png"
             alt="Operación tecnológica LogeX"
             className="max-h-[440px] w-full rounded-lg object-cover shadow-sm"
             loading="lazy"
