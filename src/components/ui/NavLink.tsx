@@ -20,9 +20,9 @@ const NavLink: React.FC<NavLinkProps> = ({
   const baseClasses =
     "px-3 py-2 rounded-md text-sm font-medium transition-colors";
   const defaultClasses =
-    "text-gray-600 hover:text-slate-700 hover:bg-slate-400/15";
+    "text-white/80 hover:text-white hover:bg-white/10";
   const activeClasses =
-    "bg-slate-100 text-slate-600 hover:bg-red-100 hover:text-red-900";
+    "bg-white text-[#1A1D2C] hover:bg-white/90";
 
   return (
     <Link

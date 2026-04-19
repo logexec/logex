@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
           <div className="font-thin max-w-56">
             <p className="font-semibold">Guayaquil</p>
-            <p>Av. Juan Tanaca Marengo y Ma. Piedad Castillo de Levi.</p>
+            <p>Av. Dr. Miguel Alcívar, Edificio Torres del Norte, Torre B</p>
           </div>
         </div>
         {/* Accent line */}

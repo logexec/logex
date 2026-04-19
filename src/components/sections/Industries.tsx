@@ -1,55 +1,61 @@
-import { motion } from "motion/react";
+import {
+  Construction,
+  Factory,
+  Globe,
+  ShoppingBag,
+  UtensilsCrossed,
+} from "lucide-react";
 import { colors } from "../../utils/colors";
 
 const industries = [
-  { name: "Consumo masivo", highlighted: true },
-  { name: "Food & Beverage", highlighted: true },
-  { name: "Retail", highlighted: false },
-  { name: "E-commerce", highlighted: false },
-  { name: "Industrial", highlighted: false },
-  { name: "Construcción", highlighted: false },
+  { icon: <ShoppingBag size={25} />, name: "Consumo masivo" },
+  { icon: <UtensilsCrossed size={25} />, name: "Food & Beverage" },
+  { icon: <Factory size={25} />, name: "Sector Industrial" },
+  { icon: <Globe size={25} />, name: "E-commerce" },
+  { icon: <Construction size={25} />, name: "Construcción" },
 ];
 
 const Industries = () => {
   return (
     <section className="bg-gray-50 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <p
+            className="text-sm font-bold uppercase tracking-wide"
+            style={{ color: colors.logex }}
+          >
+            Industrias atendidas
+          </p>
           <h2
-            className="text-4xl font-bold mb-4"
+            className="mt-3 text-3xl font-bold sm:text-4xl"
             style={{ color: colors.navy }}
           >
-            Industrias que atendemos
+            Experiencia que respalda múltiples industrias
           </h2>
-          <p
-            className="text-xl max-w-2xl mx-auto"
-            style={{ color: colors.gray }}
-          >
-            Experiencia comprobada en sectores con alta exigencia operativa.
+          <p className="mt-5 leading-8 text-gray-600">
+            Trabajamos con clientes de distintas industrias, manteniendo altos
+            estándares de servicio.
           </p>
         </div>
-
-        <div className="flex flex-wrap justify-center gap-3">
-          {industries.map((industry, index) => (
-            <motion.span
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {industries.map((industry) => (
+            <article
               key={industry.name}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              className={`inline-flex items-center rounded-full border px-5 py-2.5 text-base font-semibold shadow-sm ${
-                industry.highlighted
-                  ? "border-red-200 bg-white text-gray-900"
-                  : "border-gray-200 bg-white text-gray-700"
-              }`}
-              style={
-                industry.highlighted
-                  ? { borderColor: colors.logex, color: colors.navy }
-                  : undefined
-              }
+              className="flex flex-col items-start rounded-lg border bg-white p-5 shadow-sm"
             >
-              {industry.name}
-            </motion.span>
+              <span
+                className="mb-3 inline-flex size-11 items-center justify-center rounded-lg bg-red-50"
+                style={{ color: colors.logex }}
+              >
+                {industry.icon}
+              </span>
+              <h3
+                className="font-semibold"
+                style={{ color: colors.navy }}
+              >
+                {industry.name}
+              </h3>
+            </article>
           ))}
         </div>
       </div>
