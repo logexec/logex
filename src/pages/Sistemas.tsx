@@ -2,15 +2,63 @@ import { PageSEO } from "@/components/layout/PageSEO";
 import {
   Boxes,
   ChartBar,
+  Check,
   MapPinned,
   MonitorCheck,
+  Plug,
   ServerCog,
-  ShieldCheck,
   Truck,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { colors } from "../utils/colors";
 import tdc from "@/assets/companies/tdc.webp";
+
+const platforms = [
+  {
+    eyebrow: "TMS · Gestión de transporte",
+    name: "LogeX Vertex",
+    icon: <Truck size={22} />,
+    description:
+      "Planificación, ejecución y seguimiento de operaciones de transporte y distribución a nivel nacional.",
+    features: [
+      "Planificación de rutas",
+      "Seguimiento GPS",
+      "Gestión de flota",
+      "Monitoreo en tiempo real",
+    ],
+    image: "/vertex.png",
+    imageAlt: "LogeX Vertex — gestión de transporte",
+  },
+  {
+    eyebrow: "WMS · Gestión de almacenes",
+    name: "LogeX Axis",
+    icon: <Boxes size={22} />,
+    description:
+      "Control de inventarios y movimientos de mercancía dentro de los centros de distribución, con trazabilidad end-to-end.",
+    features: [
+      "Control de inventarios",
+      "Gestión de movimientos",
+      "Trazabilidad completa",
+      "Operación multi-centro",
+    ],
+    image: "/axis.png",
+    imageAlt: "LogeX Axis — gestión de almacenes",
+  },
+  {
+    eyebrow: "Monitoreo operativo",
+    name: "Torre de Control",
+    icon: <MonitorCheck size={22} />,
+    description:
+      "Supervisión de la operación en tiempo real con paneles, indicadores y alertas ante contingencias.",
+    features: [
+      "Paneles operativos",
+      "Indicadores en vivo",
+      "Alertas y notificaciones",
+      "Respuesta ante contingencias",
+    ],
+    image: tdc,
+    imageAlt: "Torre de Control — monitoreo operativo",
+  },
+];
 
 const capabilities = [
   {
@@ -39,21 +87,6 @@ const capabilities = [
   },
 ];
 
-const internalSystems = [
-  "LogeX Vertex",
-  "LogeX Axis",
-  "LogeX LMS",
-  "LogeX CGI",
-  "LogeX SAR",
-  "LogeX GPS",
-  "LogeX SAT",
-  "LogeX Compras",
-  "LogeX Onix",
-  "LogeX SGE",
-  "LogeX Portal",
-  "LogeX Monitoreo",
-];
-
 const Sistemas = () => {
   return (
     <div className="overflow-x-hidden">
@@ -75,15 +108,15 @@ const Sistemas = () => {
           <div className="max-w-3xl">
             <p className="mb-4 inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-white">
               <ServerCog size={18} />
-              Sistemas internos
+              Desarrollo de Software a la medida
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              Tecnología de punta para controlar sus operaciones logísticas
+              Tecnología avanzada para el control de sus operaciones logísticas
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100">
-              En LogeX desarollamos herramientas y plataformas de gestión
-              para optimizar almacenes, transporte, trazabilidad e información
-              operativa.
+            Diseñamos, implementamos y operamos nuestras propias plataformas 
+            tecnológicas, validadas en campo, para integrar y optimizar almacenes, 
+            transporte, trazabilidad y flujo de información.
             </p>
           </div>
         </div>
@@ -102,12 +135,11 @@ const Sistemas = () => {
               className="mt-3 text-3xl font-bold sm:text-4xl"
               style={{ color: colors.navy }}
             >
-              Herramientas diseñadas para operar mejor
+              Tecnología al servicio de la ejecución operativa
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Nuestros sistemas apoyan la gestión diaria de operaciones
-              complejas y de gran escala. La información se organiza para dar
-              visibilidad, prevenir incidencias y responder con mayor rapidez.
+            Facilitamos la gestión de operaciones exigentes mediante información 
+            ordenada y accionable, que permite anticiparse a problemas y responder con rapidez.
             </p>
             <img
               src="/vertex.png"
@@ -142,8 +174,8 @@ const Sistemas = () => {
       </section>
 
       <section className="bg-gray-50 py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:items-center lg:px-8">
-          <div className="rounded-lg border bg-white p-6 shadow-sm sm:p-8">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
             <p
               className="text-sm font-bold uppercase tracking-wide"
               style={{ color: colors.logex }}
@@ -151,81 +183,95 @@ const Sistemas = () => {
               Plataformas
             </p>
             <h2
-              className="mt-3 text-3xl font-bold"
+              className="mt-3 text-3xl font-bold sm:text-4xl"
               style={{ color: colors.navy }}
             >
-              Sistemas LogeX
+              Soluciones orientadas al cliente
             </h2>
             <p className="mt-5 leading-8 text-gray-600">
-              Un ecosistema de herramientas que acompaña la gestión logística,
-              desde almacenes e inventarios hasta transporte, monitoreo y
-              control operativo.
+            Un conjunto de plataformas que soportan 
+            distintas capas de la operación, desde transporte y almacenes 
+            hasta monitoreo en tiempo real.
             </p>
-
-            <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {internalSystems.map((system) => (
-                <div
-                  key={system}
-                  className="rounded-lg border bg-gray-50 px-3 py-4 text-center text-sm font-semibold text-gray-700"
-                >
-                  {system}
-                </div>
-              ))}
-            </div>
           </div>
 
-          <img
-            src="/axis.png"
-            alt="Operación tecnológica LogeX"
-            className="max-h-[440px] w-full rounded-lg object-cover shadow-sm"
-            loading="lazy"
-          />
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-lg border bg-white p-6 shadow-sm sm:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.35fr_1fr] lg:items-start">
-              <div className="flex items-center gap-4">
-                <span
-                  className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50"
-                  style={{ color: colors.logex }}
-                >
-                  <MonitorCheck size={24} />
-                </span>
-                <h2
-                  className="text-2xl font-bold"
-                  style={{ color: colors.navy }}
-                >
-                  Torre de control
-                </h2>
-              </div>
-              <div>
-                <p className="leading-8 text-gray-600">
-                  Extraemos, transformamos y organizamos información logística
-                  para configurar paneles e indicadores que supervisan la
-                  operación en tiempo real, ayudan a prevenir incidencias y
-                  permiten reaccionar ante contingencias operativas.
-                </p>
-                <Link
-                  to="/contacto"
-                  className="mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-red-600 px-5 text-base font-semibold text-white transition-colors hover:bg-red-700"
-                >
-                  <ShieldCheck size={18} />
-                  Solicitar información
-                </Link>
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {platforms.map((platform) => (
+              <article
+                key={platform.name}
+                className="flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
+              >
                 <img
-                  src={tdc}
-                  alt="Torre de control LogeX"
-                  className="mt-8 w-full rounded-lg object-cover shadow-sm"
+                  src={platform.image}
+                  alt={platform.imageAlt}
+                  className="h-48 w-full border-b object-cover"
                   loading="lazy"
                 />
-              </div>
-            </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <p
+                    className="text-xs font-bold uppercase tracking-widest"
+                    style={{ color: colors.logex }}
+                  >
+                    {platform.eyebrow}
+                  </p>
+                  <div className="mt-3 flex items-center gap-3">
+                    <span
+                      className="inline-flex size-11 items-center justify-center rounded-lg text-white shadow-sm"
+                      style={{ background: colors.logex }}
+                    >
+                      {platform.icon}
+                    </span>
+                    <h3
+                      className="text-xl font-bold"
+                      style={{ color: colors.navy }}
+                    >
+                      {platform.name}
+                    </h3>
+                  </div>
+                  <p className="mt-4 leading-7 text-gray-600">
+                    {platform.description}
+                  </p>
+                  <ul className="mt-5 space-y-2">
+                    {platform.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2 text-sm text-gray-700"
+                      >
+                        <Check
+                          size={16}
+                          className="mt-1 shrink-0"
+                          style={{ color: colors.logex }}
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10 flex items-start gap-3 rounded-lg border bg-white p-5 shadow-sm">
+            <span
+              className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-red-50"
+              style={{ color: colors.logex }}
+            >
+              <Plug size={20} />
+            </span>
+            <p className="leading-7 text-gray-600">
+              <span
+                className="font-semibold"
+                style={{ color: colors.navy }}
+              >
+                Integración con los sistemas del cliente.
+              </span>{" "}
+              Nuestras plataformas se conectan con los ERPs y WMS de cada
+              cliente a través de <strong>EDI</strong> y <strong>APIs</strong>.
+            </p>
           </div>
         </div>
       </section>
+
     </div>
   );
 };

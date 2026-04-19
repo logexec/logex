@@ -171,14 +171,20 @@ const Nosotros = () => {
 
       <section className="bg-gray-50 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2
+            className="mb-10 text-center text-3xl font-bold sm:text-4xl"
+            style={{ color: colors.navy }}
+          >
+            LogeX en cifras
+          </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {stats.map((stat) => (
               <article
                 key={stat.label}
-                className="flex flex-col items-start rounded-lg border bg-white p-6 shadow-sm"
+                className="relative flex flex-col items-start rounded-lg border bg-white p-6 pr-20 shadow-sm"
               >
                 <span
-                  className="mb-4 inline-flex size-12 items-center justify-center rounded-lg bg-red-50"
+                  className="absolute right-6 top-6 inline-flex size-12 items-center justify-center rounded-lg bg-red-50"
                   style={{ color: colors.logex }}
                 >
                   {stat.icon}
@@ -262,34 +268,6 @@ const Nosotros = () => {
         </div>
       </section>
 
-      <section className="bg-gray-50 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-lg border bg-white p-6 shadow-sm sm:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.35fr_1fr] lg:items-start">
-              <div className="flex items-center gap-4">
-                <span
-                  className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-red-50"
-                  style={{ color: colors.logex }}
-                >
-                  <Truck size={24} />
-                </span>
-                <h2
-                  className="text-2xl font-bold"
-                  style={{ color: colors.navy }}
-                >
-                  Cobertura
-                </h2>
-              </div>
-              <p className="leading-8 text-gray-600">
-                Nuestros servicios de logística y distribución tienen alcance
-                nacional, con una infraestructura diseñada para responder con
-                agilidad ante las necesidades operativas de cada cliente, sin
-                importar el volumen o la ubicación.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
