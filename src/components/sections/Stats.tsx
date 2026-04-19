@@ -29,6 +29,12 @@ const Stats = () => {
   return (
     <section className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          className="mb-10 text-center text-3xl font-bold sm:text-4xl"
+          style={{ color: colors.navy }}
+        >
+          LogeX en cifras
+        </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <motion.div
